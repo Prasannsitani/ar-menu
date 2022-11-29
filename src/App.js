@@ -1,14 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from 'react'
+import logo from './logo.svg'
+import './App.css'
+import useFetch from 'react-fetch-hook'
+import { isEmpty } from 'lodash'
 
-function App() {
-  return (
+const App = () => {
+  const { isLoading, data } = useFetch('/getData')
+
+  useEffect(() => {
+    if (!isEmpty(data)) {
+      console.log('Data : ', data)
+    }
+  }, [data])
+
+  return isLoading ? (
+    <div>Loading...</div>
+  ) : (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
+
+        <p>A simple React app.....</p>
+
         <a
           className="App-link"
           href="https://reactjs.org"
@@ -17,9 +30,12 @@ function App() {
         >
           Learn React
         </a>
+        <form action="../post" method="post" className="form">
+          <button type="submit">Connected?</button>
+        </form>
       </header>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
