@@ -1,9 +1,9 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const data = require('./data.json')
-const Fruit = require('./models/fruits')
-const People = require('./models/people')
 const mongoose = require('mongoose')
+
+// Models
+const menu = require('./models/menu')
 
 const app = express()
 
@@ -19,26 +19,96 @@ app.use((req, res, next) => {
 })
 
 // db connection
-mongoose.connect('mongodb://localhost:27017/fruitsDB')
+mongoose.connect('mongodb://localhost:27017/test-restaurant')
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.get('/getData', (req, res) => {
-  res.json(data)
+const menuData = new menu({
+  type: 'MENU',
+  items: [
+    {
+      id: '638245755e5c938391f8ae9f',
+      name: 'Veg. Pizza',
+      section: 'Pizza Mania',
+      description:
+        'Enjoy fresh pan veg pizza with paneer, onion and capsicum toppings',
+      price: { value: '200', currency: 'INR' },
+      ar_enabled: true,
+      preview_image:
+        'https://cdn.dribbble.com/userupload/3158902/file/original-7c71bfa677e61dea61bc2acd59158d32.jpg?resize=400x0',
+      food_category: 'veg',
+      ar_info: {
+        type: 'MODEL',
+        url: 'https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf',
+      },
+    },
+    {
+      id: '638245755e5c938391f8ae9f',
+      name: 'Veg. Pizza',
+      section: 'Pizza Mania',
+      description:
+        'Enjoy fresh pan veg pizza with paneer, onion and capsicum toppings',
+      price: { value: '200', currency: 'INR' },
+      ar_enabled: true,
+      preview_image:
+        'https://cdn.dribbble.com/userupload/3158902/file/original-7c71bfa677e61dea61bc2acd59158d32.jpg?resize=400x0',
+      food_category: 'veg',
+      ar_info: {
+        type: 'MODEL',
+        url: 'https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf',
+      },
+    },
+    {
+      id: '638245755e5c938391f8ae9f',
+      name: 'Aloo Tikki Burger',
+      section: 'Burger Mania',
+      description:
+        'Enjoy fresh aloo tikki burger with potato, onion and capsicum toppings',
+      price: { value: '200', currency: 'INR' },
+      ar_enabled: true,
+      preview_image:
+        'https://cdn.dribbble.com/userupload/3158902/file/original-7c71bfa677e61dea61bc2acd59158d32.jpg?resize=400x0',
+      food_category: 'veg',
+      ar_info: {
+        type: 'MODEL',
+        url: 'https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf',
+      },
+    },
+  ],
+})
+// menuData.save()
+
+app.get('/get-menu', (req, res) => {
+  let _data = {}
+
+  menu.findOne((error, menus) => {
+    if (error) {
+      res.status(500)
+    } else {
+      try {
+        menus.items.forEach(item => {
+          if (item) {
+            if (_data[item.section]) {
+              _data[item.section] = [..._data[item.section], { ...item }]
+            } else {
+              _data[item.section] = [{ ...item }]
+            }
+          } else {
+            res.sendStatus(404)
+          }
+        })
+        res.json(_data)
+      } catch (err) {
+        res.sendStatus(500)
+      }
+    }
+  })
+
+  res.status(200)
 })
 
 app.post('/post', (req, res) => {
-  console.log('Connected to React')
-
-  const fruit = new Fruit({
-    name: 'Apple',
-    rating: 7,
-    review: 'Pretty solid as fruit.',
-  })
-
-  fruit.save()
-
   res.redirect('/')
 })
 
