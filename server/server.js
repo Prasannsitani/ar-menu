@@ -89,25 +89,51 @@ app.get('/get-menu', (req, res) => {
           }
         })
         res.json(_data)
+        return
       } catch (err) {
         res.sendStatus(500)
+        return
       }
     }
   })
+})
 
-  res.status(200)
+app.get('/menu-item/:id', (req, res) => {
+  const id = req.params.id
+
+  try {
+    if (id) {
+      menu.findById(id, (error, item) => {
+        if (error) {
+          res.sendStatus(404)
+          return
+        }
+        if (!item) {
+          res.sendStatus(404)
+          return
+        }
+        res.json(item)
+      })
+    } else {
+      res.sendStatus(404)
+    }
+  } catch (err) {
+    console.log('err : ', err)
+    res.sendStatus(500)
+  }
 })
 
 app.get('/get-orders', (req, res) => {
   orders.find((error, data) => {
     if (error) {
       res.sendStatus(500)
+      return
     } else {
       if (data) {
         res.json(data)
-        res.status(200)
       } else {
-        res.status(404).json({ error: 'No Orders Found' })
+        res.sendStatus(404)
+        return
       }
     }
   })
@@ -161,7 +187,10 @@ app.post('/place-order', (req, res) => {
   }
 
   orders.create(order_item, (err, item) => {
-    if (err) throw err
+    if (err) {
+      res.sendStatus(500)
+      return
+    }
   })
 
   res.sendStatus(200)
@@ -180,16 +209,25 @@ app.post('/menu-item/add', (req, res) => {
   }
 
   menu.create(item, err => {
-    if (err) throw err
+    if (err) {
+      res.sendStatus(500)
+      return
+    }
   })
-
-  res.sendStatus(200)
 })
 
 app.delete('/menu-item/del', (req, res) => {
-  menu.deleteOne({ id: req.body.id }, error => {
-    if (error) throw error
-  })
+  try {
+    menu.findByIdAndDelete(req.body.id, error => {
+      if (error) {
+        res.sendStatus(500)
+        return
+      }
+    })
+  } catch (err) {
+    res.sendStatus(404)
+    return
+  }
 })
 
 const PORT = process.env.PORT || 8080
