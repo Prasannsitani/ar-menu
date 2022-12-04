@@ -1,0 +1,27 @@
+{
+  "_id": { "$oid": "638c282640b1ab5fc742bc10" },
+  "type": "ORDER",
+  "orders": [
+    {
+      "_id": { "$oid": "638b233a0749af5441e3d02d" },
+      "total_amount": {
+        "value": { "$numberInt": "200" },
+        "currency": "INR",
+        "displayText": "Rs. 200"
+      },
+      "status": "ORDERED",
+      "timestamp": "1999-12-31T18:30:00.000+00:00",
+      "ordered_table": "Table 2",
+      "ordered_items": [
+        {
+          "item_id": { "$iod": "638248f65e5c938391f8aea2" },
+          "quantity": { "$numberInt": "3" }
+        },
+        {
+          "item_id": { "$iod": "638248f65e5c938391f8aea3" },
+          "quantity": { "$numberInt": "4" }
+        }
+      ]
+    }
+  ]
+}
