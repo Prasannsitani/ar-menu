@@ -20,7 +20,9 @@ app.use((req, res, next) => {
 })
 
 // db connection
-mongoose.connect('mongodb://localhost:27017/test-restaurant')
+mongoose.connect(
+  'mongodb+srv://admin:admin@ar-menu.jvvucuy.mongodb.net/?retryWrites=true&w=majority/test-restaurant',
+)
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
