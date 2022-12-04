@@ -20,9 +20,10 @@ app.use((req, res, next) => {
 })
 
 // db connection
-mongoose.connect(
-  'mongodb+srv://admin:admin@ar-menu.jvvucuy.mongodb.net/?retryWrites=true&w=majority/test-restaurant',
-)
+mongoose.connect('mongodb+srv://admin:admin@ar-menu.jvvucuy.mongodb.net/test', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -168,8 +169,11 @@ app.post('/menu-item/add', (req, res) => {
 
   menu.create(item, err => {
     if (err) {
+      console.log('err : ', err)
       res.sendStatus(500)
       return
+    } else {
+      res.sendStatus(200)
     }
   })
 })
