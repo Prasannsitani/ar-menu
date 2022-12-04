@@ -116,17 +116,21 @@ app.get('/get-orders', (req, res) => {
 // Need to see again.
 app.get('/get-orders/:id', (req, res) => {
   const id = req.params.id
-  let ordered_items = []
 
-  orders.findById(id, (error, order) => {
+  orders.findById(id, async (error, order) => {
     if (error) throw error
 
     if (order) {
+      let ordered_items = []
+
       order.ordered_items.forEach(item => {
-        menu.findById(item.item_id, (error, menu_item) => {
-          if (error || !menu_item) throw error
-          ordered_items.push({ ...item, ...menu_item._doc })
-        })
+        // menu.findById(item.item_id, (error, menu_item) => {
+        //   if (error || !menu_item) throw error
+        //   // ordered_items = [...ordered_items, menu_item]
+        //   // console.log('menu item : ', { ...item, ...menu_item._doc })
+        //   // ordered_items.push({ ...item, ...menu_item._doc })
+        ordered_items.push(item)
+        // })
       })
       res.json({ ...order._doc, ordered_items })
     } else {
@@ -138,7 +142,27 @@ app.get('/get-orders/:id', (req, res) => {
 app.post('/place-order', (req, res) => {
   const params = req.body
 
-  console.log('params : ', params)
+  const order_item = {
+    total_amount: {
+      value: params.total_amount,
+      currency: 'INR',
+      displayText: `Rs ${params.total_amount}`,
+    },
+    status: 'ORDERED',
+    ordered_table: params.ordered_table,
+    timestamp: {
+      value: Date.now(),
+      displayText: new Date(Date.now()).toLocaleString({
+        locales: 'en-US',
+      }),
+    },
+    status: 'ORDERED',
+    ordered_items: params.ordered_items,
+  }
+
+  orders.create(order_item, (err, item) => {
+    if (err) throw err
+  })
 
   res.sendStatus(200)
 })
