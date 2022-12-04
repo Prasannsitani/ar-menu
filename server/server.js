@@ -167,6 +167,25 @@ app.post('/place-order', (req, res) => {
   res.sendStatus(200)
 })
 
+app.post('/menu-item/add', (req, res) => {
+  const params = req.body
+
+  const item = {
+    ...params,
+    price: {
+      value: params.price,
+      currency: 'INR',
+      displayText: `Rs. ${params.price}`,
+    },
+  }
+
+  menu.create(item, err => {
+    if (err) throw err
+  })
+
+  res.sendStatus(200)
+})
+
 app.post('/post', (req, res) => {
   res.redirect('/')
 })
