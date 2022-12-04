@@ -186,8 +186,10 @@ app.post('/menu-item/add', (req, res) => {
   res.sendStatus(200)
 })
 
-app.post('/post', (req, res) => {
-  res.redirect('/')
+app.delete('/menu-item/del', (req, res) => {
+  menu.deleteOne({ id: req.body.id }, error => {
+    if (error) throw error
+  })
 })
 
 const PORT = process.env.PORT || 8080
