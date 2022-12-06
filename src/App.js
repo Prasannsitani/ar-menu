@@ -9,12 +9,6 @@ const App = () => {
     formatter: response => response.json(),
   })
 
-  useEffect(() => {
-    if (!isEmpty(data)) {
-      console.log('data : ', data)
-    }
-  }, [data])
-
   if (isLoading) return <div>Loading...</div>
   if (error) return <div> {error.status} </div>
 
@@ -71,18 +65,6 @@ const App = () => {
             </div>
           )
         })}
-
-        {/* <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <form action="../post" method="post" className="form">
-          <button type="submit">Connected?</button>
-        </form> */}
       </header>
     </div>
   )
