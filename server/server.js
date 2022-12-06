@@ -20,10 +20,11 @@ app.use((req, res, next) => {
 })
 
 // db connection
-mongoose.connect('mongodb+srv://admin:admin@ar-menu.jvvucuy.mongodb.net/test', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+// mongoose.connect('mongodb+srv://admin:admin@ar-menu.jvvucuy.mongodb.net/test', {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// })
+mongoose.connect('mongodb://localhost:27017/test')
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))

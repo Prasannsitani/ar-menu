@@ -5,24 +5,74 @@ import useFetch from 'react-fetch-hook'
 import { isEmpty } from 'lodash'
 
 const App = () => {
-  const { isLoading, data } = useFetch('/getData')
+  const { isLoading, data, error } = useFetch('/get-orders', {
+    formatter: response => response.json(),
+  })
 
   useEffect(() => {
     if (!isEmpty(data)) {
-      console.log('Data : ', data)
+      console.log('data : ', data)
     }
   }, [data])
 
-  return isLoading ? (
-    <div>Loading...</div>
+  if (isLoading) return <div>Loading...</div>
+  if (error) return <div> {error.status} </div>
+
+  return isEmpty(data) ? (
+    <div> No Data Found </div>
   ) : (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
 
-        <p>A simple React app.....</p>
+        <h1>Menu App</h1>
+        {data.map((item, index) => {
+          return (
+            <div
+              key={index}
+              style={{
+                width: window.innerWidth / 6,
+                background: 'white',
+                boxShadow: '0px 3px 15px rgba(0,0,0,0.2)',
+                padding: '1em',
+                borderRadius: 15,
+                marginBottom: 20,
+                color: 'black',
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}
+            >
+              <div
+                style={{
+                  display: 'grid',
+                  placeItems: 2,
+                }}
+              >
+                <p style={{ fontSize: '16px' }}>{`${item.ordered_table}`}</p>
+                <p
+                  style={{ fontSize: '16px', color: 'gray' }}
+                >{`As soon as`}</p>
+              </div>
+              <div
+                style={{
+                  alignSelf: 'center',
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: '16px',
+                    color: 'black',
+                    fontWeight: 'bolder',
+                    fontFamily: 'sans-serif',
+                  }}
+                >{`${item.total_amount.displayText}`}</p>
+              </div>
+            </div>
+          )
+        })}
 
-        <a
+        {/* <a
           className="App-link"
           href="https://reactjs.org"
           target="_blank"
@@ -32,7 +82,7 @@ const App = () => {
         </a>
         <form action="../post" method="post" className="form">
           <button type="submit">Connected?</button>
-        </form>
+        </form> */}
       </header>
     </div>
   )
