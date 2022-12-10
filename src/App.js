@@ -1,9 +1,17 @@
 import React from 'react'
 import './App.css'
 import { styled } from '@mui/material/styles'
+// eslint-disable
 import { Header } from './components'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { ThemeProvider, createTheme, Box, Grid, Paper } from '@mui/material'
+import { BrowserRouter, Link, Outlet, Route, Routes } from 'react-router-dom'
+import {
+  ThemeProvider,
+  createTheme,
+  Box,
+  Grid,
+  Paper,
+  Typography,
+} from '@mui/material'
 import { Orders, OrderInfo } from './pages'
 
 const theme = createTheme({
@@ -41,6 +49,7 @@ const App = () => {
     <div className="App">
       <ThemeProvider theme={theme}>
         <BrowserRouter>
+          <Header />
           <Routes>
             <Route
               path="/"
@@ -67,9 +76,15 @@ const App = () => {
                       </Item>
                     </Grid>
                   </Grid>
+                  <Outlet />
                 </Box>
               }
-            />
+            >
+              <Route
+                path="/:id"
+                element={<Typography> Hello World </Typography>}
+              />
+            </Route>
           </Routes>
         </BrowserRouter>
       </ThemeProvider>

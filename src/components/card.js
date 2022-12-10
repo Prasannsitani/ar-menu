@@ -3,8 +3,9 @@ import { Card as MuiCard, Stack, CardActionArea, styled } from '@mui/material'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
+import { Link } from 'react-router-dom'
 
-const Item = styled(MuiCard)(({ theme }) => ({
+const StyledCard = styled(MuiCard)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
   '&:hover': {
@@ -12,10 +13,10 @@ const Item = styled(MuiCard)(({ theme }) => ({
   },
 }))
 
-const Card = () => {
+const Card = props => {
   return (
-    <Item sx={{ minWidth: 275, borderRadius: 4 }}>
-      <CardActionArea a>
+    <StyledCard sx={{ minWidth: 275, borderRadius: 4 }}>
+      <CardActionArea LinkComponent={Link} to={`/${props.id}`}>
         <CardContent>
           <Stack
             direction={{ md: 'row' }}
@@ -34,7 +35,7 @@ const Card = () => {
           </Stack>
         </CardContent>
       </CardActionArea>
-    </Item>
+    </StyledCard>
   )
 }
 

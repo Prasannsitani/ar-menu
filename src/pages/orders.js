@@ -18,8 +18,14 @@ const Orders = () => {
         <MenuOpenIcon color="white" />
       </Stack>
       <Stack spacing={2}>
-        {[1, 2, 3, 4, 5].map((item, index) => (
-          <Card />
+        {[
+          { id: 1, price: 100 },
+          { id: 2, price: 100 },
+          { id: 3, price: 100 },
+          { id: 4, price: 100 },
+          { id: 5, price: 100 },
+        ].map((item, index) => (
+          <Card {...item} key={index} />
         ))}
       </Stack>
     </Stack>

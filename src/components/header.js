@@ -5,6 +5,7 @@ import { Avatar } from '@mui/material'
 import Stack from '@mui/material/Stack'
 import { IconButton } from '@mui/material'
 import AcUnitIcon from '@mui/icons-material/AcUnit'
+import { Link } from 'react-router-dom'
 
 const drawerWidth = 70
 
@@ -42,18 +43,29 @@ const Header = () => {
         }}
         spacing={1}
       >
-        <IconButton size="large" edge="center" color="inherit">
-          <AcUnitIcon sx={{ color: 'white' }} />
-        </IconButton>
-        <IconButton size="large" edge="center" color="inherit">
-          <AcUnitIcon sx={{ color: 'white' }} />
-        </IconButton>
-        <IconButton size="large" edge="center" color="inherit">
-          <AcUnitIcon sx={{ color: 'white' }} />
-        </IconButton>
-        <IconButton size="large" edge="center" color="inherit">
-          <AcUnitIcon sx={{ color: 'white' }} />
-        </IconButton>
+        <Link to="/">
+          <IconButton size="large" color="inherit">
+            <AcUnitIcon sx={{ color: 'white' }} />
+          </IconButton>
+        </Link>
+
+        <Link to="/menu">
+          <IconButton size="large" color="inherit">
+            <AcUnitIcon sx={{ color: 'white' }} />
+          </IconButton>
+        </Link>
+
+        <Link to="/orders">
+          <IconButton size="large" color="inherit">
+            <AcUnitIcon sx={{ color: 'white' }} />
+          </IconButton>
+        </Link>
+
+        <Link to="/login">
+          <IconButton size="large" color="inherit">
+            <AcUnitIcon sx={{ color: 'white' }} />
+          </IconButton>
+        </Link>
       </Stack>
     </div>
   )
