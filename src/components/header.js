@@ -61,10 +61,14 @@ const Header = () => {
   const container = window.document.body
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', border: 'none' }}>
       <Box
         component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        sx={{
+          width: { sm: drawerWidth },
+          flexShrink: { sm: 0 },
+          border: 'none',
+        }}
         aria-label="mailbox folders"
       >
         {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
@@ -81,7 +85,12 @@ const Header = () => {
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: drawerWidth,
+              borderWidth: 0,
+              border: 0,
+              outline: 'none',
             },
+            border: 0,
+            outline: 'none',
           }}
         >
           {drawer}
