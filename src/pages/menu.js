@@ -1,7 +1,7 @@
 import React from 'react'
-import { Divider, Stack, Typography } from '@mui/material'
+import { Divider, Stack } from '@mui/material'
 import Assets from '../assets'
-import { OrderInfoItem } from '../components'
+import { MenuItem } from '../components'
 
 const Menu = props => {
   return (
@@ -98,7 +98,7 @@ const Menu = props => {
             price: '$12',
           },
         ].map((item, index) => {
-          return <OrderInfoItem {...item} key={index} />
+          return <MenuItem {...item} key={index} />
         })}
       </Stack>
     </Stack>
