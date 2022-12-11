@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography, Stack } from '@mui/material'
+import { Typography, Stack, IconButton } from '@mui/material'
 import MenuOpenIcon from '@mui/icons-material/MenuOpen'
 import { Card } from '../components'
 
@@ -15,7 +15,9 @@ const Orders = () => {
         <Typography variant="h3" fontWeight="900" color="#000000">
           Orders list
         </Typography>
-        <MenuOpenIcon color="white" />
+        <IconButton>
+          <MenuOpenIcon color="white" />
+        </IconButton>
       </Stack>
       <Stack spacing={2}>
         {[

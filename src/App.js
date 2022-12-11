@@ -1,7 +1,6 @@
 import React from 'react'
 import './App.css'
 import { styled } from '@mui/material/styles'
-// eslint-disable
 import { Header } from './components'
 import { BrowserRouter, Link, Outlet, Route, Routes } from 'react-router-dom'
 import {
@@ -85,6 +84,10 @@ const App = () => {
                 element={<Typography> Hello World </Typography>}
               />
             </Route>
+            <Route
+              path="/menu"
+              element={<Typography> Hello World </Typography>}
+            />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>

@@ -1,32 +1,10 @@
 import React from 'react'
-import {
-  Typography,
-  Stack,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  IconButton,
-  List,
-  Paper,
-} from '@mui/material'
-import CommentIcon from '@mui/icons-material/Comment'
+import { Typography, Stack } from '@mui/material'
 import { useParams } from 'react-router-dom'
 import { OrderInfoItem } from '../components'
 
 const OrderInfo = props => {
   const { id } = useParams()
-
-  function renderRow(props) {
-    const { index, style } = props
-
-    return (
-      <ListItem style={style} key={index} component="div" disablePadding>
-        <ListItemButton>
-          <ListItemText primary={`Item ${index + 1}`} />
-        </ListItemButton>
-      </ListItem>
-    )
-  }
 
   return (
     <Stack spacing={4}>
