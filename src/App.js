@@ -11,7 +11,7 @@ import {
   Paper,
   Typography,
 } from '@mui/material'
-import { Orders, OrderInfo, Menu } from './pages'
+import { Orders, OrderInfo, Menu, Table } from './pages'
 
 const theme = createTheme({
   components: {
@@ -84,6 +84,7 @@ const App = () => {
               />
             </Route>
             <Route path="/menu" element={<Menu />} />
+            <Route path="/table" element={<Table />} />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>
