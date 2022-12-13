@@ -65,7 +65,6 @@ const App = () => {
                           background: '#F8F8FA',
                         }}
                       >
-                        <Header />
                         <Orders />
                       </Item>
                     </Grid>
