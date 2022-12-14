@@ -201,8 +201,54 @@ app.delete('/menu-item/del', (req, res) => {
   }
 })
 
-app.get('/home', (req, res) => {
-  res.json('Hello World')
+app.get('/home', async (req, res) => {
+  let _data = {}
+
+  let menuData = await menu.find()
+
+  let orderData = await orders.find()
+
+  _data = {
+    orders: orderData,
+    menus: menuData,
+  }
+
+  res.json(_data)
+
+  // .find()
+  //   .then(data => {
+  //     console.log('data : ', data)
+  //   })
+  //   .catch(err => {
+  //     console.log('err : ', err)
+  //   })
+
+  // menu.find((error, menus) => {
+  //   if (error) {
+  //     res.sendStatus(500)
+  //   } else {
+  //     try {
+  //       menus.forEach(item => {
+  //         if (item) {
+  //           if (_data[item.section]) {
+  //             _data[item.section] = [..._data[item.section], { ...item._doc }]
+  //           } else {
+  //             _data[item.section] = [{ ...item._doc }]
+  //           }
+  //         } else {
+  //           res.sendStatus(404)
+  //         }
+  //       })
+  //       // res.json(_data)
+  //       return
+  //     } catch (err) {
+  //       res.sendStatus(500)
+  //       return
+  //     }
+  //   }
+  // })
+
+  return
 })
 
 const PORT = process.env.PORT || 8080
