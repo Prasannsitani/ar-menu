@@ -20,14 +20,22 @@ app.use((req, res, next) => {
 })
 
 // db connection
-mongoose.connect('mongodb+srv://admin:admin@ar-menu.jvvucuy.mongodb.net/test', {
+mongoose.connect('mongodb://localhost:27017/test', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
 // mongoose.connect('mongodb://localhost:27017/test')
+// mongodb+srv://admin:admin@ar-menu.jvvucuy.mongodb.net/test
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+
+app.get('/', (req, res) => {
+  res.json({
+    error: null,
+    data: null,
+  })
+})
 
 app.get('/get-menu', (req, res) => {
   let _data = {}
@@ -191,6 +199,10 @@ app.delete('/menu-item/del', (req, res) => {
     res.sendStatus(404)
     return
   }
+})
+
+app.get('/home', (req, res) => {
+  res.json('Hello World')
 })
 
 const PORT = process.env.PORT || 8080
