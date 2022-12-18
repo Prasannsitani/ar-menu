@@ -109,30 +109,30 @@ app.get('/get-orders', (req, res) => {
 })
 
 // Need to see again.
-app.get('/get-orders/:id', (req, res) => {
-  const id = req.params.id
+// app.get('/get-orders/:id', (req, res) => {
+//   const id = req.params.id
 
-  orders.findById(id, async (error, order) => {
-    if (error) throw error
+//   orders.findById(id, async (error, order) => {
+//     if (error) throw error
 
-    if (order) {
-      let ordered_items = []
+//     if (order) {
+//       let ordered_items = []
 
-      order.ordered_items.forEach(item => {
-        // menu.findById(item.item_id, (error, menu_item) => {
-        //   if (error || !menu_item) throw error
-        //   // ordered_items = [...ordered_items, menu_item]
-        //   // console.log('menu item : ', { ...item, ...menu_item._doc })
-        //   // ordered_items.push({ ...item, ...menu_item._doc })
-        ordered_items.push(item)
-        // })
-      })
-      res.json({ ...order._doc, ordered_items })
-    } else {
-      res.sendStatus(404)
-    }
-  })
-})
+//       order.ordered_items.forEach(item => {
+//         // menu.findById(item.item_id, (error, menu_item) => {
+//         //   if (error || !menu_item) throw error
+//         //   // ordered_items = [...ordered_items, menu_item]
+//         //   // console.log('menu item : ', { ...item, ...menu_item._doc })
+//         //   // ordered_items.push({ ...item, ...menu_item._doc })
+//         ordered_items.push(item)
+//         // })
+//       })
+//       res.json({ ...order._doc, ordered_items })
+//     } else {
+//       res.sendStatus(404)
+//     }
+//   })
+// })
 
 app.post('/place-order', (req, res) => {
   const params = req.body
@@ -187,19 +187,19 @@ app.post('/menu-item/add', (req, res) => {
   })
 })
 
-app.delete('/menu-item/del', (req, res) => {
-  try {
-    menu.findByIdAndDelete(req.body.id, error => {
-      if (error) {
-        res.sendStatus(500)
-        return
-      }
-    })
-  } catch (err) {
-    res.sendStatus(404)
-    return
-  }
-})
+// app.delete('/menu-item/del', (req, res) => {
+//   try {
+//     menu.findByIdAndDelete(req.body.id, error => {
+//       if (error) {
+//         res.sendStatus(500)
+//         return
+//       }
+//     })
+//   } catch (err) {
+//     res.sendStatus(404)
+//     return
+//   }
+// })
 
 app.get('/home', async (req, res) => {
   let _menu = []
