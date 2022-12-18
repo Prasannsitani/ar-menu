@@ -158,11 +158,10 @@ app.post('/place-order', (req, res) => {
   orders.create(order_item, (err, item) => {
     if (err) {
       res.sendStatus(500)
-      return
+    } else {
+      res.json({ id: item._id })
     }
   })
-
-  res.sendStatus(200)
 })
 
 app.post('/menu-item/add', (req, res) => {
