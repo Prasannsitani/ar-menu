@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 // Models
 const menu = require('./models/menu')
 const orders = require('./models/order')
+const info = require('./models/info')
 
 const app = express()
 
@@ -202,53 +203,37 @@ app.delete('/menu-item/del', (req, res) => {
 })
 
 app.get('/home', async (req, res) => {
+  let _menu = []
+  let _info = {}
   let _data = {}
 
-  let menuData = await menu.find()
+  try {
+    _info = await info.findOne()
+  } catch (err) {}
 
-  let orderData = await orders.find()
-
-  _data = {
-    orders: orderData,
-    menus: menuData,
+  try {
+    _menu = await menu.find()
+    if (_menu) {
+      _menu.forEach(item => {
+        if (item) {
+          if (_data[item.section]) {
+            _data[item.section] = [..._data[item.section], { ...item._doc }]
+          } else {
+            _data[item.section] = [{ ...item._doc }]
+          }
+        }
+      })
+    } else {
+      res.sendStatus(404)
+    }
+  } catch (err) {
+    res.sendStatus(404)
   }
 
-  res.json(_data)
-
-  // .find()
-  //   .then(data => {
-  //     console.log('data : ', data)
-  //   })
-  //   .catch(err => {
-  //     console.log('err : ', err)
-  //   })
-
-  // menu.find((error, menus) => {
-  //   if (error) {
-  //     res.sendStatus(500)
-  //   } else {
-  //     try {
-  //       menus.forEach(item => {
-  //         if (item) {
-  //           if (_data[item.section]) {
-  //             _data[item.section] = [..._data[item.section], { ...item._doc }]
-  //           } else {
-  //             _data[item.section] = [{ ...item._doc }]
-  //           }
-  //         } else {
-  //           res.sendStatus(404)
-  //         }
-  //       })
-  //       // res.json(_data)
-  //       return
-  //     } catch (err) {
-  //       res.sendStatus(500)
-  //       return
-  //     }
-  //   }
-  // })
-
-  return
+  res.json({
+    info: _info,
+    menu: _data,
+  })
 })
 
 const PORT = process.env.PORT || 8080

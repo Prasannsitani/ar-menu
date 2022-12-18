@@ -1,0 +1,72 @@
+{
+  "info": {
+    "name": "Test Restaurant",
+    "image_url": "https://cdn.dribbble.com/userupload/3158902/file/original-7c71bfa677e61dea61bc2acd59158d32.jpg?resize=400x0",
+    "theme": {
+      "primary_color": "orange",
+      "secondary_color": "black",
+      "primary_text_color": "white",
+      "secondary_text_color": "white",
+      "quantity_button_color": "orangered"
+    }
+  },
+  "menus": [
+    {
+      "_id": "6399ed7a7437846162c0e0f0",
+      "name": "Spring Roll",
+      "section": "Chinese",
+      "description": "Enjoy fresh pan veg pizza with paneer, onion and capsicum toppings",
+      "price": {
+        "value": 300,
+        "currency": "INR",
+        "displayText": "Rs. 300"
+      },
+      "ar_enabled": true,
+      "preview_image": "https://cdn.dribbble.com/userupload/3158902/file/original-7c71bfa677e61dea61bc2acd59158d32.jpg?resize=400x0",
+      "food_category": "veg",
+      "ar_info": {
+        "type": "MODEL",
+        "url": "https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
+      },
+      "__v": 0
+    },
+    {
+      "_id": "6399ee707437846162c0e0f3",
+      "name": "Caprese Salad",
+      "section": "Italian",
+      "description": "A healthy meal makes healthy diet!!",
+      "price": {
+        "value": 300,
+        "currency": "INR",
+        "displayText": "Rs. 300"
+      },
+      "ar_enabled": true,
+      "preview_image": "https://cdn.dribbble.com/userupload/3158902/file/original-7c71bfa677e61dea61bc2acd59158d32.jpg?resize=400x0",
+      "food_category": "veg",
+      "ar_info": {
+        "type": "MODEL",
+        "url": "https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
+      },
+      "__v": 0
+    },
+    {
+      "_id": "6399eea87437846162c0e0f6",
+      "name": "Cheeze Pasta",
+      "section": "Italian",
+      "description": "A healthy meal makes healthy diet!!",
+      "price": {
+        "value": 300,
+        "currency": "INR",
+        "displayText": "Rs. 300"
+      },
+      "ar_enabled": true,
+      "preview_image": "https://cdn.dribbble.com/userupload/3158902/file/original-7c71bfa677e61dea61bc2acd59158d32.jpg?resize=400x0",
+      "food_category": "veg",
+      "ar_info": {
+        "type": "MODEL",
+        "url": "https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
+      },
+      "__v": 0
+    }
+  ]
+}
