@@ -141,7 +141,7 @@ app.post('/place-order', (req, res) => {
     total_amount: {
       value: params.total_amount,
       currency: 'INR',
-      displayText: `Rs ${params.total_amount}`,
+      displayText: `Rs. ${params.total_amount}`,
     },
     status: 'ORDERED',
     ordered_table: params.ordered_table,
