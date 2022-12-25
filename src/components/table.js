@@ -7,6 +7,7 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
+import { Modal } from '../components'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -55,41 +56,51 @@ const Table = () => {
   const [isOpen, setIsOpen] = useState({ isOpen: false, data: {} })
 
   return (
-    <TableContainer
-      component={Paper}
-      sx={{
-        width: '80%',
-        maxHeight: 700,
-      }}
-    >
-      <MuiTable aria-label="customized table" stickyHeader>
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-            <StyledTableCell align="right">Calories</StyledTableCell>
-            <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map(row => (
-            <StyledTableRow
-              key={row.name}
-              onClick={() => console.log('Hello World : ', row)}
-            >
-              <StyledTableCell component="th" scope="row">
-                {row.name}
-              </StyledTableCell>
-              <StyledTableCell align="right">{row.calories}</StyledTableCell>
-              <StyledTableCell align="right">{row.fat}</StyledTableCell>
-              <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-              <StyledTableCell align="right">{row.protein}</StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </MuiTable>
-    </TableContainer>
+    <>
+      <TableContainer
+        component={Paper}
+        sx={{
+          width: '80%',
+          maxHeight: 700,
+        }}
+      >
+        <MuiTable aria-label="customized table" stickyHeader>
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>Dessert (100g serving)</StyledTableCell>
+              <StyledTableCell align="right">Calories</StyledTableCell>
+              <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
+              <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
+              <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row, index) => (
+              <StyledTableRow
+                key={index}
+                onClick={() => {
+                  console.log('Hello World : ', row)
+                  setIsOpen({ isOpen: true, data: row })
+                }}
+              >
+                <StyledTableCell component="th" scope="row">
+                  {row.name}
+                </StyledTableCell>
+                <StyledTableCell align="right">{row.calories}</StyledTableCell>
+                <StyledTableCell align="right">{row.fat}</StyledTableCell>
+                <StyledTableCell align="right">{row.carbs}</StyledTableCell>
+                <StyledTableCell align="right">{row.protein}</StyledTableCell>
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </MuiTable>
+      </TableContainer>
+      <Modal
+        isOpen={isOpen?.isOpen}
+        data={isOpen?.data}
+        onClose={() => setIsOpen({ isOpen: false, data: {} })}
+      />
+    </>
   )
 }
 
