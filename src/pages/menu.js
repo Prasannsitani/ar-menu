@@ -1,7 +1,7 @@
 import React from 'react'
 import { Divider, Stack } from '@mui/material'
 import Assets from '../assets'
-import { MenuItem } from '../components'
+import { MenuItem, Table } from '../components'
 
 const Menu = props => {
   return (
@@ -10,9 +10,9 @@ const Menu = props => {
         width: `calc(${window.screen.width}px)`,
         alignItems: 'center',
       }}
-      spacing={4}
+      spacing={6}
     >
-      <Stack>
+      <Stack marginTop={4}>
         <img
           src={Assets.Menu}
           alt={props.name}
@@ -33,7 +33,8 @@ const Menu = props => {
           }}
         />
       </Stack>
-      <Stack
+      <Table />
+      {/* <Stack
         spacing={4}
         style={{
           maxHeight: 600,
@@ -100,7 +101,7 @@ const Menu = props => {
         ].map((item, index) => {
           return <MenuItem {...item} key={index} />
         })}
-      </Stack>
+      </Stack> */}
     </Stack>
   )
 }

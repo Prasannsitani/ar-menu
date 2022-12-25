@@ -48,8 +48,43 @@ const App = () => {
     <div className="App">
       <ThemeProvider theme={theme}>
         <BrowserRouter>
+          <Header />
           <Routes>
+            <Route
+              path="/"
+              element={
+                <Box sx={{ background: '#21222D' }}>
+                  <Grid container paddingLeft={10}>
+                    <Grid item xs={4}>
+                      <Item
+                        sx={{
+                          boxShadow: '0px 0px 5px 1px #969696',
+                          borderTopLeftRadius: 20,
+                          borderBottomLeftRadius: 20,
+                          border: 0,
+                          background: '#F8F8FA',
+                        }}
+                      >
+                        <Orders />
+                      </Item>
+                    </Grid>
+                    <Grid item xs={8}>
+                      <Item>
+                        <OrderInfo />
+                      </Item>
+                    </Grid>
+                  </Grid>
+                  <Outlet />
+                </Box>
+              }
+            >
+              <Route
+                path="/:id"
+                element={<Typography> Hello World </Typography>}
+              />
+            </Route>
             <Route path="/" element={<Menu />} />
+            <Route path="/table" element={<Table />} />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>

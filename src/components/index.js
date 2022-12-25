@@ -1,4 +1,5 @@
 export { default as Card } from './card'
+export { default as Table } from './table'
 export { default as Header } from './header'
 export { default as MenuItem } from './menu-item'
 export { default as TableCard } from './table-card'
