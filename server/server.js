@@ -1,6 +1,9 @@
+const { S3Client } = require('@aws-sdk/client-s3')
 const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const multer = require('multer')
+const multerS3 = require('multer-s3')
 
 // Models
 const menu = require('./models/menu')
@@ -30,6 +33,28 @@ mongoose.connect('mongodb+srv://admin:admin@ar-menu.jvvucuy.mongodb.net/test', {
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+
+// Set DigitalOcean Spaces
+const s3 = new S3Client({
+  region: 'ap-south-1',
+  endpoint: 'https://fra1.digitaloceanspaces.com',
+  credentials: {
+    accessKeyId: 'DO00FHXJYKE998TXYQH4',
+    secretAccessKey: 'CSnZnDgpbiXCGpPcvPUXaqavH8s97JtUap0KSn9G540',
+  },
+})
+
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: 'public-asset',
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    acl: 'public-read',
+    key: (request, file, cb) => {
+      cb(null, file.originalname)
+    },
+  }),
+}).array('model', 2)
 
 app.get('/', (req, res) => {
   res.json({
@@ -233,6 +258,22 @@ app.get('/home', async (req, res) => {
     info: _info,
     menu: _data,
   })
+})
+
+app.post('/update-menu', async (req, res) => {
+  upload(req, res, error => {
+    if (error) {
+      console.log(error)
+      return
+    }
+
+    const name = req.body.name
+    const price = req.body.name
+    const model = req.files?.[0]?.location
+    const previewImage = req.files?.[1]?.location
+  })
+
+  res.redirect('/')
 })
 
 const PORT = process.env.PORT || 8080

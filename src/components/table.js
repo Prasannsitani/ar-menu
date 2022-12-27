@@ -8,6 +8,8 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import { Modal } from '../components'
+import Snackbar from '@mui/material/Snackbar'
+import Slide from '@mui/material/Slide'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -55,6 +57,8 @@ const rows = [
 const Table = () => {
   const [isOpen, setIsOpen] = useState({ isOpen: false, data: {} })
 
+  const [toastIsOpen, setToastIsOpen] = useState(false)
+
   return (
     <>
       <TableContainer
@@ -79,7 +83,6 @@ const Table = () => {
               <StyledTableRow
                 key={index}
                 onClick={() => {
-                  console.log('Hello World : ', row)
                   setIsOpen({ isOpen: true, data: row })
                 }}
               >
@@ -99,6 +102,14 @@ const Table = () => {
         isOpen={isOpen?.isOpen}
         data={isOpen?.data}
         onClose={() => setIsOpen({ isOpen: false, data: {} })}
+        openToast={() => setToastIsOpen(true)}
+      />
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        open={toastIsOpen}
+        onClose={() => setToastIsOpen(false)}
+        message="I love snacks"
+        TransitionComponent={props => <Slide {...props} direction="up" />}
       />
     </>
   )

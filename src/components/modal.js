@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {
   Modal as MuiModal,
   Typography,
@@ -45,43 +45,54 @@ const Modal = props => {
   const [values, setValues] = useState({
     name: '',
     price: '',
-    modal: '',
+    model: '',
     previewImage: '',
   })
   const [errors, setErrors] = useState({})
 
-  const [type, setType] = useState({
-    modal: 'file',
-    previewImage: '',
-  })
+  // const validate = () => {
+  //   let temp = {}
+  //   temp.name = values.name ? '' : 'This field is Required.'
+  //   temp.price = values.price ? '' : 'This field is Required.'
+  //   temp.modal = values.modal ? '' : 'This field is Required.'
+  //   temp.previewImage = values.previewImage ? '' : 'This field is Required.'
+  //   setErrors({
+  //     ...temp,
+  //   })
 
-  const validate = () => {
-    let temp = {}
-    temp.name = values.name ? '' : 'This field is Required.'
-    temp.price = values.price ? '' : 'This field is Required.'
-    temp.modal = values.modal ? '' : 'This field is Required.'
-    temp.previewImage = values.previewImage ? '' : 'This field is Required.'
-    setErrors({
-      ...temp,
-    })
-
-    return Object.values(temp).every(x => x == '')
-  }
+  //   return Object.values(temp).every(x => x == '')
+  // }
 
   const handleSubmit = e => {
-    e.preventDefault()
-    console.log('validate : ', validate(), values)
+    // e.preventDefault()
     // if (validate()) {
-    //   window.alert('submitted!!')
+    props.openToast()
+    props.onClose()
+
     // } else {
-    //   window.alert('falied!!')
+    // window.alert('falied!!')
     // }
+    // try {
+    //   let res = await fetch('/update-menu', {
+    //     method: 'POST',
+    //     body: JSON.stringify({
+    //       name: values.name,
+    //       price: values.price,
+    //       model: values.model,
+    //       previewImage: values.previewImage,
+    //     }),
+    //   })
+
+    //   console.log('res : ', res.status)
+    // } catch (err) {
+    //   console.log('err : ', err)
+    // }
+    setValues({})
   }
 
   return (
     <MuiModal
       keepMounted
-      //   open={true}
       open={props.isOpen}
       onClose={props.onClose}
       aria-labelledby="keep-mounted-modal-title"
@@ -97,17 +108,21 @@ const Modal = props => {
         >
           Details
         </Typography>
-        <form action="/" onSubmit={handleSubmit}>
+        <form
+          action="/update-menu"
+          enctype="multipart/form-data"
+          method="post"
+          onSubmit={handleSubmit}
+        >
           <Stack spacing={4}>
             <TextField
               id="outlined-name"
               label="Name"
+              name="name"
               variant="outlined"
               fullWidth
               value={values.name}
               onChange={ev => setValues({ ...values, name: ev.target.value })}
-              error={errors.name ? true : false}
-              helperText={errors.name ? errors.name : ''}
               required
               autoComplete="off"
             />
@@ -116,35 +131,38 @@ const Modal = props => {
               label="Price"
               variant="outlined"
               type="number"
+              name="price"
               fullWidth
               value={values.price}
               onChange={ev => setValues({ ...values, price: ev.target.value })}
-              error={errors.price ? true : false}
-              helperText={errors.price ? errors.price : ''}
               required
             />
+            {/* <form method="post" enctype="multipart/form-data" action="/upload">
+              <input type="file" name="upload" />
+              <br />
+
+              <input type="file" name="upload" />
+
+              <input type="submit" class="button" />
+            </form> */}
             <CssTextField
               label="3d Modal"
-              name="username"
+              name="model"
               variant="outlined"
               type="file"
-              onChange={ev => setValues({ ...values, modal: ev.target.value })}
-              error={errors.modal ? true : false}
-              helperText={errors.modal ? errors.modal : ''}
+              onChange={ev => setValues({ ...values, model: ev.target.value })}
               required
               focused
             />
             <CssTextField
               label="Preview Image"
-              name="username"
+              name="model"
               variant="outlined"
               type="file"
               focused
               onChange={ev =>
                 setValues({ ...values, previewImage: ev.target.value })
               }
-              error={errors.previewImage ? true : false}
-              helperText={errors.previewImage ? errors.previewImage : ''}
               required
             />
             <Stack
