@@ -1,9 +1,14 @@
 import React from 'react'
 import { Divider, Stack } from '@mui/material'
 import Assets from '../assets'
-import { MenuItem, Table } from '../components'
+import { Table } from '../components'
+import useFetch from 'react-fetch-hook'
 
 const Menu = props => {
+  const { data, isLoading, error } = useFetch('/get-menu-list') || {}
+
+  if (isLoading) return null
+  if (error) return null
   return (
     <Stack
       sx={{
@@ -33,75 +38,7 @@ const Menu = props => {
           }}
         />
       </Stack>
-      <Table />
-      {/* <Stack
-        spacing={4}
-        style={{
-          maxHeight: 600,
-          overflow: 'auto',
-          border: '2px solid white',
-          borderRadius: 10,
-          padding: 40,
-        }}
-      >
-        {[
-          {
-            id: 1,
-            imageUrl:
-              'https://tse4.mm.bing.net/th?id=OIP.kTvs-fiEdCw7rldk41rhKwHaEo&pid=Api&P=0',
-            name: 'Fruity Pancake',
-            quantity: 2,
-            additional_info: 'without syrup',
-            price: '$12',
-          },
-          {
-            id: 2,
-            imageUrl:
-              'https://tse4.mm.bing.net/th?id=OIP.kTvs-fiEdCw7rldk41rhKwHaEo&pid=Api&P=0',
-            name: 'Rice with wok vegetables',
-            quantity: 3,
-            additional_info: 'with teriyaki sauce',
-            price: '$15',
-          },
-          {
-            id: 3,
-            imageUrl:
-              'https://tse4.mm.bing.net/th?id=OIP.kTvs-fiEdCw7rldk41rhKwHaEo&pid=Api&P=0',
-            name: 'Spring Salad',
-            quantity: 1,
-            price: '$14',
-          },
-          {
-            id: 4,
-            imageUrl:
-              'https://tse4.mm.bing.net/th?id=OIP.kTvs-fiEdCw7rldk41rhKwHaEo&pid=Api&P=0',
-            name: 'Fruity Pancake',
-            quantity: 2,
-            additional_info: 'without syrup',
-            price: '$12',
-          },
-          {
-            id: 4,
-            imageUrl:
-              'https://tse4.mm.bing.net/th?id=OIP.kTvs-fiEdCw7rldk41rhKwHaEo&pid=Api&P=0',
-            name: 'Fruity Pancake',
-            quantity: 2,
-            additional_info: 'without syrup',
-            price: '$12',
-          },
-          {
-            id: 4,
-            imageUrl:
-              'https://tse4.mm.bing.net/th?id=OIP.kTvs-fiEdCw7rldk41rhKwHaEo&pid=Api&P=0',
-            name: 'Fruity Pancake',
-            quantity: 2,
-            additional_info: 'without syrup',
-            price: '$12',
-          },
-        ].map((item, index) => {
-          return <MenuItem {...item} key={index} />
-        })}
-      </Stack> */}
+      <Table data={data} />
     </Stack>
   )
 }

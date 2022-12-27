@@ -89,7 +89,7 @@ const Modal = props => {
         </Typography>
         <form
           action="/update-menu"
-          enctype="multipart/form-data"
+          encType="multipart/form-data"
           method="post"
           onSubmit={handleSubmit}
         >

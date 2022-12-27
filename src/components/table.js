@@ -54,7 +54,9 @@ const rows = [
   createData('Gingerbread', 356, 16.0, 49, 3.9),
 ]
 
-const Table = () => {
+const Table = props => {
+  console.log('props : ', props)
+
   const [isOpen, setIsOpen] = useState({ isOpen: false, data: {} })
 
   const [toastIsOpen, setToastIsOpen] = useState(false)
@@ -79,27 +81,33 @@ const Table = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row, index) => (
+            {props.data.map((item, index) => (
               <StyledTableRow
                 key={index}
                 onClick={() => {
-                  setIsOpen({ isOpen: true, data: row })
+                  setIsOpen({ isOpen: true, data: item })
                 }}
               >
                 <StyledTableCell align="center">{index}</StyledTableCell>
                 <StyledTableCell align="center">
                   <img
-                    src={`https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=100&h=100&fit=crop&auto=format`}
-                    srcSet={`https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=100&h=100&fit=crop&auto=format&dpr=2 2x`}
+                    src={`${item.preview_image}?w=100&h=100&fit=crop&auto=format`}
+                    srcSet={`${item.preview_image}?w=100&h=100&fit=crop&auto=format&dpr=2 2x`}
                     alt={'Image'}
                     loading="lazy"
-                    style={{ 'border-radius': 10 }}
+                    style={{
+                      width: '100px',
+                      height: '100px',
+                      borderRadius: 10,
+                      objectFit: 'cover',
+                    }}
                   />
                 </StyledTableCell>
-
-                <StyledTableCell align="center">{row.calories}</StyledTableCell>
-                <StyledTableCell align="center">{row.fat}</StyledTableCell>
-                <StyledTableCell align="center">{row.carbs}</StyledTableCell>
+                <StyledTableCell align="center">{item.name}</StyledTableCell>
+                <StyledTableCell align="center">{item.section}</StyledTableCell>
+                <StyledTableCell align="center">
+                  {item.price.displayText}
+                </StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>
