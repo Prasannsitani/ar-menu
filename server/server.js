@@ -63,6 +63,21 @@ app.get('/', (req, res) => {
   })
 })
 
+app.get('/get-menu-list', (req, res) => {
+  try {
+    menu.find((error, menus) => {
+      if (error) {
+        res.sendStatus(500)
+        return
+      }
+      res.json(menus)
+    })
+  } catch (err) {
+    res.sendStatus(500)
+    return
+  }
+})
+
 app.get('/get-menu', (req, res) => {
   let _data = {}
 

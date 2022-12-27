@@ -64,18 +64,18 @@ const Table = () => {
       <TableContainer
         component={Paper}
         sx={{
-          width: '80%',
+          width: '60%',
           maxHeight: 700,
         }}
       >
         <MuiTable aria-label="customized table" stickyHeader>
-          <TableHead>
+          <TableHead sx={{ width: '100%' }}>
             <TableRow>
-              <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-              <StyledTableCell align="right">Calories</StyledTableCell>
-              <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-              <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-              <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
+              <StyledTableCell align="center">Sr. No</StyledTableCell>
+              <StyledTableCell align="center">Image</StyledTableCell>
+              <StyledTableCell align="center">Name</StyledTableCell>
+              <StyledTableCell align="center">Category</StyledTableCell>
+              <StyledTableCell align="center">Price&nbsp;(Rs.)</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -86,13 +86,20 @@ const Table = () => {
                   setIsOpen({ isOpen: true, data: row })
                 }}
               >
-                <StyledTableCell component="th" scope="row">
-                  {row.name}
+                <StyledTableCell align="center">{index}</StyledTableCell>
+                <StyledTableCell align="center">
+                  <img
+                    src={`https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=100&h=100&fit=crop&auto=format`}
+                    srcSet={`https://images.unsplash.com/photo-1551963831-b3b1ca40c98e?w=100&h=100&fit=crop&auto=format&dpr=2 2x`}
+                    alt={'Image'}
+                    loading="lazy"
+                    style={{ 'border-radius': 10 }}
+                  />
                 </StyledTableCell>
-                <StyledTableCell align="right">{row.calories}</StyledTableCell>
-                <StyledTableCell align="right">{row.fat}</StyledTableCell>
-                <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-                <StyledTableCell align="right">{row.protein}</StyledTableCell>
+
+                <StyledTableCell align="center">{row.calories}</StyledTableCell>
+                <StyledTableCell align="center">{row.fat}</StyledTableCell>
+                <StyledTableCell align="center">{row.carbs}</StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>

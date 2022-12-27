@@ -64,29 +64,8 @@ const Modal = props => {
   // }
 
   const handleSubmit = e => {
-    // e.preventDefault()
-    // if (validate()) {
     props.openToast()
     props.onClose()
-
-    // } else {
-    // window.alert('falied!!')
-    // }
-    // try {
-    //   let res = await fetch('/update-menu', {
-    //     method: 'POST',
-    //     body: JSON.stringify({
-    //       name: values.name,
-    //       price: values.price,
-    //       model: values.model,
-    //       previewImage: values.previewImage,
-    //     }),
-    //   })
-
-    //   console.log('res : ', res.status)
-    // } catch (err) {
-    //   console.log('err : ', err)
-    // }
     setValues({})
   }
 
