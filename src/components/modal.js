@@ -64,16 +64,8 @@ const Modal = props => {
   }, [props.data])
 
   const handleSubmit = e => {
-    // e.preventDefault()
     props.openToast()
     props.onClose()
-    // setValues({
-    //   id: '',
-    //   name: '',
-    //   description: '',
-    //   category: '',
-    //   price: '',
-    // })
   }
 
   return (
@@ -189,13 +181,14 @@ const Modal = props => {
             >
               <Button
                 sx={{ width: '48%' }}
+                color="error"
                 variant="outlined"
                 onClick={props.onClose}
               >
-                Cancel
+                DELETE
               </Button>
               <Button sx={{ width: '48%' }} variant="contained" type="submit">
-                Save
+                SAVE
               </Button>
             </Stack>
           </Stack>

@@ -76,7 +76,7 @@ const Table = props => {
                   setIsOpen({ isOpen: true, data: item })
                 }}
               >
-                <StyledTableCell align="center">{index}</StyledTableCell>
+                <StyledTableCell align="center">{index + 1}</StyledTableCell>
                 <StyledTableCell align="center">
                   <img
                     src={`${item.preview_image}?w=100&h=100&fit=crop&auto=format`}
