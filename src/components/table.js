@@ -117,7 +117,8 @@ const Table = props => {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         open={toastIsOpen}
         onClose={() => setToastIsOpen(false)}
-        message="I love snacks"
+        color="success"
+        message="Submitted Successfully!!"
         TransitionComponent={props => <Slide {...props} direction="up" />}
       />
     </>

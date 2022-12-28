@@ -24,10 +24,11 @@ app.use((req, res, next) => {
 })
 
 // db connection
-mongoose.connect('mongodb+srv://admin:admin@ar-menu.jvvucuy.mongodb.net/test', {
+mongoose.connect('mongodb://localhost:27017/test', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
+// mongodb+srv://admin:admin@ar-menu.jvvucuy.mongodb.net/test
 // mongoose.connect('mongodb://localhost:27017/test')
 //
 
@@ -43,18 +44,6 @@ const s3 = new S3Client({
     secretAccessKey: 'CSnZnDgpbiXCGpPcvPUXaqavH8s97JtUap0KSn9G540',
   },
 })
-
-const upload = multer({
-  storage: multerS3({
-    s3: s3,
-    bucket: 'public-asset',
-    contentType: multerS3.AUTO_CONTENT_TYPE,
-    acl: 'public-read',
-    key: (request, file, cb) => {
-      cb(null, file.originalname)
-    },
-  }),
-}).array('model', 2)
 
 app.get('/', (req, res) => {
   res.json({
@@ -273,19 +262,66 @@ app.get('/home', async (req, res) => {
   })
 })
 
+const upload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: 'public-asset',
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    acl: 'public-read',
+    key: (request, file, cb) => {
+      cb(null, file.originalname)
+    },
+  }),
+}).array('files', 2)
+
 app.post('/update-menu', async (req, res) => {
   upload(req, res, error => {
     if (error) {
       return
     }
 
-    const name = req.body.name
-    const price = req.body.name
-    const model = req.files?.[0]?.location
+    const { id, name, price, description, category } = req.body
+    const arModel = req.files?.[0]?.location
     const previewImage = req.files?.[1]?.location
-  })
 
-  res.redirect('/')
+    const updateObject = {
+      name: name,
+      section: category,
+      description: description,
+      price: {
+        value: price,
+        currency: 'INR',
+        displayText: `Rs. ${price}`,
+      },
+      ar_enabled: true,
+      food_category: 'veg',
+    }
+
+    if (previewImage) {
+      updateObject['preview_image'] = previewImage
+    }
+
+    if (arModel) {
+      updateObject['ar_info'] = {
+        type: 'MODEL',
+        url: arModel,
+      }
+    }
+
+    menu.findByIdAndUpdate(
+      id,
+      { $set: updateObject },
+      { new: true },
+      (err, item) => {
+        if (err) {
+          res.sendStatus(500)
+          return
+        }
+
+        res.redirect('/')
+      },
+    )
+  })
 })
 
 const PORT = process.env.PORT || 8080

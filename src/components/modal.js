@@ -44,32 +44,36 @@ const CssTextField = withStyles({
 
 const Modal = props => {
   const [values, setValues] = useState({
+    id: '',
     name: '',
     description: '',
     category: '',
-    price: 0,
-    model: '',
-    previewImage: '',
+    price: '',
   })
 
   useEffect(() => {
     if (!isEmpty(props.data)) {
       setValues({
+        id: props.data?._id,
         name: props.data?.name,
         description: props.data?.description,
         category: props.data?.section,
         price: props.data?.price?.value,
-        model: props.data?.ar_info?.url,
-        previewImage: props.data?.preview_image,
       })
     }
-    console.log('props : ', props.data?.name)
   }, [props.data])
 
   const handleSubmit = e => {
+    // e.preventDefault()
     props.openToast()
     props.onClose()
-    setValues({})
+    // setValues({
+    //   id: '',
+    //   name: '',
+    //   description: '',
+    //   category: '',
+    //   price: '',
+    // })
   }
 
   return (
@@ -96,9 +100,16 @@ const Modal = props => {
           method="post"
           onSubmit={handleSubmit}
         >
+          <TextField
+            label="Id"
+            name="id"
+            type="text"
+            value={values.id}
+            onChange={ev => setValues({ ...values, name: ev.target.value })}
+            sx={{ display: 'none' }}
+          />
           <Stack spacing={4}>
             <TextField
-              id="outlined-name"
               label="Name"
               name="name"
               variant="outlined"
@@ -110,7 +121,6 @@ const Modal = props => {
               focused
             />
             <TextField
-              id="outlined-name"
               label="Description"
               name="description"
               variant="outlined"
@@ -124,7 +134,6 @@ const Modal = props => {
               focused
             />
             <TextField
-              id="outlined-name"
               label="Category"
               name="category"
               variant="outlined"
@@ -138,7 +147,6 @@ const Modal = props => {
               focused
             />
             <TextField
-              id="outlined-price"
               label="Price"
               variant="outlined"
               type="number"
@@ -146,21 +154,24 @@ const Modal = props => {
               fullWidth
               value={values.price}
               onChange={ev => setValues({ ...values, price: ev.target.value })}
+              autoComplete="off"
               required
               focused
             />
+
             <CssTextField
               label="3d Modal"
-              name="model"
+              name="files"
               variant="outlined"
               type="file"
               onChange={ev => setValues({ ...values, model: ev.target.value })}
               required
               focused
             />
+
             <CssTextField
               label="Preview Image"
-              name="model"
+              name="files"
               variant="outlined"
               type="file"
               focused
