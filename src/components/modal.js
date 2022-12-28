@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import {
   Modal as MuiModal,
   Typography,
   TextField,
   Stack,
   Button,
+  Box,
 } from '@mui/material'
 import { withStyles } from '@mui/styles'
 import { isEmpty } from 'lodash'
+import { useNavigate } from 'react-router-dom'
 
 const style = {
   position: 'absolute',
@@ -43,6 +45,8 @@ const CssTextField = withStyles({
 })(TextField)
 
 const Modal = props => {
+  const navigate = useNavigate()
+
   const [values, setValues] = useState({
     id: '',
     name: '',
@@ -66,6 +70,27 @@ const Modal = props => {
   const handleSubmit = e => {
     props.openToast()
     props.onClose()
+  }
+
+  const handleDelete = () => {
+    fetch('http://localhost:3000/menu-item/del', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: values.id,
+      }),
+    })
+      .then(response => {
+        if (response.status === 200) {
+          window.location.reload()
+        }
+      })
+      .catch(err => {
+        console.log('err in catch : ', err)
+      })
   }
 
   return (
@@ -183,10 +208,11 @@ const Modal = props => {
                 sx={{ width: '48%' }}
                 color="error"
                 variant="outlined"
-                onClick={props.onClose}
+                onClick={handleDelete}
               >
                 DELETE
               </Button>
+
               <Button sx={{ width: '48%' }} variant="contained" type="submit">
                 SAVE
               </Button>

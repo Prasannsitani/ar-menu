@@ -214,19 +214,20 @@ app.post('/menu-item/add', (req, res) => {
   })
 })
 
-// app.delete('/menu-item/del', (req, res) => {
-//   try {
-//     menu.findByIdAndDelete(req.body.id, error => {
-//       if (error) {
-//         res.sendStatus(500)
-//         return
-//       }
-//     })
-//   } catch (err) {
-//     res.sendStatus(404)
-//     return
-//   }
-// })
+app.post('/menu-item/del', (req, res) => {
+  try {
+    menu.findByIdAndDelete(req.body.id, error => {
+      if (error) {
+        res.sendStatus(500)
+        return
+      }
+      res.redirect('/')
+    })
+  } catch (err) {
+    res.sendStatus(404)
+    return
+  }
+})
 
 app.get('/home', async (req, res) => {
   let _menu = []
