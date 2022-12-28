@@ -15,7 +15,6 @@ const Menu = props => {
         width: `calc(${window.screen.width}px)`,
         alignItems: 'center',
       }}
-      spacing={6}
     >
       <Stack marginTop={4}>
         <img

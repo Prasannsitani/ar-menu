@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { styled } from '@mui/material/styles'
-import { Stack, Table as MuiTable } from '@mui/material'
+import { Stack, Table as MuiTable, Button } from '@mui/material'
 import TableBody from '@mui/material/TableBody'
 import TableCell, { tableCellClasses } from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
@@ -10,6 +10,7 @@ import Paper from '@mui/material/Paper'
 import { Modal } from '../components'
 import Snackbar from '@mui/material/Snackbar'
 import Slide from '@mui/material/Slide'
+import AddCircleIcon from '@mui/icons-material/AddCircle'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -37,12 +38,28 @@ const Table = props => {
   const [toastIsOpen, setToastIsOpen] = useState(false)
 
   return (
-    <>
+    <Stack
+      sx={{
+        width: '100%',
+        alignItems: 'center',
+      }}
+      spacing={4}
+    >
+      <Stack sx={{ width: '80%', position: 'absolute', top: 170 }}>
+        <Button
+          sx={{ alignSelf: 'flex-end' }}
+          variant="contained"
+          endIcon={<AddCircleIcon color="white" />}
+          onClick={() => setIsOpen({ isOpen: true, data: {} })}
+        >
+          Add Item
+        </Button>
+      </Stack>
       <TableContainer
         component={Paper}
         sx={{
           width: '80%',
-          maxHeight: 700,
+          maxHeight: 620,
         }}
       >
         <MuiTable aria-label="customized table" stickyHeader>
@@ -121,7 +138,7 @@ const Table = props => {
         message="Submitted Successfully!!"
         TransitionComponent={props => <Slide {...props} direction="up" />}
       />
-    </>
+    </Stack>
   )
 }
 

@@ -135,7 +135,8 @@ const Modal = props => {
               onChange={ev => setValues({ ...values, name: ev.target.value })}
               required
               autoComplete="off"
-              focused
+              focused={values.name ? true : false}
+              autoFocus={true}
             />
             <TextField
               label="Description"
@@ -148,7 +149,7 @@ const Modal = props => {
               }
               required
               autoComplete="off"
-              focused
+              focused={values.description ? true : false}
             />
             <TextField
               label="Category"
@@ -161,7 +162,7 @@ const Modal = props => {
               }
               required
               autoComplete="off"
-              focused
+              focused={values.category ? true : false}
             />
             <TextField
               label="Price"
@@ -173,7 +174,7 @@ const Modal = props => {
               onChange={ev => setValues({ ...values, price: ev.target.value })}
               autoComplete="off"
               required
-              focused
+              focused={values.price ? true : false}
             />
 
             <CssTextField
@@ -181,9 +182,8 @@ const Modal = props => {
               name="files"
               variant="outlined"
               type="file"
-              onChange={ev => setValues({ ...values, model: ev.target.value })}
-              required
               focused
+              required
             />
 
             <CssTextField
@@ -192,9 +192,6 @@ const Modal = props => {
               variant="outlined"
               type="file"
               focused
-              onChange={ev =>
-                setValues({ ...values, previewImage: ev.target.value })
-              }
               required
             />
             <Stack
