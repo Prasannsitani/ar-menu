@@ -127,7 +127,6 @@ app.get('/menu-item/:id', (req, res) => {
       res.sendStatus(404)
     }
   } catch (err) {
-    console.log('err : ', err)
     res.sendStatus(500)
   }
 })
@@ -218,7 +217,6 @@ app.post('/menu-item/add', (req, res) => {
 
   menu.create(item, err => {
     if (err) {
-      console.log('err : ', err)
       res.sendStatus(500)
       return
     } else {
@@ -278,7 +276,6 @@ app.get('/home', async (req, res) => {
 app.post('/update-menu', async (req, res) => {
   upload(req, res, error => {
     if (error) {
-      console.log(error)
       return
     }
 

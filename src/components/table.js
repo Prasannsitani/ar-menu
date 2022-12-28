@@ -31,32 +31,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }))
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein }
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-]
-
 const Table = props => {
-  console.log('props : ', props)
-
   const [isOpen, setIsOpen] = useState({ isOpen: false, data: {} })
 
   const [toastIsOpen, setToastIsOpen] = useState(false)
@@ -66,18 +41,31 @@ const Table = props => {
       <TableContainer
         component={Paper}
         sx={{
-          width: '60%',
+          width: '80%',
           maxHeight: 700,
         }}
       >
         <MuiTable aria-label="customized table" stickyHeader>
           <TableHead sx={{ width: '100%' }}>
-            <TableRow>
-              <StyledTableCell align="center">Sr. No</StyledTableCell>
-              <StyledTableCell align="center">Image</StyledTableCell>
-              <StyledTableCell align="center">Name</StyledTableCell>
-              <StyledTableCell align="center">Category</StyledTableCell>
-              <StyledTableCell align="center">Price&nbsp;(Rs.)</StyledTableCell>
+            <TableRow sx={{ fontWeight: 'bold' }}>
+              <StyledTableCell align="center" sx={{ fontWeight: 'bold' }}>
+                Sr. No
+              </StyledTableCell>
+              <StyledTableCell align="center" sx={{ fontWeight: 'bold' }}>
+                Image
+              </StyledTableCell>
+              <StyledTableCell align="center" sx={{ fontWeight: 'bold' }}>
+                Name
+              </StyledTableCell>
+              <StyledTableCell align="center" sx={{ fontWeight: 'bold' }}>
+                Description
+              </StyledTableCell>
+              <StyledTableCell align="center" sx={{ fontWeight: 'bold' }}>
+                Category
+              </StyledTableCell>
+              <StyledTableCell align="center" sx={{ fontWeight: 'bold' }}>
+                Price&nbsp;(Rs.)
+              </StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -104,6 +92,12 @@ const Table = props => {
                   />
                 </StyledTableCell>
                 <StyledTableCell align="center">{item.name}</StyledTableCell>
+                <StyledTableCell
+                  align="center"
+                  sx={{ minWidth: '100px', maxWidth: '150px' }}
+                >
+                  {item.description}
+                </StyledTableCell>
                 <StyledTableCell align="center">{item.section}</StyledTableCell>
                 <StyledTableCell align="center">
                   {item.price.displayText}

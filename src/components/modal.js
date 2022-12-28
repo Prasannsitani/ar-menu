@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Modal as MuiModal,
   Typography,
@@ -7,6 +7,7 @@ import {
   Button,
 } from '@mui/material'
 import { withStyles } from '@mui/styles'
+import { isEmpty } from 'lodash'
 
 const style = {
   position: 'absolute',
@@ -44,24 +45,26 @@ const CssTextField = withStyles({
 const Modal = props => {
   const [values, setValues] = useState({
     name: '',
-    price: '',
+    description: '',
+    category: '',
+    price: 0,
     model: '',
     previewImage: '',
   })
-  const [errors, setErrors] = useState({})
 
-  // const validate = () => {
-  //   let temp = {}
-  //   temp.name = values.name ? '' : 'This field is Required.'
-  //   temp.price = values.price ? '' : 'This field is Required.'
-  //   temp.modal = values.modal ? '' : 'This field is Required.'
-  //   temp.previewImage = values.previewImage ? '' : 'This field is Required.'
-  //   setErrors({
-  //     ...temp,
-  //   })
-
-  //   return Object.values(temp).every(x => x == '')
-  // }
+  useEffect(() => {
+    if (!isEmpty(props.data)) {
+      setValues({
+        name: props.data?.name,
+        description: props.data?.description,
+        category: props.data?.section,
+        price: props.data?.price?.value,
+        model: props.data?.ar_info?.url,
+        previewImage: props.data?.preview_image,
+      })
+    }
+    console.log('props : ', props.data?.name)
+  }, [props.data])
 
   const handleSubmit = e => {
     props.openToast()
@@ -104,6 +107,35 @@ const Modal = props => {
               onChange={ev => setValues({ ...values, name: ev.target.value })}
               required
               autoComplete="off"
+              focused
+            />
+            <TextField
+              id="outlined-name"
+              label="Description"
+              name="description"
+              variant="outlined"
+              fullWidth
+              value={values.description}
+              onChange={ev =>
+                setValues({ ...values, description: ev.target.value })
+              }
+              required
+              autoComplete="off"
+              focused
+            />
+            <TextField
+              id="outlined-name"
+              label="Category"
+              name="category"
+              variant="outlined"
+              fullWidth
+              value={values.category}
+              onChange={ev =>
+                setValues({ ...values, category: ev.target.value })
+              }
+              required
+              autoComplete="off"
+              focused
             />
             <TextField
               id="outlined-price"
@@ -115,15 +147,8 @@ const Modal = props => {
               value={values.price}
               onChange={ev => setValues({ ...values, price: ev.target.value })}
               required
+              focused
             />
-            {/* <form method="post" enctype="multipart/form-data" action="/upload">
-              <input type="file" name="upload" />
-              <br />
-
-              <input type="file" name="upload" />
-
-              <input type="submit" class="button" />
-            </form> */}
             <CssTextField
               label="3d Modal"
               name="model"
