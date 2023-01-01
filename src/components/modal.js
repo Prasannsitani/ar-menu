@@ -1,15 +1,17 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Modal as MuiModal,
   Typography,
   TextField,
   Stack,
   Button,
-  Box,
+  IconButton,
+  Divider,
 } from '@mui/material'
 import { withStyles } from '@mui/styles'
 import { isEmpty } from 'lodash'
 import { useNavigate } from 'react-router-dom'
+import CancelIcon from '@mui/icons-material/Cancel'
 
 const style = {
   position: 'absolute',
@@ -21,6 +23,7 @@ const style = {
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
+  borderRadius: 10,
 }
 
 const CssTextField = withStyles({
@@ -88,9 +91,7 @@ const Modal = props => {
           window.location.reload()
         }
       })
-      .catch(err => {
-        console.log('err in catch : ', err)
-      })
+      .catch(err => {})
   }
 
   return (
@@ -102,15 +103,34 @@ const Modal = props => {
       aria-describedby="keep-mounted-modal-description"
     >
       <Stack sx={style} spacing={4}>
-        <Typography
-          id="keep-mounted-modal-title"
-          variant="h4"
-          component="h2"
-          textAlign="center"
-          fontWeight="bold"
+        <IconButton
+          sx={{ position: 'absolute', right: 15 }}
+          onClick={() => props.onClose()}
         >
-          Details
-        </Typography>
+          <CancelIcon />
+        </IconButton>
+
+        <Stack w="100%" alignItems="center">
+          <Typography
+            id="keep-mounted-modal-title"
+            variant="h4"
+            component="h2"
+            textAlign="center"
+            fontWeight="bold"
+            fontFamily="cursive"
+          >
+            Details
+          </Typography>
+          <Divider
+            sx={{
+              width: '15%',
+              alignSelf: 'center',
+              color: 'black',
+              background: '#000',
+            }}
+          />
+        </Stack>
+
         <form
           action="/update-menu"
           encType="multipart/form-data"
