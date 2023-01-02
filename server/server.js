@@ -14,15 +14,12 @@ const app = express()
 
 // header to prevent CORS
 app.use((req, res, next) => {
-  res.header(
-    'Access-Control-Allow-Origin',
-    'https://menu-app-admin-luqws.ondigitalocean.app',
-  )
+  res.header('Access-Control-Allow-Origin', '*')
   res.header(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept',
   )
-  res.header('Access-Control-Request-Method', 'GET, POST')
+  res.header('Access-Control-Request-Method', 'POST')
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
   next()
 })
