@@ -5,7 +5,10 @@ import { Table } from '../components'
 import useFetch from 'react-fetch-hook'
 
 const Menu = props => {
-  const { data, isLoading, error } = useFetch('/get-menu-list') || {}
+  const { data, isLoading, error } =
+    useFetch(
+      'https://menu-app-rwlj3.ondigitalocean.app/ar-menu-server/get-menu-list',
+    ) || {}
 
   if (isLoading) return null
   if (error) return null

@@ -1,17 +1,8 @@
 import React from 'react'
 import './App.css'
-import { styled } from '@mui/material/styles'
-import { Header } from './components'
-import { BrowserRouter, Link, Outlet, Route, Routes } from 'react-router-dom'
-import {
-  ThemeProvider,
-  createTheme,
-  Box,
-  Grid,
-  Paper,
-  Typography,
-} from '@mui/material'
-import { Orders, OrderInfo, Menu, Table } from './pages'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { ThemeProvider, createTheme, Paper } from '@mui/material'
+import { Menu } from './pages'
 
 const theme = createTheme({
   components: {
@@ -33,15 +24,6 @@ const theme = createTheme({
     },
   },
 })
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  height: `calc(${window.screen.height}px - 160px)`,
-  color: theme.palette.text.secondary,
-}))
 
 const App = () => {
   return (
