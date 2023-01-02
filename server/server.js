@@ -221,7 +221,7 @@ app.post('/menu-item/del', (req, res) => {
         res.sendStatus(500)
         return
       }
-      res.redirect('/')
+      res.redirect('https://menu-app-admin-luqws.ondigitalocean.app/')
     })
   } catch (err) {
     res.sendStatus(404)
