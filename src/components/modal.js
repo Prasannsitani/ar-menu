@@ -10,7 +10,6 @@ import {
 } from '@mui/material'
 import { withStyles } from '@mui/styles'
 import { isEmpty } from 'lodash'
-import { useNavigate } from 'react-router-dom'
 import CancelIcon from '@mui/icons-material/Cancel'
 
 const style = {
@@ -48,8 +47,6 @@ const CssTextField = withStyles({
 })(TextField)
 
 const Modal = props => {
-  const navigate = useNavigate()
-
   const [values, setValues] = useState({
     id: '',
     name: '',
@@ -68,6 +65,15 @@ const Modal = props => {
         price: props.data?.price?.value,
       })
     }
+
+    return () =>
+      setValues({
+        id: '',
+        name: '',
+        description: '',
+        category: '',
+        price: '',
+      })
   }, [props.data])
 
   const handleSubmit = e => {
