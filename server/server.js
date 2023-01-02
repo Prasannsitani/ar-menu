@@ -316,7 +316,7 @@ app.post('/update-menu', async (req, res) => {
           return
         }
 
-        res.redirect('/')
+        res.redirect('https://menu-app-admin-luqws.ondigitalocean.app/')
       })
     } else {
       menu.findByIdAndUpdate(
@@ -329,7 +329,7 @@ app.post('/update-menu', async (req, res) => {
             return
           }
 
-          res.redirect('/')
+          res.redirect('https://menu-app-admin-luqws.ondigitalocean.app/')
         },
       )
     }

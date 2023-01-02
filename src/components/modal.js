@@ -79,6 +79,7 @@ const Modal = props => {
   const handleSubmit = e => {
     props.openToast()
     props.onClose()
+    window.location.reload()
   }
 
   const handleDelete = () => {
@@ -141,7 +142,7 @@ const Modal = props => {
         </Stack>
 
         <form
-          action="/update-menu"
+          action="https://menu-app-rwlj3.ondigitalocean.app/ar-menu-server/update-menu"
           encType="multipart/form-data"
           method="post"
           onSubmit={handleSubmit}
