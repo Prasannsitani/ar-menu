@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 })
 
 // db connection
-mongoose.connect('mongodb+srv://admin:admin@ar-menu.jvvucuy.mongodb.net/test', {
+mongoose.connect('mongodb://localhost:27017/test', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
@@ -223,7 +223,6 @@ app.post('/menu-item/del', (req, res) => {
         return
       }
       res.sendStatus(200)
-      // res.redirect('https://menu-app-admin-luqws.ondigitalocean.app/')
     })
   } catch (err) {
     res.sendStatus(404)
@@ -283,13 +282,13 @@ app.post('/update-menu', async (req, res) => {
       return
     }
 
-    const { id, name, price, description, category } = req.body
+    const { id, name, price, description, section, category } = req.body
     const arModel = req.files?.[0]?.location
     const previewImage = req.files?.[1]?.location
 
     const updateObject = {
       name: name,
-      section: category,
+      section: section,
       description: description,
       price: {
         value: price,
@@ -297,7 +296,7 @@ app.post('/update-menu', async (req, res) => {
         displayText: `Rs. ${price}`,
       },
       ar_enabled: true,
-      food_category: 'veg',
+      food_category: category,
     }
 
     if (previewImage) {

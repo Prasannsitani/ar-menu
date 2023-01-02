@@ -81,6 +81,9 @@ const Table = props => {
                 Category
               </StyledTableCell>
               <StyledTableCell align="center" sx={{ fontWeight: 'bold' }}>
+                Section
+              </StyledTableCell>
+              <StyledTableCell align="center" sx={{ fontWeight: 'bold' }}>
                 Price&nbsp;(Rs.)
               </StyledTableCell>
             </TableRow>
@@ -114,6 +117,9 @@ const Table = props => {
                   sx={{ minWidth: '100px', maxWidth: '150px' }}
                 >
                   {item.description}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {item.food_category}
                 </StyledTableCell>
                 <StyledTableCell align="center">{item.section}</StyledTableCell>
                 <StyledTableCell align="center">

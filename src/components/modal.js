@@ -52,6 +52,7 @@ const Modal = props => {
     name: '',
     description: '',
     category: '',
+    section: '',
     price: '',
   })
 
@@ -61,7 +62,8 @@ const Modal = props => {
         id: props.data?._id,
         name: props.data?.name,
         description: props.data?.description,
-        category: props.data?.section,
+        category: props.data?.food_category,
+        section: props.data?.section,
         price: props.data?.price?.value,
       })
     }
@@ -72,6 +74,7 @@ const Modal = props => {
         name: '',
         description: '',
         category: '',
+        section: '',
         price: '',
       })
   }, [props.data])
@@ -193,6 +196,19 @@ const Modal = props => {
               required
               autoComplete="off"
               focused={values.category ? true : false}
+            />
+            <TextField
+              label="Section"
+              name="section"
+              variant="outlined"
+              fullWidth
+              value={values.section}
+              onChange={ev =>
+                setValues({ ...values, section: ev.target.value })
+              }
+              required
+              autoComplete="off"
+              focused={values.section ? true : false}
             />
             <TextField
               label="Price"
