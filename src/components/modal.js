@@ -86,7 +86,6 @@ const Modal = props => {
     fetch(
       'https://menu-app-rwlj3.ondigitalocean.app/ar-menu-server/menu-item/del',
       {
-        mode: 'no-cors',
         method: 'POST',
         headers: {
           Accept: 'application/json',

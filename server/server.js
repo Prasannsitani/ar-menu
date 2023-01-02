@@ -216,13 +216,14 @@ app.post('/menu-item/add', (req, res) => {
 
 app.post('/menu-item/del', (req, res) => {
   try {
-    menu.findByIdAndDelete(req.body.id, error => {
-      if (error) {
-        res.sendStatus(500)
-        return
-      }
-      res.redirect('https://menu-app-admin-luqws.ondigitalocean.app/')
-    })
+    console.log('id : ', req.body.id)
+    // menu.findByIdAndDelete(req.body.id, error => {
+    //   if (error) {
+    //     res.sendStatus(500)
+    //     return
+    //   }
+    //   res.redirect('https://menu-app-admin-luqws.ondigitalocean.app/')
+    // })
   } catch (err) {
     res.sendStatus(404)
     return
