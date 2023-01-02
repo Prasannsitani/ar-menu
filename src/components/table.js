@@ -59,7 +59,7 @@ const Table = props => {
         component={Paper}
         sx={{
           width: '80%',
-          maxHeight: 720,
+          maxHeight: `calc(${window.screen.height}px - 400px)`,
         }}
       >
         <MuiTable aria-label="customized table" stickyHeader>
