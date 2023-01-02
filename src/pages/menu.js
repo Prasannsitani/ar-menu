@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import {
-  Divider,
   Stack,
   Typography,
   AppBar,
@@ -8,7 +7,6 @@ import {
   Toolbar,
   Button,
 } from '@mui/material'
-import Assets from '../assets'
 import { Table } from '../components'
 import useFetch from 'react-fetch-hook'
 import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu'
