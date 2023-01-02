@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 })
 
 // db connection
-mongoose.connect('mongodb://localhost:27017/test', {
+mongoose.connect('mongodb+srv://admin:admin@ar-menu.jvvucuy.mongodb.net/test', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
