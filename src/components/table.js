@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { styled } from '@mui/material/styles'
-import { Stack, Table as MuiTable, Button } from '@mui/material'
+import { Stack, Table as MuiTable } from '@mui/material'
 import TableBody from '@mui/material/TableBody'
 import TableCell, { tableCellClasses } from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
@@ -10,7 +10,6 @@ import Paper from '@mui/material/Paper'
 import { Modal } from '../components'
 import Snackbar from '@mui/material/Snackbar'
 import Slide from '@mui/material/Slide'
-import AddCircleIcon from '@mui/icons-material/AddCircle'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -33,8 +32,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }))
 
 const Table = props => {
-  const [isOpen, setIsOpen] = useState({ isOpen: false, data: {} })
-
   const [toastIsOpen, setToastIsOpen] = useState(false)
 
   return (
@@ -43,23 +40,12 @@ const Table = props => {
         width: '100%',
         alignItems: 'center',
       }}
-      spacing={4}
     >
-      <Stack sx={{ width: '80%', position: 'absolute', top: 170 }}>
-        <Button
-          sx={{ alignSelf: 'flex-end' }}
-          variant="contained"
-          endIcon={<AddCircleIcon color="white" />}
-          onClick={() => setIsOpen({ isOpen: true, data: {} })}
-        >
-          Add Item
-        </Button>
-      </Stack>
       <TableContainer
         component={Paper}
         sx={{
-          width: '80%',
-          maxHeight: `calc(${window.screen.height}px - 400px)`,
+          width: '90%',
+          maxHeight: `calc(${window.screen.height}px - 270px)`,
         }}
       >
         <MuiTable aria-label="customized table" stickyHeader>
@@ -90,12 +76,7 @@ const Table = props => {
           </TableHead>
           <TableBody>
             {props.data.map((item, index) => (
-              <StyledTableRow
-                key={index}
-                onClick={() => {
-                  setIsOpen({ isOpen: true, data: item })
-                }}
-              >
+              <StyledTableRow key={index} onClick={() => props.onOpen(item)}>
                 <StyledTableCell align="center">{index + 1}</StyledTableCell>
                 <StyledTableCell align="center">
                   <img
@@ -131,9 +112,9 @@ const Table = props => {
         </MuiTable>
       </TableContainer>
       <Modal
-        isOpen={isOpen?.isOpen}
-        data={isOpen?.data}
-        onClose={() => setIsOpen({ isOpen: false, data: {} })}
+        isOpen={props.isOpen?.isOpen}
+        data={props.isOpen?.data}
+        onClose={props.onClose}
         openToast={() => setToastIsOpen(true)}
       />
       <Snackbar

@@ -283,8 +283,14 @@ app.post('/update-menu', async (req, res) => {
     }
 
     const { id, name, price, description, section, category } = req.body
-    const arModel = req.files?.[0]?.location
-    const previewImage = req.files?.[1]?.location
+    const arModel =
+      req.files?.[0]?.contentType === 'application/octet-stream'
+        ? `https://${req.files?.[0]?.location}`
+        : req.files?.[0]?.location
+    const previewImage =
+      req.files?.[1]?.contentType === 'application/octet-stream'
+        ? `https://${req.files?.[1]?.location}`
+        : req.files?.[1]?.location
 
     const updateObject = {
       name: name,

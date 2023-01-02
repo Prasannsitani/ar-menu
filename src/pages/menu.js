@@ -1,10 +1,22 @@
-import React from 'react'
-import { Divider, Stack } from '@mui/material'
+import React, { useState } from 'react'
+import {
+  Divider,
+  Stack,
+  Typography,
+  AppBar,
+  Container,
+  Toolbar,
+  Button,
+} from '@mui/material'
 import Assets from '../assets'
 import { Table } from '../components'
 import useFetch from 'react-fetch-hook'
+import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu'
+import AddCircleIcon from '@mui/icons-material/AddCircle'
 
 const Menu = props => {
+  const [isOpen, setIsOpen] = useState({ isOpen: false, data: {} })
+
   const { data, isLoading, error } =
     useFetch(
       'https://menu-app-rwlj3.ondigitalocean.app/ar-menu-server/get-menu-list',
@@ -17,30 +29,61 @@ const Menu = props => {
       sx={{
         width: `calc(${window.screen.width}px)`,
         alignItems: 'center',
+        padding: 2,
       }}
+      spacing={2}
     >
-      <Stack marginTop={4}>
-        <img
-          src={Assets.Menu}
-          alt={props.name}
-          loading="lazy"
-          style={{
-            width: '450px',
-            alignSelf: 'center',
-            paddingLeft: 50,
-          }}
-        />
-        <Divider
-          sx={{
-            background: 'white',
-            width: '25%',
-            alignSelf: 'center',
-            padding: 0.2,
-            borderRadius: 10,
-          }}
-        />
-      </Stack>
-      <Table data={data} />
+      <AppBar
+        position="static"
+        sx={{ background: 'transparent', boxShadow: 'none' }}
+      >
+        <Container maxWidth="xl">
+          <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
+            <Stack flexDirection="row" alignItems="center">
+              <RestaurantMenuIcon
+                sx={{
+                  display: 'flex',
+                  mr: 1,
+                  fontSize: 'xs',
+                }}
+              />
+              <Typography
+                variant="h5"
+                noWrap
+                component="a"
+                href="/"
+                sx={{
+                  mr: 2,
+                  display: 'flex',
+                  fontFamily: 'monospace',
+                  fontWeight: 700,
+                  letterSpacing: '.3rem',
+                  color: 'inherit',
+                  textDecoration: 'none',
+                }}
+              >
+                MENU
+              </Typography>
+            </Stack>
+            <Stack>
+              <Button
+                sx={{ alignSelf: 'flex-end' }}
+                variant="contained"
+                endIcon={<AddCircleIcon color="white" />}
+                onClick={() => setIsOpen({ isOpen: true, data: {} })}
+              >
+                Add Item
+              </Button>
+            </Stack>
+          </Toolbar>
+        </Container>
+      </AppBar>
+      <Table
+        data={data}
+        isOpen={isOpen}
+        onClose={() => setIsOpen({ isOpen: false, data: {} })}
+        onOpen={data => setIsOpen({ isOpen: true, data: data })}
+      />
     </Stack>
   )
 }
