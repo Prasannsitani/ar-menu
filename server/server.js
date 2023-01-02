@@ -309,19 +309,30 @@ app.post('/update-menu', async (req, res) => {
       }
     }
 
-    menu.findByIdAndUpdate(
-      id,
-      { $set: updateObject },
-      { new: true },
-      (err, item) => {
+    if (id === '') {
+      menu.create(updateObject, err => {
         if (err) {
           res.sendStatus(500)
           return
         }
 
         res.redirect('/')
-      },
-    )
+      })
+    } else {
+      menu.findByIdAndUpdate(
+        id,
+        { $set: updateObject },
+        { new: true },
+        (err, item) => {
+          if (err) {
+            res.sendStatus(500)
+            return
+          }
+
+          res.redirect('/')
+        },
+      )
+    }
   })
 })
 

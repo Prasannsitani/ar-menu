@@ -59,7 +59,7 @@ const Table = props => {
         component={Paper}
         sx={{
           width: '80%',
-          maxHeight: 620,
+          maxHeight: 720,
         }}
       >
         <MuiTable aria-label="customized table" stickyHeader>
