@@ -16,7 +16,7 @@ const app = express()
 app.use((req, res, next) => {
   res.header(
     'Access-Control-Allow-Origin',
-    'https://menu-app-admin-luqws.ondigitalocean.app/',
+    'https://menu-app-admin-luqws.ondigitalocean.app',
   )
   res.header(
     'Access-Control-Allow-Headers',
