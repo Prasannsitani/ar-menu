@@ -82,7 +82,7 @@ const Modal = props => {
   }
 
   const handleDelete = () => {
-    fetch('http://localhost:3000/menu-item/del', {
+    fetch('/menu-item/del', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
