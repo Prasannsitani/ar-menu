@@ -65,17 +65,29 @@ const Menu = props => {
                 MENU
               </Typography>
             </Stack>
-            <Stack>
-              <Button
-                sx={{ alignSelf: 'flex-end' }}
-                variant="contained"
-                endIcon={<AddCircleIcon color="white" />}
-                onClick={() =>
-                  setIsOpen({ isOpen: true, data: {}, showImage: true })
-                }
-              >
-                Add Item
-              </Button>
+            <Stack flexDirection="row">
+              <Stack marginRight={2}>
+                <Button
+                  sx={{ alignSelf: 'flex-end' }}
+                  variant="contained"
+                  endIcon={<AddCircleIcon color="white" />}
+                  onClick={() => console.log('item clicked!!')}
+                >
+                  Edit Ui
+                </Button>
+              </Stack>
+              <Stack>
+                <Button
+                  sx={{ alignSelf: 'flex-end' }}
+                  variant="contained"
+                  endIcon={<AddCircleIcon color="white" />}
+                  onClick={() =>
+                    setIsOpen({ isOpen: true, data: {}, showImage: true })
+                  }
+                >
+                  Add Item
+                </Button>
+              </Stack>
             </Stack>
           </Toolbar>
         </Container>
