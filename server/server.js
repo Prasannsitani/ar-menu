@@ -362,7 +362,9 @@ app.post('/upload-image', (req, res) => {
               return
             }
 
-            res.sendStatus(200)
+            res.json({
+              message: 'Image Uploaded Successfully',
+            })
           },
         )
       }
@@ -435,6 +437,36 @@ app.post('/upload-model', (req, res) => {
       })
     }
   })
+})
+
+app.post('/delete-model', (req, res) => {
+  console.log('req.body : ', req.body)
+  const { id } = req.body
+  if (id) {
+    menu.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          ar_enabled: false,
+          ar_info: {},
+        },
+      },
+      { new: true },
+      (err, item) => {
+        if (err) {
+          res.sendStatus(500)
+          return
+        }
+        res.json({
+          message: 'Model Deleted Successfully',
+        })
+      },
+    )
+  } else {
+    res.status(400).json({
+      message: 'Something Went Wrong!!',
+    })
+  }
 })
 
 const PORT = process.env.PORT || 8080

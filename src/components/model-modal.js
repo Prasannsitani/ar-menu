@@ -61,6 +61,8 @@ const ModelModal = props => {
 
   const [uploadLoading, setUploadLoading] = useState(false)
 
+  const [deleteLoading, setDeleteLoading] = useState(false)
+
   const [currentFile, setCurrentFile] = useState()
 
   const changeHandler = event => {
@@ -84,8 +86,6 @@ const ModelModal = props => {
       .then(response => response)
       .then(async response => {
         const data = await response.json()
-        console.log('data : ', data)
-        console.log('response : ', response.status)
 
         if (response.status === 200) {
           window.location.reload()
@@ -98,7 +98,38 @@ const ModelModal = props => {
         setUploadLoading(false)
       })
       .catch(error => {
-        console.log('error : ', error)
+        setUploadLoading(false)
+        props.openToast('Something Went Wrong!!')
+      })
+  }
+
+  const handleDelete = ev => {
+    setDeleteLoading(true)
+    fetch(`${process.env.REACT_APP_API_URL}/delete-model`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: props.id,
+      }),
+    })
+      .then(response => response)
+      .then(async response => {
+        const data = await response.json()
+
+        if (response.status === 200) {
+          window.location.reload()
+        } else if (response.status === 400 && !isEmpty(data)) {
+          props.openToast(data?.message)
+        } else {
+          props.openToast('Something Went Wrong!!')
+        }
+        setDeleteLoading(false)
+      })
+      .catch(error => {
+        setDeleteLoading(false)
         props.openToast('Something Went Wrong!!')
       })
   }
@@ -177,9 +208,16 @@ const ModelModal = props => {
               sx={{ width: '48%' }}
               color="error"
               variant="outlined"
-              onClick={props.onClose}
+              onClick={() => (props.isModel ? handleDelete() : props.onClose())}
             >
-              DELETE
+              {deleteLoading ? (
+                <Box sx={{ display: 'flex' }}>
+                  <CircularProgress sx={{ color: 'red' }} size="1rem" />
+                </Box>
+              ) : null}
+              <Typography sx={{ ml: deleteLoading ? 1 : 0 }}>
+                {props.isModel ? `DELETE` : `CANCEL`}
+              </Typography>
             </Button>
             <CircularProgress color="primary" size="sm" />
             <Button
