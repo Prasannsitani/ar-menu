@@ -338,14 +338,16 @@ app.post('/upload-image', (req, res) => {
       return
     }
 
-    const contentType = req.files[0].contentType
-    const imageUrl = req.files[0].location
+    const contentType = req.files?.[0]?.contentType
+    const imageUrl = req.files?.[0]?.location
     const { id } = req.body
 
     if (
-      contentType === 'image/png' ||
-      contentType === 'image/jpeg' ||
-      contentType === 'image/jpg'
+      contentType &&
+      imageUrl &&
+      (contentType === 'image/png' ||
+        contentType === 'image/jpeg' ||
+        contentType === 'image/jpg')
     ) {
       if (id) {
         menu.findByIdAndUpdate(
@@ -440,7 +442,6 @@ app.post('/upload-model', (req, res) => {
 })
 
 app.post('/delete-model', (req, res) => {
-  console.log('req.body : ', req.body)
   const { id } = req.body
   if (id) {
     menu.findByIdAndUpdate(
