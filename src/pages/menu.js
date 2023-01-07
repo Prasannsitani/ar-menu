@@ -13,7 +13,11 @@ import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 
 const Menu = props => {
-  const [isOpen, setIsOpen] = useState({ isOpen: false, data: {} })
+  const [isOpen, setIsOpen] = useState({
+    isOpen: false,
+    data: {},
+    showImage: false,
+  })
 
   const { data, isLoading, error } =
     useFetch(`${process.env.REACT_APP_API_URL}/get-menu-list`) || {}
@@ -66,7 +70,9 @@ const Menu = props => {
                 sx={{ alignSelf: 'flex-end' }}
                 variant="contained"
                 endIcon={<AddCircleIcon color="white" />}
-                onClick={() => setIsOpen({ isOpen: true, data: {} })}
+                onClick={() =>
+                  setIsOpen({ isOpen: true, data: {}, showImage: true })
+                }
               >
                 Add Item
               </Button>
@@ -77,8 +83,10 @@ const Menu = props => {
       <Table
         data={data}
         isOpen={isOpen}
-        onClose={() => setIsOpen({ isOpen: false, data: {} })}
-        onOpen={data => setIsOpen({ isOpen: true, data: data })}
+        onClose={() => setIsOpen({ isOpen: false, data: {}, showImage: false })}
+        onOpen={data =>
+          setIsOpen({ isOpen: true, data: data, showImage: false })
+        }
       />
     </Stack>
   )

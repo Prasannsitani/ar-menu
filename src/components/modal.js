@@ -79,12 +79,6 @@ const Modal = props => {
       })
   }, [props.data])
 
-  const handleSubmit = e => {
-    props.openToast()
-    props.onClose()
-    window.location.reload()
-  }
-
   const handleDelete = () => {
     fetch(`${process.env.REACT_APP_API_URL}/menu-item/del`, {
       method: 'POST',
@@ -145,14 +139,12 @@ const Modal = props => {
           action={`${process.env.REACT_APP_API_URL}/update-menu`}
           encType="multipart/form-data"
           method="post"
-          onSubmit={handleSubmit}
         >
           <TextField
             label="Id"
             name="id"
             type="text"
             value={values.id}
-            onChange={ev => setValues({ ...values, name: ev.target.value })}
             sx={{ display: 'none' }}
           />
           <Stack spacing={4}>
@@ -220,23 +212,16 @@ const Modal = props => {
               focused={values.price ? true : false}
             />
 
-            <CssTextField
-              label="3d Modal"
-              name="files"
-              variant="outlined"
-              type="file"
-              focused
-              required
-            />
-
-            <CssTextField
-              label="Preview Image"
-              name="files"
-              variant="outlined"
-              type="file"
-              focused
-              required
-            />
+            {props.showImage ? (
+              <CssTextField
+                label="Preview Image"
+                name="files"
+                variant="outlined"
+                type="file"
+                focused
+                required
+              />
+            ) : null}
             <Stack
               sx={{
                 flexDirection: 'row',

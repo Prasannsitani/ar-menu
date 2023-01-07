@@ -101,15 +101,7 @@ const Table = props => {
           </TableHead>
           <TableBody>
             {props.data.map((item, index) => (
-              <StyledTableRow
-                key={index}
-                onClick={
-                  () => {
-                    console.log('item : ', item)
-                  }
-                  // props.onOpen(item)
-                }
-              >
+              <StyledTableRow key={index} onClick={() => props.onOpen(item)}>
                 <StyledTableCell align="center">{index + 1}</StyledTableCell>
                 <StyledTableCell align="center">
                   <>
@@ -199,6 +191,7 @@ const Table = props => {
       <Modal
         isOpen={props.isOpen?.isOpen}
         data={props.isOpen?.data}
+        showImage={props.isOpen?.showImage}
         onClose={props.onClose}
         openToast={message => setToast({ isOpen: true, message: message })}
       />
@@ -220,7 +213,7 @@ const Table = props => {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         open={toast.isOpen}
         onClose={() => setToast({ isOpen: false, message: '' })}
-        message={toast.message}
+        message={toast.message ? toast.message : 'Request Successfull'}
         TransitionComponent={props => <Slide {...props} direction="up" />}
       />
     </Stack>

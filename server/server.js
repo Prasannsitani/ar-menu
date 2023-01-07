@@ -255,18 +255,12 @@ const upload = multer({
 app.post('/update-menu', async (req, res) => {
   upload(req, res, error => {
     if (error) {
+      res.sendStatus(500)
       return
     }
 
     const { id, name, price, description, section, category } = req.body
-    const arModel =
-      req.files?.[0]?.contentType === 'application/octet-stream'
-        ? `https://${req.files?.[0]?.location}`
-        : req.files?.[0]?.location
-    const previewImage =
-      req.files?.[1]?.contentType === 'application/octet-stream'
-        ? `https://${req.files?.[1]?.location}`
-        : req.files?.[1]?.location
+    const previewImage = req.files?.[0]?.location
 
     const updateObject = {
       name: name,
@@ -277,19 +271,11 @@ app.post('/update-menu', async (req, res) => {
         currency: 'INR',
         displayText: `Rs. ${price}`,
       },
-      ar_enabled: true,
       food_category: category,
     }
 
     if (previewImage) {
       updateObject['preview_image'] = previewImage
-    }
-
-    if (arModel) {
-      updateObject['ar_info'] = {
-        type: 'MODEL',
-        url: arModel,
-      }
     }
 
     if (id === '') {
