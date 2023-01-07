@@ -86,19 +86,16 @@ const Modal = props => {
   }
 
   const handleDelete = () => {
-    fetch(
-      'https://menu-app-rwlj3.ondigitalocean.app/ar-menu-server/menu-item/del',
-      {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id: values.id,
-        }),
+    fetch(`${process.env.REACT_APP_API_URL}/menu-item/del`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
-    )
+      body: JSON.stringify({
+        id: values.id,
+      }),
+    })
       .then(response => {
         if (response.status === 200) {
           window.location.reload()
@@ -145,7 +142,7 @@ const Modal = props => {
         </Stack>
 
         <form
-          action="https://menu-app-rwlj3.ondigitalocean.app/ar-menu-server/update-menu"
+          action={`${process.env.REACT_APP_API_URL}/update-menu`}
           encType="multipart/form-data"
           method="post"
           onSubmit={handleSubmit}

@@ -1,7 +1,7 @@
 import React from 'react'
 import './App.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { ThemeProvider, createTheme, Paper } from '@mui/material'
+import { ThemeProvider, createTheme } from '@mui/material'
 import { Menu } from './pages'
 
 const theme = createTheme({

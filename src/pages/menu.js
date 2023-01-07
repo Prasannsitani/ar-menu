@@ -16,9 +16,7 @@ const Menu = props => {
   const [isOpen, setIsOpen] = useState({ isOpen: false, data: {} })
 
   const { data, isLoading, error } =
-    useFetch(
-      'https://menu-app-rwlj3.ondigitalocean.app/ar-menu-server/get-menu-list',
-    ) || {}
+    useFetch(`${process.env.REACT_APP_API_URL}/get-menu-list`) || {}
 
   if (isLoading) return null
   if (error) return null
