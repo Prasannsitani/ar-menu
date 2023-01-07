@@ -210,14 +210,16 @@ const ModelModal = props => {
               variant="outlined"
               onClick={() => (props.isModel ? handleDelete() : props.onClose())}
             >
-              {deleteLoading ? (
-                <Box sx={{ display: 'flex' }}>
-                  <CircularProgress sx={{ color: 'red' }} size="1rem" />
-                </Box>
-              ) : null}
-              <Typography sx={{ ml: deleteLoading ? 1 : 0 }}>
-                {props.isModel ? `DELETE` : `CANCEL`}
-              </Typography>
+              <Stack flexDirection="row" alignItems="center">
+                {deleteLoading ? (
+                  <Box sx={{ display: 'flex' }}>
+                    <CircularProgress sx={{ color: 'red' }} size="1rem" />
+                  </Box>
+                ) : null}
+                <Typography sx={{ ml: deleteLoading ? 1 : 0 }}>
+                  {props.isModel ? `DELETE` : `CANCEL`}
+                </Typography>
+              </Stack>
             </Button>
             <CircularProgress color="primary" size="sm" />
             <Button

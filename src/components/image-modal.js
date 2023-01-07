@@ -7,10 +7,12 @@ import {
   Button,
   IconButton,
   Divider,
+  Box,
 } from '@mui/material'
 import { withStyles } from '@mui/styles'
 import { isEmpty } from 'lodash'
 import CancelIcon from '@mui/icons-material/Cancel'
+import CircularProgress from '@mui/material/CircularProgress'
 
 const style = {
   position: 'absolute',
@@ -54,6 +56,8 @@ const ImageModal = props => {
 
   const id = useMemo(() => (props.id ? props.id : ''), [props.id])
 
+  const [uploadLoading, setUploadLoading] = useState(false)
+
   const [currentFile, setCurrentFile] = useState()
 
   const changeHandler = event => {
@@ -61,6 +65,7 @@ const ImageModal = props => {
   }
 
   const handleSubmit = e => {
+    setUploadLoading(true)
     const formData = new FormData()
 
     formData.append('id', id)
@@ -83,8 +88,10 @@ const ImageModal = props => {
         } else {
           props.openToast('Something Went Wrong!!')
         }
+        setUploadLoading(false)
       })
       .catch(error => {
+        setUploadLoading(false)
         props.openToast('Something Went Wrong!!')
       })
   }
@@ -173,7 +180,16 @@ const ImageModal = props => {
               variant="contained"
               onClick={handleSubmit}
             >
-              Upload
+              <Stack flexDirection="row" alignItems="center">
+                {uploadLoading ? (
+                  <Box sx={{ display: 'flex' }}>
+                    <CircularProgress sx={{ color: 'white' }} size="1rem" />
+                  </Box>
+                ) : null}
+                <Typography sx={{ ml: uploadLoading ? 1 : 0 }}>
+                  Upload
+                </Typography>
+              </Stack>
             </Button>
           </Stack>
         </Stack>
