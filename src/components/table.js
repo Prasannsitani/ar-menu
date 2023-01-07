@@ -1,13 +1,19 @@
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { styled } from '@mui/material/styles'
-import { Stack, Table as MuiTable, IconButton, Typography } from '@mui/material'
+import {
+  Stack,
+  Table as MuiTable,
+  IconButton,
+  Typography,
+  Box,
+} from '@mui/material'
 import TableBody from '@mui/material/TableBody'
 import TableCell, { tableCellClasses } from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
-import { ImageModal, Modal } from '../components'
+import { ImageModal, Modal, ModelModal } from '../components'
 import Snackbar from '@mui/material/Snackbar'
 import Slide from '@mui/material/Slide'
 import UploadFileIcon from '@mui/icons-material/UploadFile'
@@ -44,6 +50,12 @@ const Table = props => {
     isOpen: false,
   })
 
+  const [modelModal, setModelModal] = useState({
+    id: '',
+    isModel: false,
+    isOpen: false,
+  })
+
   return (
     <Stack
       sx={{
@@ -68,6 +80,9 @@ const Table = props => {
                 Image
               </StyledTableCell>
               <StyledTableCell align="center" sx={{ fontWeight: 'bold' }}>
+                Is Model
+              </StyledTableCell>
+              <StyledTableCell align="center" sx={{ fontWeight: 'bold' }}>
                 Name
               </StyledTableCell>
               <StyledTableCell align="center" sx={{ fontWeight: 'bold' }}>
@@ -88,7 +103,12 @@ const Table = props => {
             {props.data.map((item, index) => (
               <StyledTableRow
                 key={index}
-                // onClick={() => props.onOpen(item)}
+                onClick={
+                  () => {
+                    console.log('item : ', item)
+                  }
+                  // props.onOpen(item)
+                }
               >
                 <StyledTableCell align="center">{index + 1}</StyledTableCell>
                 <StyledTableCell align="center">
@@ -118,6 +138,44 @@ const Table = props => {
                       <UploadFileIcon style={{ color: 'gray' }} />
                     </IconButton>
                   </>
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  <Stack
+                    sx={{
+                      alignItems: 'flex-end',
+                      justifyContent: 'center',
+                      alignSelf: 'center',
+                      flexDirection: 'row',
+                    }}
+                  >
+                    <img
+                      src={`${
+                        item.ar_enabled
+                          ? `https://www.shutterstock.com/image-illustration/yes-word-pop-art-retro-260nw-1096973984.jpg`
+                          : `https://png.pngtree.com/png-clipart/20200224/original/pngtree-no-speech-bubble-icon-pop-art-style-png-image_5248403.jpg`
+                      }?w=100&h=100&fit=crop&auto=format`}
+                      alt={'Image'}
+                      loading="lazy"
+                      style={{
+                        width: '100px',
+                        height: '100px',
+                        borderRadius: 10,
+                        objectFit: 'cover',
+                      }}
+                    />
+                    <IconButton
+                      className="upload"
+                      onClick={() =>
+                        setModelModal({
+                          isOpen: true,
+                          isModel: item.ar_enabled,
+                          id: item._id,
+                        })
+                      }
+                    >
+                      <UploadFileIcon style={{ color: 'gray' }} />
+                    </IconButton>
+                  </Stack>
                 </StyledTableCell>
                 <StyledTableCell align="center">{item.name}</StyledTableCell>
                 <StyledTableCell
@@ -149,6 +207,13 @@ const Table = props => {
         isOpen={imageModal.isOpen}
         imageUrl={imageModal.imageUrl}
         onClose={() => setImageModal({ isOpen: false, imageUrl: '', id: '' })}
+        openToast={message => setToast({ isOpen: true, message: message })}
+      />
+      <ModelModal
+        id={modelModal.id}
+        isOpen={modelModal.isOpen}
+        isModel={modelModal.isModel}
+        onClose={() => setModelModal({ isOpen: false, isModel: false, id: '' })}
         openToast={message => setToast({ isOpen: true, message: message })}
       />
       <Snackbar

@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const multer = require('multer')
 const multerS3 = require('multer-s3')
+const path = require('path')
 
 // ENV
 require('dotenv').config()
@@ -328,7 +329,7 @@ const uploadImage = multer({
       cb(null, file.originalname)
     },
   }),
-}).array('image', 2)
+}).array('image', 1)
 
 app.post('/upload-image', (req, res) => {
   uploadImage(req, res, error => {
@@ -361,9 +362,7 @@ app.post('/upload-image', (req, res) => {
               return
             }
 
-            res.json({
-              message: 'Image Uploaded Successfully',
-            })
+            res.sendStatus(200)
           },
         )
       }
@@ -371,6 +370,68 @@ app.post('/upload-image', (req, res) => {
       res.status(400).json({
         message:
           'Unsupported File format [Supported formats - png, jpeg and jpg]',
+      })
+    }
+  })
+})
+
+const uploadModel = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: 'public-asset',
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    acl: 'public-read',
+    key: (request, file, cb) => {
+      cb(null, file.originalname)
+    },
+  }),
+}).array('model', 1)
+
+app.post('/upload-model', (req, res) => {
+  uploadModel(req, res, error => {
+    if (error) {
+      res.sendStatus(500)
+      return
+    }
+
+    const contentType = req.files?.[0]?.contentType
+    const modelUrl = req.files?.[0]?.location
+    const { id } = req.body
+
+    if (
+      contentType &&
+      modelUrl &&
+      contentType === 'application/octet-stream' &&
+      (path.extname(modelUrl) === '.glb' || path.extname(modelUrl) === '.gltf')
+    ) {
+      if (id) {
+        menu.findByIdAndUpdate(
+          id,
+          {
+            $set: {
+              ar_enabled: true,
+              ar_info: {
+                type: 'MODEL',
+                url: `https://${modelUrl}`,
+              },
+            },
+          },
+          { new: true },
+          (err, item) => {
+            if (err) {
+              res.sendStatus(500)
+              return
+            }
+
+            res.json({
+              message: 'Model Uploaded Successfully',
+            })
+          },
+        )
+      }
+    } else {
+      res.status(400).json({
+        message: 'Unsupported File format [Supported formats - glb and gltf]',
       })
     }
   })
