@@ -1,15 +1,16 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { styled } from '@mui/material/styles'
-import { Stack, Table as MuiTable } from '@mui/material'
+import { Stack, Table as MuiTable, IconButton, Typography } from '@mui/material'
 import TableBody from '@mui/material/TableBody'
 import TableCell, { tableCellClasses } from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
-import { Modal } from '../components'
+import { ImageModal, Modal } from '../components'
 import Snackbar from '@mui/material/Snackbar'
 import Slide from '@mui/material/Slide'
+import UploadFileIcon from '@mui/icons-material/UploadFile'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -32,7 +33,16 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }))
 
 const Table = props => {
-  const [toastIsOpen, setToastIsOpen] = useState(false)
+  const [toast, setToast] = useState({
+    isOpen: false,
+    message: '',
+  })
+
+  const [imageModal, setImageModal] = useState({
+    id: '',
+    imageUrl: '',
+    isOpen: false,
+  })
 
   return (
     <Stack
@@ -76,21 +86,38 @@ const Table = props => {
           </TableHead>
           <TableBody>
             {props.data.map((item, index) => (
-              <StyledTableRow key={index} onClick={() => props.onOpen(item)}>
+              <StyledTableRow
+                key={index}
+                // onClick={() => props.onOpen(item)}
+              >
                 <StyledTableCell align="center">{index + 1}</StyledTableCell>
                 <StyledTableCell align="center">
-                  <img
-                    src={`${item.preview_image}?w=100&h=100&fit=crop&auto=format`}
-                    srcSet={`${item.preview_image}?w=100&h=100&fit=crop&auto=format&dpr=2 2x`}
-                    alt={'Image'}
-                    loading="lazy"
-                    style={{
-                      width: '100px',
-                      height: '100px',
-                      borderRadius: 10,
-                      objectFit: 'cover',
-                    }}
-                  />
+                  <>
+                    <img
+                      src={`${item.preview_image}?w=100&h=100&fit=crop&auto=format`}
+                      srcSet={`${item.preview_image}?w=100&h=100&fit=crop&auto=format&dpr=2 2x`}
+                      alt={'Image'}
+                      loading="lazy"
+                      style={{
+                        width: '100px',
+                        height: '100px',
+                        borderRadius: 10,
+                        objectFit: 'cover',
+                      }}
+                    />
+                    <IconButton
+                      className="upload"
+                      onClick={() =>
+                        setImageModal({
+                          isOpen: true,
+                          imageUrl: item.preview_image,
+                          id: item._id,
+                        })
+                      }
+                    >
+                      <UploadFileIcon style={{ color: 'gray' }} />
+                    </IconButton>
+                  </>
                 </StyledTableCell>
                 <StyledTableCell align="center">{item.name}</StyledTableCell>
                 <StyledTableCell
@@ -115,14 +142,20 @@ const Table = props => {
         isOpen={props.isOpen?.isOpen}
         data={props.isOpen?.data}
         onClose={props.onClose}
-        openToast={() => setToastIsOpen(true)}
+        openToast={message => setToast({ isOpen: true, message: message })}
+      />
+      <ImageModal
+        id={imageModal.id}
+        isOpen={imageModal.isOpen}
+        imageUrl={imageModal.imageUrl}
+        onClose={() => setImageModal({ isOpen: false, imageUrl: '', id: '' })}
+        openToast={message => setToast({ isOpen: true, message: message })}
       />
       <Snackbar
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        open={toastIsOpen}
-        onClose={() => setToastIsOpen(false)}
-        color="success"
-        message="Submitted Successfully!!"
+        open={toast.isOpen}
+        onClose={() => setToast({ isOpen: false, message: '' })}
+        message={toast.message}
         TransitionComponent={props => <Slide {...props} direction="up" />}
       />
     </Stack>

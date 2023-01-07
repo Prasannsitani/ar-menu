@@ -318,6 +318,64 @@ app.post('/update-menu', async (req, res) => {
   })
 })
 
+const uploadImage = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: 'public-asset',
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    acl: 'public-read',
+    key: (request, file, cb) => {
+      cb(null, file.originalname)
+    },
+  }),
+}).array('image', 2)
+
+app.post('/upload-image', (req, res) => {
+  uploadImage(req, res, error => {
+    if (error) {
+      res.sendStatus(500)
+      return
+    }
+
+    const contentType = req.files[0].contentType
+    const imageUrl = req.files[0].location
+    const { id } = req.body
+
+    if (
+      contentType === 'image/png' ||
+      contentType === 'image/jpeg' ||
+      contentType === 'image/jpg'
+    ) {
+      if (id) {
+        menu.findByIdAndUpdate(
+          id,
+          {
+            $set: {
+              preview_image: imageUrl,
+            },
+          },
+          { new: true },
+          (err, item) => {
+            if (err) {
+              res.sendStatus(500)
+              return
+            }
+
+            res.json({
+              message: 'Image Uploaded Successfully',
+            })
+          },
+        )
+      }
+    } else {
+      res.status(400).json({
+        message:
+          'Unsupported File format [Supported formats - png, jpeg and jpg]',
+      })
+    }
+  })
+})
+
 const PORT = process.env.PORT || 8080
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
