@@ -5,6 +5,9 @@ const mongoose = require('mongoose')
 const multer = require('multer')
 const multerS3 = require('multer-s3')
 
+// ENV
+require('dotenv').config()
+
 // Models
 const menu = require('./models/menu')
 const orders = require('./models/order')
@@ -12,7 +15,7 @@ const info = require('./models/info')
 
 const app = express()
 
-// header to prevent CORS
+// Header to prevent CORS
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*')
   res.header(
@@ -24,25 +27,23 @@ app.use((req, res, next) => {
   next()
 })
 
-// db connection
-mongoose.connect('mongodb+srv://admin:admin@ar-menu.jvvucuy.mongodb.net/test', {
+// DB connection
+mongoose.connect(process.env.DB_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-// mongodb+srv://admin:admin@ar-menu.jvvucuy.mongodb.net/test
-// mongoose.connect('mongodb://localhost:27017/test')
-//
 
+// BODY Parser Setup
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 // Set DigitalOcean Spaces
 const s3 = new S3Client({
   region: 'ap-south-1',
-  endpoint: 'https://fra1.digitaloceanspaces.com',
+  endpoint: process.env.S3_BUCKET_ENDPOINT,
   credentials: {
-    accessKeyId: 'DO00FHXJYKE998TXYQH4',
-    secretAccessKey: 'CSnZnDgpbiXCGpPcvPUXaqavH8s97JtUap0KSn9G540',
+    accessKeyId: process.env.S3_ACCESS_KEY,
+    secretAccessKey: process.env.S3_SECRET_KEY,
   },
 })
 
@@ -136,32 +137,6 @@ app.get('/get-orders', (req, res) => {
     }
   })
 })
-
-// Need to see again.
-// app.get('/get-orders/:id', (req, res) => {
-//   const id = req.params.id
-
-//   orders.findById(id, async (error, order) => {
-//     if (error) throw error
-
-//     if (order) {
-//       let ordered_items = []
-
-//       order.ordered_items.forEach(item => {
-//         // menu.findById(item.item_id, (error, menu_item) => {
-//         //   if (error || !menu_item) throw error
-//         //   // ordered_items = [...ordered_items, menu_item]
-//         //   // console.log('menu item : ', { ...item, ...menu_item._doc })
-//         //   // ordered_items.push({ ...item, ...menu_item._doc })
-//         ordered_items.push(item)
-//         // })
-//       })
-//       res.json({ ...order._doc, ordered_items })
-//     } else {
-//       res.sendStatus(404)
-//     }
-//   })
-// })
 
 app.post('/place-order', (req, res) => {
   const params = req.body
@@ -323,7 +298,7 @@ app.post('/update-menu', async (req, res) => {
           return
         }
 
-        res.redirect('https://menu-app-admin-luqws.ondigitalocean.app/')
+        res.redirect(process.env.ADMIN_URL)
       })
     } else {
       menu.findByIdAndUpdate(
@@ -336,7 +311,7 @@ app.post('/update-menu', async (req, res) => {
             return
           }
 
-          res.redirect('https://menu-app-admin-luqws.ondigitalocean.app/')
+          res.redirect(process.env.ADMIN_URL)
         },
       )
     }
