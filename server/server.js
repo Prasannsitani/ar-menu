@@ -200,7 +200,9 @@ app.post('/menu-item/del', (req, res) => {
           res.sendStatus(500)
           return
         }
-        res.sendStatus(200)
+        res.json({
+          message: 'Deleted Successfully!!',
+        })
       })
     } catch (err) {
       res.sendStatus(500)
