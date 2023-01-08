@@ -478,6 +478,7 @@ app.post('/update-info', (req, res) => {
     primaryTextColor,
     secondaryColor,
     secondaryTextColor,
+    quantityButtonColor,
   } = req.body
 
   if (
@@ -485,7 +486,8 @@ app.post('/update-info', (req, res) => {
     primaryColor &&
     secondaryColor &&
     secondaryTextColor &&
-    primaryTextColor
+    primaryTextColor &&
+    quantityButtonColor
   ) {
     const updateObject = {
       name: name,
@@ -494,6 +496,7 @@ app.post('/update-info', (req, res) => {
         primary_text_color: primaryTextColor,
         secondary_color: secondaryColor,
         secondary_text_color: secondaryTextColor,
+        quantity_button_color: quantityButtonColor,
       },
     }
 

@@ -25,14 +25,13 @@ const style = {
 }
 
 const ColorModal = props => {
-  console.log('props : ', props)
-
   const [values, setValues] = useState({
     name: '',
     primaryColor: '',
     primaryTextColor: '',
     secondaryColor: '',
     secondaryTextColor: '',
+    quantityButtonColor: '',
   })
 
   useEffect(() => {
@@ -43,6 +42,7 @@ const ColorModal = props => {
         primaryTextColor: props.data?.theme?.primary_text_color,
         secondaryColor: props.data?.theme?.secondary_color,
         secondaryTextColor: props.data?.theme?.secondary_text_color,
+        quantityButtonColor: props.data?.theme?.quantity_button_color,
       })
     }
 
@@ -53,6 +53,7 @@ const ColorModal = props => {
         primaryTextColor: '',
         secondaryColor: '',
         secondaryTextColor: '',
+        quantityButtonColor: '',
       })
   }, [props.data])
 
@@ -69,6 +70,7 @@ const ColorModal = props => {
         primaryTextColor: values.primaryTextColor,
         secondaryColor: values.secondaryColor,
         secondaryTextColor: values.secondaryTextColor,
+        quantityButtonColor: values.quantityButtonColor,
       }),
     })
       .then(response => response)
@@ -186,6 +188,19 @@ const ColorModal = props => {
             autoComplete="off"
             required
             focused={values.secondaryTextColor ? true : false}
+          />
+          <TextField
+            label="Quantity Button Color"
+            name="quantityButtonColor"
+            variant="outlined"
+            fullWidth
+            value={values.quantityButtonColor}
+            onChange={ev =>
+              setValues({ ...values, quantityButtonColor: ev.target.value })
+            }
+            autoComplete="off"
+            required
+            focused={values.quantityButtonColor ? true : false}
           />
           <Stack
             sx={{
