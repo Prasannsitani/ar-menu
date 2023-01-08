@@ -89,7 +89,7 @@ const Menu = props => {
                     setThemeModal({ isOpen: true, data: theme.data })
                   }
                 >
-                  Edit Ui
+                  Edit UI
                 </Button>
               </Stack>
               <Stack>

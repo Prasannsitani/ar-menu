@@ -7,10 +7,16 @@ import {
   Button,
   IconButton,
   Divider,
+  Box,
 } from '@mui/material'
 import { withStyles } from '@mui/styles'
 import { isEmpty } from 'lodash'
 import CancelIcon from '@mui/icons-material/Cancel'
+import Select from '@mui/material/Select'
+import MenuItem from '@mui/material/MenuItem'
+import InputLabel from '@mui/material/InputLabel'
+import FormControl from '@mui/material/FormControl'
+import CircularProgress from '@mui/material/CircularProgress'
 
 const style = {
   position: 'absolute',
@@ -47,6 +53,12 @@ const CssTextField = withStyles({
 })(TextField)
 
 const Modal = props => {
+  const [currentFile, setCurrentFile] = useState()
+
+  const [uploadLoading, setUploadLoading] = useState(false)
+
+  const [deleteLoading, setDeleteLoading] = useState(false)
+
   const [values, setValues] = useState({
     id: '',
     name: '',
@@ -68,7 +80,7 @@ const Modal = props => {
       })
     }
 
-    return () =>
+    return () => {
       setValues({
         id: '',
         name: '',
@@ -77,9 +89,12 @@ const Modal = props => {
         section: '',
         price: '',
       })
+      setCurrentFile()
+    }
   }, [props.data])
 
   const handleDelete = () => {
+    setDeleteLoading(true)
     fetch(`${process.env.REACT_APP_API_URL}/menu-item/del`, {
       method: 'POST',
       headers: {
@@ -90,12 +105,63 @@ const Modal = props => {
         id: values.id,
       }),
     })
-      .then(response => {
+      .then(response => response)
+      .then(async response => {
+        const data = await response.json()
         if (response.status === 200) {
           window.location.reload()
+        } else if (response.status === 400 && !isEmpty(data)) {
+          props.openToast(data?.message)
+        } else {
+          props.openToast('Something Went Wrong!!')
         }
+        setDeleteLoading(false)
       })
-      .catch(err => {})
+      .catch(err => setDeleteLoading(false))
+  }
+
+  const changeHandler = event => {
+    setCurrentFile(event.target.files[0])
+  }
+
+  const handleSubmit = () => {
+    setUploadLoading(true)
+    const formData = new FormData()
+
+    formData.append('id', values.id)
+    formData.append('name', values.name)
+    formData.append('description', values.description)
+    formData.append('category', values.category)
+    formData.append('section', values.section)
+    formData.append('price', values.price)
+
+    if (props.showImage) {
+      formData.append('image', currentFile)
+    }
+
+    fetch(`${process.env.REACT_APP_API_URL}/update-menu`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+      },
+      body: formData,
+    })
+      .then(response => response)
+      .then(async response => {
+        const data = await response.json()
+        if (response.status === 200) {
+          window.location.reload()
+        } else if (response.status === 400 && !isEmpty(data)) {
+          props.openToast(data?.message)
+        } else {
+          props.openToast('Something Went Wrong!!')
+        }
+        setUploadLoading(false)
+      })
+      .catch(error => {
+        setUploadLoading(false)
+        props.openToast('Something Went Wrong!!')
+      })
   }
 
   return (
@@ -135,115 +201,132 @@ const Modal = props => {
           />
         </Stack>
 
-        <form
-          action={`${process.env.REACT_APP_API_URL}/update-menu`}
-          encType="multipart/form-data"
-          method="post"
-        >
+        <TextField
+          label="Id"
+          name="id"
+          type="text"
+          value={values.id}
+          sx={{ display: 'none' }}
+        />
+        <Stack spacing={4}>
           <TextField
-            label="Id"
-            name="id"
-            type="text"
-            value={values.id}
-            sx={{ display: 'none' }}
+            label="Name"
+            name="name"
+            variant="outlined"
+            fullWidth
+            value={values.name}
+            onChange={ev => setValues({ ...values, name: ev.target.value })}
+            required
+            autoComplete="off"
+            focused={values.name ? true : false}
+            autoFocus={true}
           />
-          <Stack spacing={4}>
-            <TextField
-              label="Name"
-              name="name"
-              variant="outlined"
-              fullWidth
-              value={values.name}
-              onChange={ev => setValues({ ...values, name: ev.target.value })}
-              required
-              autoComplete="off"
-              focused={values.name ? true : false}
-              autoFocus={true}
-            />
-            <TextField
-              label="Description"
-              name="description"
-              variant="outlined"
-              fullWidth
-              value={values.description}
-              onChange={ev =>
-                setValues({ ...values, description: ev.target.value })
-              }
-              required
-              autoComplete="off"
-              focused={values.description ? true : false}
-            />
-            <TextField
-              label="Category"
+          <TextField
+            label="Description"
+            name="description"
+            variant="outlined"
+            fullWidth
+            value={values.description}
+            onChange={ev =>
+              setValues({ ...values, description: ev.target.value })
+            }
+            required
+            autoComplete="off"
+            focused={values.description ? true : false}
+          />
+          <FormControl fullWidth focused={values.category ? true : false}>
+            <InputLabel id="category-label">Category</InputLabel>
+            <Select
+              labelId="category-label"
+              id="Category"
               name="category"
-              variant="outlined"
-              fullWidth
               value={values.category}
+              label="Category"
               onChange={ev =>
                 setValues({ ...values, category: ev.target.value })
               }
-              required
-              autoComplete="off"
-              focused={values.category ? true : false}
-            />
-            <TextField
-              label="Section"
-              name="section"
-              variant="outlined"
-              fullWidth
-              value={values.section}
-              onChange={ev =>
-                setValues({ ...values, section: ev.target.value })
-              }
-              required
-              autoComplete="off"
-              focused={values.section ? true : false}
-            />
-            <TextField
-              label="Price"
-              variant="outlined"
-              type="number"
-              name="price"
-              fullWidth
-              value={values.price}
-              onChange={ev => setValues({ ...values, price: ev.target.value })}
-              autoComplete="off"
-              required
-              focused={values.price ? true : false}
-            />
-
-            {props.showImage ? (
-              <CssTextField
-                label="Preview Image"
-                name="files"
-                variant="outlined"
-                type="file"
-                focused
-                required
-              />
-            ) : null}
-            <Stack
-              sx={{
-                flexDirection: 'row',
-                width: '100%',
-                justifyContent: 'space-between',
-              }}
             >
-              <Button
-                sx={{ width: '48%' }}
-                color="error"
-                variant="outlined"
-                onClick={handleDelete}
-              >
-                DELETE
-              </Button>
+              <MenuItem value={`veg`}>Veg</MenuItem>
+              <MenuItem value={`non_veg`}>Non Veg</MenuItem>
+            </Select>
+          </FormControl>
 
-              <Button sx={{ width: '48%' }} variant="contained" type="submit">
-                SAVE
-              </Button>
-            </Stack>
+          <TextField
+            label="Section"
+            name="section"
+            variant="outlined"
+            fullWidth
+            value={values.section}
+            onChange={ev => setValues({ ...values, section: ev.target.value })}
+            required
+            autoComplete="off"
+            focused={values.section ? true : false}
+          />
+          <TextField
+            label="Price"
+            variant="outlined"
+            type="number"
+            name="price"
+            fullWidth
+            value={values.price}
+            onChange={ev => setValues({ ...values, price: ev.target.value })}
+            autoComplete="off"
+            required
+            focused={values.price ? true : false}
+          />
+
+          {props.showImage ? (
+            <CssTextField
+              label="Preview Image"
+              name="image"
+              variant="outlined"
+              type="file"
+              focused
+              required
+              onChange={changeHandler}
+            />
+          ) : null}
+          <Stack
+            sx={{
+              flexDirection: 'row',
+              width: '100%',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Button
+              sx={{ width: '48%' }}
+              color="error"
+              variant="outlined"
+              onClick={handleDelete}
+            >
+              <Stack flexDirection="row" alignItems="center">
+                {deleteLoading ? (
+                  <Box sx={{ display: 'flex' }}>
+                    <CircularProgress sx={{ color: 'red' }} size="1rem" />
+                  </Box>
+                ) : null}
+                <Typography sx={{ ml: deleteLoading ? 1 : 0 }}>
+                  {`DELETE`}
+                </Typography>
+              </Stack>
+            </Button>
+
+            <Button
+              sx={{ width: '48%' }}
+              variant="contained"
+              onClick={handleSubmit}
+            >
+              <Stack flexDirection="row" alignItems="center">
+                {uploadLoading ? (
+                  <Box sx={{ display: 'flex' }}>
+                    <CircularProgress sx={{ color: 'white' }} size="1rem" />
+                  </Box>
+                ) : null}
+                <Typography sx={{ ml: uploadLoading ? 1 : 0 }}>SAVE</Typography>
+              </Stack>
+            </Button>
           </Stack>
-        </form>
+        </Stack>
       </Stack>
     </MuiModal>
   )

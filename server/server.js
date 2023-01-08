@@ -163,9 +163,10 @@ app.post('/place-order', (req, res) => {
   orders.create(order_item, (err, item) => {
     if (err) {
       res.sendStatus(500)
-    } else {
-      res.json({ id: item._id })
+      return
     }
+
+    res.json({ id: item._id })
   })
 })
 
@@ -185,23 +186,28 @@ app.post('/menu-item/add', (req, res) => {
     if (err) {
       res.sendStatus(500)
       return
-    } else {
-      res.sendStatus(200)
     }
+
+    res.sendStatus(200)
   })
 })
 
 app.post('/menu-item/del', (req, res) => {
-  try {
-    menu.findByIdAndDelete(req.body.id, error => {
-      if (error) {
-        res.sendStatus(500)
-        return
-      }
-      res.sendStatus(200)
-    })
-  } catch (err) {
-    res.sendStatus(404)
+  if (req.body.id) {
+    try {
+      menu.findByIdAndDelete(req.body.id, error => {
+        if (error) {
+          res.sendStatus(500)
+          return
+        }
+        res.sendStatus(200)
+      })
+    } catch (err) {
+      res.sendStatus(500)
+      return
+    }
+  } else {
+    res.sendStatus(500)
     return
   }
 })
@@ -250,7 +256,7 @@ const upload = multer({
       cb(null, file.originalname)
     },
   }),
-}).array('files', 2)
+}).array('image', 2)
 
 app.post('/update-menu', async (req, res) => {
   upload(req, res, error => {
@@ -262,45 +268,81 @@ app.post('/update-menu', async (req, res) => {
     const { id, name, price, description, section, category } = req.body
     const previewImage = req.files?.[0]?.location
 
-    const updateObject = {
-      name: name,
-      section: section,
-      description: description,
-      price: {
-        value: price,
-        currency: 'INR',
-        displayText: `Rs. ${price}`,
-      },
-      food_category: category,
-    }
-
-    if (previewImage) {
-      updateObject['preview_image'] = previewImage
-    }
-
     if (id === '') {
-      menu.create(updateObject, err => {
-        if (err) {
-          res.sendStatus(500)
-          return
-        }
-
-        res.redirect(process.env.ADMIN_URL)
-      })
-    } else {
-      menu.findByIdAndUpdate(
-        id,
-        { $set: updateObject },
-        { new: true },
-        (err, item) => {
-          if (err) {
-            res.sendStatus(500)
-            return
+      if (name && price && description && section && category && previewImage) {
+        if (
+          path.extname(previewImage) === '.png' ||
+          path.extname(previewImage) === '.jpeg' ||
+          path.extname(previewImage) === '.jpg'
+        ) {
+          const updateObject = {
+            name: name,
+            section: section,
+            description: description,
+            price: {
+              value: price,
+              currency: 'INR',
+              displayText: `Rs. ${price}`,
+            },
+            food_category: category,
+            preview_image: previewImage,
           }
 
-          res.redirect(process.env.ADMIN_URL)
+          menu.create(updateObject, err => {
+            if (err) {
+              res.sendStatus(500)
+              return
+            }
+
+            res.json({
+              message: 'Item Added Successfully',
+            })
+          })
+        } else {
+          res.status(400).json({
+            message:
+              'Unsupported file format. [Supported formats : png, jpeg and jpg]',
+          })
+        }
+      } else {
+        res.status(400).json({
+          message: 'All Fields are compulsory',
+        })
+      }
+    } else {
+      const updateObject = {
+        name: name,
+        section: section,
+        description: description,
+        price: {
+          value: price,
+          currency: 'INR',
+          displayText: `Rs. ${price}`,
         },
-      )
+        food_category: category,
+      }
+
+      if (name && price && description && section && category) {
+        menu.findByIdAndUpdate(
+          id,
+          { $set: updateObject },
+          { new: true },
+          (err, item) => {
+            if (err) {
+              res.sendStatus(500)
+              return
+            }
+
+            res.json({
+              message: 'Menu Item Updated Successfully',
+            })
+          },
+        )
+      } else {
+        res.status(400).json({
+          message: 'All Fields are compulsory',
+        })
+      }
     }
   })
 })
