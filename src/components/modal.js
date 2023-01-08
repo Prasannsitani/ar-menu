@@ -117,7 +117,10 @@ const Modal = props => {
         }
         setDeleteLoading(false)
       })
-      .catch(err => setDeleteLoading(false))
+      .catch(err => {
+        setDeleteLoading(false)
+        props.openToast('Something Went Wrong!!')
+      })
   }
 
   const changeHandler = event => {

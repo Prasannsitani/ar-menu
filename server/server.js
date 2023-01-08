@@ -290,15 +290,28 @@ app.post('/update-menu', async (req, res) => {
             preview_image: previewImage,
           }
 
-          menu.create(updateObject, err => {
-            if (err) {
+          menu.find({}, (error, items) => {
+            if (error) {
               res.sendStatus(500)
               return
             }
 
-            res.json({
-              message: 'Item Added Successfully',
-            })
+            if (items && items.length < 10) {
+              menu.create(updateObject, err => {
+                if (err) {
+                  res.sendStatus(500)
+                  return
+                }
+
+                res.json({
+                  message: 'Item Added Successfully',
+                })
+              })
+            } else {
+              res.status(400).json({
+                message: 'Maximun 10 items allowed',
+              })
+            }
           })
         } else {
           res.status(400).json({
