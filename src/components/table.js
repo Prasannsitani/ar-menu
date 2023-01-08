@@ -10,7 +10,7 @@ import Paper from '@mui/material/Paper'
 import { ImageModal, Modal, ModelModal } from '../components'
 import Snackbar from '@mui/material/Snackbar'
 import Slide from '@mui/material/Slide'
-import UploadFileIcon from '@mui/icons-material/UploadFile'
+import EditIcon from '@mui/icons-material/Edit'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -121,7 +121,7 @@ const Table = props => {
                         })
                       }
                     >
-                      <UploadFileIcon style={{ color: 'gray' }} />
+                      <EditIcon style={{ color: 'gray' }} />
                     </IconButton>
                   </>
                 </StyledTableCell>
@@ -137,8 +137,8 @@ const Table = props => {
                     <img
                       src={`${
                         item.ar_enabled
-                          ? `https://www.shutterstock.com/image-illustration/yes-word-pop-art-retro-260nw-1096973984.jpg`
-                          : `https://png.pngtree.com/png-clipart/20200224/original/pngtree-no-speech-bubble-icon-pop-art-style-png-image_5248403.jpg`
+                          ? `https://public-asset.fra1.cdn.digitaloceanspaces.com/tick.png`
+                          : `https://public-asset.fra1.cdn.digitaloceanspaces.com/Cross.png`
                       }?w=100&h=100&fit=crop&auto=format`}
                       alt={'Image'}
                       loading="lazy"
@@ -148,6 +148,13 @@ const Table = props => {
                         borderRadius: 10,
                         objectFit: 'cover',
                       }}
+                      onClick={() =>
+                        setModelModal({
+                          isOpen: true,
+                          isModel: item.ar_enabled,
+                          id: item._id,
+                        })
+                      }
                     />
                     <IconButton
                       className="upload"
@@ -159,7 +166,7 @@ const Table = props => {
                         })
                       }
                     >
-                      <UploadFileIcon style={{ color: 'gray' }} />
+                      <EditIcon style={{ color: 'gray' }} />
                     </IconButton>
                   </Stack>
                 </StyledTableCell>

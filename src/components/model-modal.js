@@ -52,8 +52,8 @@ const ModelModal = props => {
   const modelUrl = useMemo(
     () =>
       props.isModel
-        ? 'https://www.shutterstock.com/image-illustration/yes-word-pop-art-retro-260nw-1096973984.jpg'
-        : 'https://png.pngtree.com/png-clipart/20200224/original/pngtree-no-speech-bubble-icon-pop-art-style-png-image_5248403.jpg',
+        ? 'https://public-asset.fra1.cdn.digitaloceanspaces.com/tick.png'
+        : 'https://public-asset.fra1.cdn.digitaloceanspaces.com/Cross.png',
     [props.isModel],
   )
 
