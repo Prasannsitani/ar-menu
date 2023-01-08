@@ -456,6 +456,70 @@ app.post('/delete-model', (req, res) => {
   }
 })
 
+app.get('/get-info', (req, res) => {
+  try {
+    info.findOne((error, infoData) => {
+      if (error) {
+        res.sendStatus(500)
+        return
+      }
+      res.json(infoData)
+    })
+  } catch (err) {
+    res.sendStatus(500)
+    return
+  }
+})
+
+app.post('/update-info', (req, res) => {
+  const {
+    name,
+    primaryColor,
+    primaryTextColor,
+    secondaryColor,
+    secondaryTextColor,
+  } = req.body
+
+  if (
+    name &&
+    primaryColor &&
+    secondaryColor &&
+    secondaryTextColor &&
+    primaryTextColor
+  ) {
+    const updateObject = {
+      name: name,
+      theme: {
+        primary_color: primaryColor,
+        primary_text_color: primaryTextColor,
+        secondary_color: secondaryColor,
+        secondary_text_color: secondaryTextColor,
+      },
+    }
+
+    info.updateOne(
+      {},
+      {
+        $set: updateObject,
+      },
+      (err, data) => {
+        if (err) {
+          res.sendStatus(500)
+          return
+        }
+
+        res.json({
+          message: 'Info Updated Successfully',
+        })
+      },
+    )
+  } else {
+    res.status(400).json({
+      message: 'All Fields are compulsory',
+    })
+  }
+})
+
 const PORT = process.env.PORT || 8080
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`))

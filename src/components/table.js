@@ -1,12 +1,6 @@
 import React, { useState } from 'react'
 import { styled } from '@mui/material/styles'
-import {
-  Stack,
-  Table as MuiTable,
-  IconButton,
-  Typography,
-  Box,
-} from '@mui/material'
+import { Stack, Table as MuiTable, IconButton } from '@mui/material'
 import TableBody from '@mui/material/TableBody'
 import TableCell, { tableCellClasses } from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
@@ -100,7 +94,7 @@ const Table = props => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.data.map((item, index) => (
+            {props.data?.map((item, index) => (
               <StyledTableRow key={index} onClick={() => props.onOpen(item)}>
                 <StyledTableCell align="center">{index + 1}</StyledTableCell>
                 <StyledTableCell align="center">

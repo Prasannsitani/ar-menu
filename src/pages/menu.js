@@ -7,10 +7,12 @@ import {
   Toolbar,
   Button,
 } from '@mui/material'
-import { Table } from '../components'
+import { Table, ColorModal } from '../components'
 import useFetch from 'react-fetch-hook'
 import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
+import Slide from '@mui/material/Slide'
+import Snackbar from '@mui/material/Snackbar'
 
 const Menu = props => {
   const [isOpen, setIsOpen] = useState({
@@ -19,11 +21,23 @@ const Menu = props => {
     showImage: false,
   })
 
+  const [themeModal, setThemeModal] = useState({
+    isOpen: false,
+    data: {},
+  })
+
+  const [toast, setToast] = useState({
+    isOpen: false,
+    message: '',
+  })
+
   const { data, isLoading, error } =
     useFetch(`${process.env.REACT_APP_API_URL}/get-menu-list`) || {}
 
-  if (isLoading) return null
-  if (error) return null
+  const theme = useFetch(`${process.env.REACT_APP_API_URL}/get-info`)
+
+  if (isLoading || theme.isLoading) return null
+  if (error || theme.error) return null
   return (
     <Stack
       sx={{
@@ -71,7 +85,9 @@ const Menu = props => {
                   sx={{ alignSelf: 'flex-end' }}
                   variant="contained"
                   endIcon={<AddCircleIcon color="white" />}
-                  onClick={() => console.log('item clicked!!')}
+                  onClick={() =>
+                    setThemeModal({ isOpen: true, data: theme.data })
+                  }
                 >
                   Edit Ui
                 </Button>
@@ -99,6 +115,19 @@ const Menu = props => {
         onOpen={data =>
           setIsOpen({ isOpen: true, data: data, showImage: false })
         }
+      />
+      <ColorModal
+        data={themeModal.data}
+        isOpen={themeModal.isOpen}
+        onClose={() => setThemeModal({ isOpen: false, data: {} })}
+        onOpenToast={message => setToast({ isOpen: true, message: message })}
+      />
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        open={toast.isOpen}
+        onClose={() => setToast({ isOpen: false, message: '' })}
+        message={toast.message ? toast.message : 'Request Successfull'}
+        TransitionComponent={props => <Slide {...props} direction="up" />}
       />
     </Stack>
   )
