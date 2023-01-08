@@ -46,7 +46,7 @@ const Table = props => {
 
   const [modelModal, setModelModal] = useState({
     id: '',
-    isModel: false,
+    isModel: '',
     isOpen: false,
   })
 
@@ -110,16 +110,25 @@ const Table = props => {
                         borderRadius: 10,
                         objectFit: 'cover',
                       }}
-                    />
-                    <IconButton
-                      className="upload"
-                      onClick={() =>
+                      onClick={ev => {
+                        ev.stopPropagation()
                         setImageModal({
                           isOpen: true,
                           imageUrl: item.preview_image,
                           id: item._id,
                         })
-                      }
+                      }}
+                    />
+                    <IconButton
+                      className="upload"
+                      onClick={ev => {
+                        ev.stopPropagation()
+                        setImageModal({
+                          isOpen: true,
+                          imageUrl: item.preview_image,
+                          id: item._id,
+                        })
+                      }}
                     >
                       <EditIcon style={{ color: 'gray' }} />
                     </IconButton>
@@ -148,23 +157,25 @@ const Table = props => {
                         borderRadius: 10,
                         objectFit: 'cover',
                       }}
-                      onClick={() =>
+                      onClick={ev => {
+                        ev.stopPropagation()
                         setModelModal({
                           isOpen: true,
                           isModel: item.ar_enabled,
                           id: item._id,
                         })
-                      }
+                      }}
                     />
                     <IconButton
                       className="upload"
-                      onClick={() =>
+                      onClick={ev => {
+                        ev.stopPropagation()
                         setModelModal({
                           isOpen: true,
                           isModel: item.ar_enabled,
                           id: item._id,
                         })
-                      }
+                      }}
                     >
                       <EditIcon style={{ color: 'gray' }} />
                     </IconButton>
@@ -207,7 +218,7 @@ const Table = props => {
         id={modelModal.id}
         isOpen={modelModal.isOpen}
         isModel={modelModal.isModel}
-        onClose={() => setModelModal({ isOpen: false, isModel: false, id: '' })}
+        onClose={() => setModelModal({ isOpen: false, isModel: '', id: '' })}
         openToast={message => setToast({ isOpen: true, message: message })}
       />
       <Snackbar

@@ -49,13 +49,15 @@ const CssTextField = withStyles({
 })(TextField)
 
 const ModelModal = props => {
-  const modelUrl = useMemo(
-    () =>
-      props.isModel
-        ? 'https://public-asset.fra1.cdn.digitaloceanspaces.com/tick.png'
-        : 'https://public-asset.fra1.cdn.digitaloceanspaces.com/Cross.png',
-    [props.isModel],
-  )
+  const modelUrl = useMemo(() => {
+    if (props.isModel === true) {
+      return 'https://public-asset.fra1.cdn.digitaloceanspaces.com/tick.png'
+    } else if (props.isModel === false) {
+      return 'https://public-asset.fra1.cdn.digitaloceanspaces.com/Cross.png'
+    } else {
+      return null
+    }
+  }, [props.isModel])
 
   const id = useMemo(() => (props.id ? props.id : ''), [props.id])
 
@@ -171,14 +173,16 @@ const ModelModal = props => {
           />
         </Stack>
 
-        <img
-          src={`${modelUrl}`}
-          srcSet={`${modelUrl}`}
-          width="30%"
-          style={{ margin: '0 auto', marginTop: '8px' }}
-          alt={`image`}
-          loading="lazy"
-        />
+        {modelUrl ? (
+          <img
+            src={`${modelUrl}`}
+            srcSet={`${modelUrl}`}
+            width="30%"
+            style={{ margin: '0 auto', marginTop: '8px' }}
+            alt={`image`}
+            loading="lazy"
+          />
+        ) : null}
 
         <TextField
           label="Id"
