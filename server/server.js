@@ -443,11 +443,13 @@ app.post('/upload-model', (req, res) => {
 
     const contentType = req.files?.[0]?.contentType
     const modelUrl = req.files?.[0]?.location
+    const name = req.files?.[0]?.originalname
     const { id } = req.body
 
     if (
       contentType &&
       modelUrl &&
+      name &&
       contentType === 'application/octet-stream' &&
       (path.extname(modelUrl) === '.glb' || path.extname(modelUrl) === '.gltf')
     ) {
@@ -459,7 +461,7 @@ app.post('/upload-model', (req, res) => {
               ar_enabled: true,
               ar_info: {
                 type: 'MODEL',
-                url: `https://${modelUrl}`,
+                url: `https://public-asset.fra1.cdn.digitaloceanspaces.com/${name}`,
               },
             },
           },
