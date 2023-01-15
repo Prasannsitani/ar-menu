@@ -131,6 +131,7 @@ const Menu = props => {
       <Table
         data={data}
         isOpen={isOpen}
+        sections={theme.data?.sections}
         onClose={() => setIsOpen({ isOpen: false, data: {}, showImage: false })}
         onOpen={data =>
           setIsOpen({ isOpen: true, data: data, showImage: false })

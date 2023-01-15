@@ -254,17 +254,25 @@ const Modal = props => {
             </Select>
           </FormControl>
 
-          <TextField
-            label="Section"
-            name="section"
-            variant="outlined"
-            fullWidth
-            value={values.section}
-            onChange={ev => setValues({ ...values, section: ev.target.value })}
-            required
-            autoComplete="off"
-            focused={values.section ? true : false}
-          />
+          <FormControl fullWidth focused={values.section ? true : false}>
+            <InputLabel id="category-label">Section</InputLabel>
+            <Select
+              labelId="section-label"
+              name="section"
+              value={values.section}
+              label="Section"
+              onChange={ev =>
+                setValues({ ...values, section: ev.target.value })
+              }
+            >
+              {props.sections.map(item => {
+                return (
+                  <MenuItem value={`${item.name}`}>{`${item.name}`}</MenuItem>
+                )
+              })}
+            </Select>
+          </FormControl>
+
           <TextField
             label="Price"
             variant="outlined"

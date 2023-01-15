@@ -264,6 +264,7 @@ const Table = props => {
       <Modal
         isOpen={props.isOpen?.isOpen}
         data={props.isOpen?.data}
+        sections={props.sections}
         showImage={props.isOpen?.showImage}
         onClose={props.onClose}
         openToast={message => setToast({ isOpen: true, message: message })}
