@@ -7,7 +7,12 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
-import { ImageModal, Modal, ModelModal } from '../components'
+import {
+  ImageModal,
+  Modal,
+  ModelModal,
+  ModelMultipleImageModal,
+} from '../components'
 import Snackbar from '@mui/material/Snackbar'
 import Slide from '@mui/material/Slide'
 import EditIcon from '@mui/icons-material/Edit'
@@ -50,6 +55,12 @@ const Table = props => {
     isOpen: false,
   })
 
+  const [modelImagesModal, setModelImagesModal] = useState({
+    id: '',
+    imageUrls: [],
+    isOpen: false,
+  })
+
   return (
     <Stack
       sx={{
@@ -75,6 +86,9 @@ const Table = props => {
               </StyledTableCell>
               <StyledTableCell align="center" sx={{ fontWeight: 'bold' }}>
                 Is Model
+              </StyledTableCell>
+              <StyledTableCell align="center" sx={{ fontWeight: 'bold' }}>
+                360 Model Images
               </StyledTableCell>
               <StyledTableCell align="center" sx={{ fontWeight: 'bold' }}>
                 Name
@@ -181,6 +195,43 @@ const Table = props => {
                     </IconButton>
                   </Stack>
                 </StyledTableCell>
+                <StyledTableCell align="center">
+                  <>
+                    <img
+                      src={`${item.preview_image}?w=100&h=100&fit=crop&auto=format`}
+                      srcSet={`${item.preview_image}?w=100&h=100&fit=crop&auto=format&dpr=2 2x`}
+                      alt={'Image'}
+                      loading="lazy"
+                      style={{
+                        width: '100px',
+                        height: '100px',
+                        borderRadius: 10,
+                        objectFit: 'cover',
+                      }}
+                      onClick={ev => {
+                        ev.stopPropagation()
+                        setModelImagesModal({
+                          isOpen: true,
+                          imageUrls: [],
+                          id: item._id,
+                        })
+                      }}
+                    />
+                    <IconButton
+                      className="upload"
+                      onClick={ev => {
+                        ev.stopPropagation()
+                        setModelImagesModal({
+                          isOpen: true,
+                          imageUrls: [],
+                          id: item._id,
+                        })
+                      }}
+                    >
+                      <EditIcon style={{ color: 'gray' }} />
+                    </IconButton>
+                  </>
+                </StyledTableCell>
                 <StyledTableCell align="center">{item.name}</StyledTableCell>
                 <StyledTableCell
                   align="center"
@@ -227,6 +278,13 @@ const Table = props => {
         onClose={() => setToast({ isOpen: false, message: '' })}
         message={toast.message ? toast.message : 'Request Successfull'}
         TransitionComponent={props => <Slide {...props} direction="up" />}
+      />
+      <ModelMultipleImageModal
+        id={modelImagesModal.id}
+        isOpen={modelImagesModal.isOpen}
+        onClose={() =>
+          setModelImagesModal({ isOpen: false, imageUrls: [], id: '' })
+        }
       />
     </Stack>
   )
