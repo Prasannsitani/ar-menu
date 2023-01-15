@@ -582,6 +582,78 @@ app.post('/update-info', (req, res) => {
   }
 })
 
+const uploadModelImages = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: 'public-asset',
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    acl: 'public-read',
+    metadata: function (req, file, cb) {
+      cb(null, Object.assign({}, req.body))
+    },
+    key: (req, file, cb) => {
+      cb(null, `${req.body.id}/${file.originalname}`)
+    },
+  }),
+}).array('images', 24)
+
+app.post('/upload-model-images', (req, res) => {
+  uploadModelImages(req, res, error => {
+    if (error) {
+      res.sendStatus(500)
+      return
+    }
+
+    let isValid = false
+    const { id } = req.body
+
+    for (let item of req.files) {
+      if (
+        item.contentType === 'image/png' ||
+        item.contentType === 'image/jpeg' ||
+        item.contentType === 'image/jpg'
+      ) {
+        isValid = true
+      }
+    }
+
+    if (isValid) {
+      if (id) {
+        menu.findByIdAndUpdate(
+          id,
+          {
+            $set: {
+              photos_360: {
+                is_active: true,
+                path_url: `https://public-asset.fra1.cdn.digitaloceanspaces.com/${id}`,
+                total: req.files?.length,
+              },
+            },
+          },
+          { new: true },
+          (err, item) => {
+            if (err) {
+              res.sendStatus(500)
+              return
+            }
+
+            res.json({
+              message: 'Model Images Uploaded Successfully',
+            })
+          },
+        )
+      } else {
+        res.sendStatus(500)
+        return
+      }
+    } else {
+      res.status(400).json({
+        message: 'Unsupported Format',
+      })
+    }
+  })
+})
+
 const PORT = process.env.PORT || 8080
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`))

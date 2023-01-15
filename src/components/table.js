@@ -285,6 +285,7 @@ const Table = props => {
         onClose={() =>
           setModelImagesModal({ isOpen: false, imageUrls: [], id: '' })
         }
+        openToast={message => setToast({ isOpen: true, message: message })}
       />
     </Stack>
   )

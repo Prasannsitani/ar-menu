@@ -28,27 +28,6 @@ const style = {
   borderRadius: 10,
 }
 
-const CssTextField = withStyles({
-  root: {
-    '& label.Mui-focused': {
-      color: 'gray',
-    },
-    '& .MuiInput-underline:after': {
-      borderBottomColor: 'yellow',
-    },
-    '& .MuiOutlinedInput-root': {
-      '&:hover fieldset': {
-        borderColor: 'lightGray',
-        borderWidth: '1px',
-      },
-      '&.Mui-focused fieldset': {
-        borderColor: 'lightGray',
-        borderWidth: '1px',
-      },
-    },
-  },
-})(TextField)
-
 const ModelMultipleImageModal = props => {
   //   const imageUrl = useMemo(
   //     () => (props.imageUrl ? props.imageUrl : ''),
@@ -59,18 +38,16 @@ const ModelMultipleImageModal = props => {
 
   const [uploadLoading, setUploadLoading] = useState(false)
 
-  const [currentFile, setCurrentFile] = useState()
+  const [currentFile, setCurrentFile] = useState([])
 
-  const changeHandler = event => {
-    setCurrentFile(event.target.files)
-  }
+  const changeHandler = event => setCurrentFile(event.target.files)
 
   const handleSubmit = e => {
     setUploadLoading(true)
     const formData = new FormData()
 
     formData.append('id', id)
-    formData.append('image', currentFile)
+    for (let item of currentFile) formData.append('images', item)
 
     fetch(`${process.env.REACT_APP_API_URL}/upload-model-images`, {
       method: 'POST',
@@ -82,20 +59,18 @@ const ModelMultipleImageModal = props => {
       .then(response => response)
       .then(async response => {
         const data = await response.json()
-        console.log('data : ', data)
-        console.log('response : ', response)
-        // if (response.status === 200) {
-        //   window.location.reload()
-        // } else if (response.status === 400 && !isEmpty(data)) {
-        //   props.openToast(data?.message)
-        // } else {
-        //   props.openToast('Something Went Wrong!!')
-        // }
+        if (response.status === 200) {
+          window.location.reload()
+        } else if (response.status === 400 && !isEmpty(data)) {
+          props.openToast(data?.message)
+        } else {
+          props.openToast('Something Went Wrong!!')
+        }
         setUploadLoading(false)
       })
       .catch(error => {
         setUploadLoading(false)
-        // props.openToast('Something Went Wrong!!')
+        props.openToast('Something Went Wrong!!')
       })
   }
 
@@ -155,15 +130,17 @@ const ModelMultipleImageModal = props => {
         <Stack spacing={4}>
           {/* <CssTextField
             label="Model Images"
-            name="modelImages"
+            name="images"
             variant="outlined"
             type="file"
             focused
             required
-            // onChange={changeHandler}
+            onChange={changeHandler}
           /> */}
 
           <input
+            id="images"
+            name="images"
             type="file"
             multiple
             accept="image/*"
