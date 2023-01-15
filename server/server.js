@@ -612,60 +612,64 @@ const uploadModelImages = multer({
 })
 
 app.post('/upload-model-images', (req, res) => {
-  uploadModelImages.array('images', 24)(req, res, error => {
-    if (error) {
-      res.sendStatus(500)
-      return
-    }
-
-    let isValid = false
-    const { id } = req.body
-
-    for (let item of req.files) {
-      if (
-        item.contentType === 'image/png' ||
-        item.contentType === 'image/jpeg' ||
-        item.contentType === 'image/jpg'
-      ) {
-        isValid = true
-      }
-    }
-
-    if (isValid) {
-      if (id) {
-        menu.findByIdAndUpdate(
-          id,
-          {
-            $set: {
-              model_360_images: {
-                is_active: true,
-                path_url: `https://public-asset.fra1.cdn.digitaloceanspaces.com/${id}`,
-                total: req.files?.length,
-              },
-            },
-          },
-          { new: true },
-          (err, item) => {
-            if (err) {
-              res.sendStatus(500)
-              return
-            }
-
-            res.json({
-              message: 'Model Images Uploaded Successfully',
-            })
-          },
-        )
-      } else {
+  uploadModelImages.array('images', process.env.MAX_360_IMAGES_COUNT)(
+    req,
+    res,
+    error => {
+      if (error) {
         res.sendStatus(500)
         return
       }
-    } else {
-      res.status(400).json({
-        message: 'Unsupported Format',
-      })
-    }
-  })
+
+      let isValid = false
+      const { id } = req.body
+
+      for (let item of req.files) {
+        if (
+          item.contentType === 'image/png' ||
+          item.contentType === 'image/jpeg' ||
+          item.contentType === 'image/jpg'
+        ) {
+          isValid = true
+        }
+      }
+
+      if (isValid) {
+        if (id) {
+          menu.findByIdAndUpdate(
+            id,
+            {
+              $set: {
+                model_360_images: {
+                  is_active: true,
+                  path_url: `https://public-asset.fra1.cdn.digitaloceanspaces.com/${id}`,
+                  total: req.files?.length,
+                },
+              },
+            },
+            { new: true },
+            (err, item) => {
+              if (err) {
+                res.sendStatus(500)
+                return
+              }
+
+              res.json({
+                message: 'Model Images Uploaded Successfully',
+              })
+            },
+          )
+        } else {
+          res.sendStatus(500)
+          return
+        }
+      } else {
+        res.status(400).json({
+          message: 'Unsupported Format',
+        })
+      }
+    },
+  )
 })
 
 app.post('/delete-model-images', (req, res) => {

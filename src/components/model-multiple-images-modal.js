@@ -135,7 +135,7 @@ const ModelMultipleImageModal = props => {
             fontWeight="bold"
             fontFamily="cursive"
           >
-            3D Model Images
+            360 Model Images
           </Typography>
           <Divider
             sx={{
