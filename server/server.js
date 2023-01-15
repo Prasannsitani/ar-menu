@@ -686,6 +686,73 @@ app.post('/delete-model-images', (req, res) => {
   }
 })
 
+app.post('/add-section', async (req, res) => {
+  const { name } = req.body
+
+  if (name) {
+    const data = await info.findOne()
+    let sections = []
+
+    if (data?.sections) {
+      let isPresent = false
+      for (let section of data?.sections) {
+        if (section.name === name) {
+          isPresent = true
+        }
+      }
+
+      if (isPresent) {
+        res.status(400).json({
+          message: 'Section Already Present',
+        })
+        return
+      } else {
+        sections = [
+          ...data?.sections,
+          {
+            id: data.sections?.length + 1,
+            name: name,
+          },
+        ]
+      }
+    } else {
+      sections.push({
+        id: 1,
+        name: name,
+      })
+    }
+
+    if (sections.length > 0) {
+      info.updateOne(
+        {},
+        {
+          $set: {
+            sections: sections,
+          },
+        },
+        (err, data) => {
+          if (err) {
+            res.sendStatus(500)
+            return
+          }
+
+          res.json({
+            message: 'Info Updated Successfully',
+          })
+        },
+      )
+    } else {
+      res.sendStatus(500)
+      return
+    }
+  } else {
+    res.status(400).json({
+      message: 'Section Name Is Required',
+    })
+    return
+  }
+})
+
 const PORT = process.env.PORT || 8080
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`))

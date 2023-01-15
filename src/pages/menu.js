@@ -7,7 +7,7 @@ import {
   Toolbar,
   Button,
 } from '@mui/material'
-import { Table, ColorModal } from '../components'
+import { Table, ColorModal, SectionModal } from '../components'
 import useFetch from 'react-fetch-hook'
 import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
@@ -24,6 +24,11 @@ const Menu = props => {
   const [themeModal, setThemeModal] = useState({
     isOpen: false,
     data: {},
+  })
+
+  const [sectionModal, setSectionModal] = useState({
+    isOpen: false,
+    sections: [],
   })
 
   const [toast, setToast] = useState({
@@ -86,6 +91,21 @@ const Menu = props => {
                   variant="contained"
                   endIcon={<AddCircleIcon color="white" />}
                   onClick={() =>
+                    setSectionModal({
+                      isOpen: true,
+                      sections: theme.data?.sections,
+                    })
+                  }
+                >
+                  Add Section
+                </Button>
+              </Stack>
+              <Stack marginRight={2}>
+                <Button
+                  sx={{ alignSelf: 'flex-end' }}
+                  variant="contained"
+                  endIcon={<AddCircleIcon color="white" />}
+                  onClick={() =>
                     setThemeModal({ isOpen: true, data: theme.data })
                   }
                 >
@@ -120,6 +140,12 @@ const Menu = props => {
         data={themeModal.data}
         isOpen={themeModal.isOpen}
         onClose={() => setThemeModal({ isOpen: false, data: {} })}
+        onOpenToast={message => setToast({ isOpen: true, message: message })}
+      />
+      <SectionModal
+        isOpen={sectionModal.isOpen}
+        sections={sectionModal.sections}
+        onClose={() => setSectionModal({ isOpen: false, sections: [] })}
         onOpenToast={message => setToast({ isOpen: true, message: message })}
       />
       <Snackbar
