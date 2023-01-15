@@ -171,7 +171,7 @@ const ModelMultipleImageModal = props => {
             name="images"
             type="file"
             multiple
-            accept="image/*"
+            accept="image/png"
             style={{ border: '1px solid gray', padding: 15, fontSize: 16 }}
             onChange={changeHandler}
           />
