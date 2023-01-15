@@ -180,6 +180,13 @@ app.post('/menu-item/add', (req, res) => {
       currency: 'INR',
       displayText: `Rs. ${params.price}`,
     },
+    ar_enabled: false,
+    ar_info: {},
+    model_360_images: {
+      is_active: false,
+      path_url: '',
+      total: 0,
+    },
   }
 
   menu.create(item, err => {
@@ -288,6 +295,13 @@ app.post('/update-menu', async (req, res) => {
             },
             food_category: category,
             preview_image: previewImage,
+            ar_enabled: false,
+            ar_info: {},
+            model_360_images: {
+              is_active: false,
+              path_url: '',
+              total: 0,
+            },
           }
 
           menu.find({}, (error, items) => {
