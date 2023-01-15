@@ -383,7 +383,7 @@ const uploadImage = multer({
     contentType: multerS3.AUTO_CONTENT_TYPE,
     acl: 'public-read',
     key: (request, file, cb) => {
-      cb(null, `${Date.now()}_${file.originalname}`)
+      cb(null, `${file.originalname}`)
     },
   }),
 }).array('image', 1)
@@ -443,7 +443,7 @@ const uploadModel = multer({
     contentType: multerS3.AUTO_CONTENT_TYPE,
     acl: 'public-read',
     key: (request, file, cb) => {
-      cb(null, `${Date.now()}_${file.originalname}`)
+      cb(null, `${file.originalname}`)
     },
   }),
 }).array('model', 1)
