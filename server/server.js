@@ -623,7 +623,7 @@ app.post('/upload-model-images', (req, res) => {
           id,
           {
             $set: {
-              photos_360: {
+              model_360_images: {
                 is_active: true,
                 path_url: `https://public-asset.fra1.cdn.digitaloceanspaces.com/${id}`,
                 total: req.files?.length,
