@@ -615,7 +615,7 @@ app.post('/upload-model-images', (req, res) => {
   uploadModelImages.array('images', process.env.MAX_360_IMAGES_COUNT)(
     req,
     res,
-    error => {
+    async error => {
       if (error) {
         res.sendStatus(500)
         return
@@ -638,30 +638,38 @@ app.post('/upload-model-images', (req, res) => {
 
       if (isValidCount === req.files?.length) {
         if (id) {
-          menu.findByIdAndUpdate(
-            id,
-            {
-              $set: {
-                model_360_images: {
-                  is_active: true,
-                  path_url: `https://public-asset.fra1.cdn.digitaloceanspaces.com/${id}`,
-                  total: req.files?.length,
-                },
-                model_360_image_urls: imageUrls,
-              },
-            },
-            { new: true },
-            (err, item) => {
-              if (err) {
-                res.sendStatus(500)
-                return
-              }
+          const menuData = await menu.findById(id)
 
-              res.json({
-                message: 'Model Images Uploaded Successfully',
-              })
-            },
-          )
+          if (menuData?.model_360_images?.is_active) {
+            res.status(400).json({
+              message: 'Already Uploaded',
+            })
+          } else {
+            menu.findByIdAndUpdate(
+              id,
+              {
+                $set: {
+                  model_360_images: {
+                    is_active: true,
+                    path_url: `https://public-asset.fra1.cdn.digitaloceanspaces.com/${id}`,
+                    total: req.files?.length,
+                  },
+                  model_360_image_urls: imageUrls,
+                },
+              },
+              { new: true },
+              (err, item) => {
+                if (err) {
+                  res.sendStatus(500)
+                  return
+                }
+
+                res.json({
+                  message: 'Model Images Uploaded Successfully',
+                })
+              },
+            )
+          }
         } else {
           res.sendStatus(500)
           return
