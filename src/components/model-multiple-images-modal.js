@@ -29,10 +29,15 @@ const style = {
 }
 
 const ModelMultipleImageModal = props => {
-  //   const imageUrl = useMemo(
-  //     () => (props.imageUrl ? props.imageUrl : ''),
-  //     [props.imageUrl],
-  //   )
+  const imageUrl = useMemo(() => {
+    if (props.isUpload === true) {
+      return 'https://public-asset.fra1.cdn.digitaloceanspaces.com/tick.png'
+    } else if (props.isUpload === false) {
+      return 'https://public-asset.fra1.cdn.digitaloceanspaces.com/Cross.png'
+    } else {
+      return null
+    }
+  }, [props.isUpload])
 
   const id = useMemo(() => (props.id ? props.id : ''), [props.id])
 
@@ -111,14 +116,16 @@ const ModelMultipleImageModal = props => {
           />
         </Stack>
 
-        {/* <img
-          src={`${imageUrl}`}
-          srcSet={`${imageUrl}`}
-          width="30%"
-          style={{ margin: '0 auto', marginTop: '8px' }}
-          alt={`image`}
-          loading="lazy"
-        /> */}
+        {imageUrl ? (
+          <img
+            src={`${imageUrl}`}
+            srcSet={`${imageUrl}`}
+            width="30%"
+            style={{ margin: '0 auto', marginTop: '8px' }}
+            alt={`image`}
+            loading="lazy"
+          />
+        ) : null}
 
         <TextField
           label="Id"
@@ -128,16 +135,6 @@ const ModelMultipleImageModal = props => {
           sx={{ display: 'none' }}
         />
         <Stack spacing={4}>
-          {/* <CssTextField
-            label="Model Images"
-            name="images"
-            variant="outlined"
-            type="file"
-            focused
-            required
-            onChange={changeHandler}
-          /> */}
-
           <input
             id="images"
             name="images"

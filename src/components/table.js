@@ -57,7 +57,7 @@ const Table = props => {
 
   const [modelImagesModal, setModelImagesModal] = useState({
     id: '',
-    imageUrls: [],
+    isUpload: '',
     isOpen: false,
   })
 
@@ -196,10 +196,20 @@ const Table = props => {
                   </Stack>
                 </StyledTableCell>
                 <StyledTableCell align="center">
-                  <>
+                  <Stack
+                    sx={{
+                      alignItems: 'flex-end',
+                      justifyContent: 'center',
+                      alignSelf: 'center',
+                      flexDirection: 'row',
+                    }}
+                  >
                     <img
-                      src={`${item.preview_image}?w=100&h=100&fit=crop&auto=format`}
-                      srcSet={`${item.preview_image}?w=100&h=100&fit=crop&auto=format&dpr=2 2x`}
+                      src={`${
+                        item.model_360_images?.is_active
+                          ? `https://public-asset.fra1.cdn.digitaloceanspaces.com/tick.png`
+                          : `https://public-asset.fra1.cdn.digitaloceanspaces.com/Cross.png`
+                      }?w=100&h=100&fit=crop&auto=format`}
                       alt={'Image'}
                       loading="lazy"
                       style={{
@@ -212,7 +222,7 @@ const Table = props => {
                         ev.stopPropagation()
                         setModelImagesModal({
                           isOpen: true,
-                          imageUrls: [],
+                          isUpload: item.model_360_images?.is_active,
                           id: item._id,
                         })
                       }}
@@ -223,14 +233,14 @@ const Table = props => {
                         ev.stopPropagation()
                         setModelImagesModal({
                           isOpen: true,
-                          imageUrls: [],
+                          isUpload: item.model_360_images?.is_active,
                           id: item._id,
                         })
                       }}
                     >
                       <EditIcon style={{ color: 'gray' }} />
                     </IconButton>
-                  </>
+                  </Stack>
                 </StyledTableCell>
                 <StyledTableCell align="center">{item.name}</StyledTableCell>
                 <StyledTableCell
@@ -282,8 +292,9 @@ const Table = props => {
       <ModelMultipleImageModal
         id={modelImagesModal.id}
         isOpen={modelImagesModal.isOpen}
+        isUpload={modelImagesModal.isUpload}
         onClose={() =>
-          setModelImagesModal({ isOpen: false, imageUrls: [], id: '' })
+          setModelImagesModal({ isOpen: false, isUpload: '', id: '' })
         }
         openToast={message => setToast({ isOpen: true, message: message })}
       />
