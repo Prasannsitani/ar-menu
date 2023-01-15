@@ -94,7 +94,6 @@ const ModelModal = props => {
         } else if (response.status === 400 && !isEmpty(data)) {
           props.openToast(data?.message)
         } else {
-          console.log('else')
           props.openToast('Something Went Wrong!!')
         }
         setUploadLoading(false)
