@@ -595,10 +595,10 @@ const uploadModelImages = multer({
       cb(null, `${req.body.id}/${file.originalname}`)
     },
   }),
-}).array('images', 24)
+})
 
 app.post('/upload-model-images', (req, res) => {
-  uploadModelImages(req, res, error => {
+  uploadModelImages.array('images', 24)(req, res, error => {
     if (error) {
       res.sendStatus(500)
       return
@@ -652,6 +652,38 @@ app.post('/upload-model-images', (req, res) => {
       })
     }
   })
+})
+
+app.post('/delete-model-images', (req, res) => {
+  const { id } = req.body
+
+  if (id) {
+    menu.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          model_360_images: {
+            is_active: false,
+            path_url: '',
+            total: 0,
+          },
+        },
+      },
+      { new: true },
+      (err, item) => {
+        if (err) {
+          res.sendStatus(500)
+          return
+        }
+        res.json({
+          message: 'Model Deleted Successfully',
+        })
+      },
+    )
+  } else {
+    res.sendStatus(500)
+    return
+  }
 })
 
 const PORT = process.env.PORT || 8080

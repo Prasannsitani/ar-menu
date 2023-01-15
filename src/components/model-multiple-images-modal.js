@@ -80,7 +80,34 @@ const ModelMultipleImageModal = props => {
   }
 
   const handleDelete = () => {
-    console.log('handleDelete Pressed')
+    setDeleteLoading(true)
+    fetch(`${process.env.REACT_APP_API_URL}/delete-model-images`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: props.id,
+      }),
+    })
+      .then(response => response)
+      .then(async response => {
+        const data = await response.json()
+
+        if (response.status === 200) {
+          window.location.reload()
+        } else if (response.status === 400 && !isEmpty(data)) {
+          props.openToast(data?.message)
+        } else {
+          props.openToast('Something Went Wrong!!')
+        }
+        setDeleteLoading(false)
+      })
+      .catch(error => {
+        setDeleteLoading(false)
+        props.openToast('Something Went Wrong!!')
+      })
   }
 
   return (
