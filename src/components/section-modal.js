@@ -69,7 +69,30 @@ const SectionModal = props => {
   }
 
   const handleDelete = props => {
-    console.log('Delete Index : ', props.id)
+    fetch(`${process.env.REACT_APP_API_URL}/delete-section`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: props.id,
+      }),
+    })
+      .then(response => response)
+      .then(async response => {
+        const data = await response.json()
+        if (response.status === 200) {
+          window.location.reload()
+        } else if (response.status === 400 && !isEmpty(data)) {
+          props.onOpenToast(data?.message)
+        } else {
+          props.onOpenToast('Something Went Wrong!!')
+        }
+      })
+      .catch(error => {
+        props.onOpenToast('Something Went Wrong!!')
+      })
   }
 
   return (

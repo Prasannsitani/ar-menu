@@ -753,6 +753,48 @@ app.post('/add-section', async (req, res) => {
   }
 })
 
+app.post('/delete-section', async (req, res) => {
+  const { id } = req.body
+
+  if (id) {
+    const data = await info.findOne()
+    let sections = data?.sections ? data.sections : []
+
+    if (sections.length > 0) {
+      let removedSections = sections.filter(data => data.id !== id)
+
+      let finalSections = removedSections.map((item, index) => {
+        return {
+          id: index + 1,
+          name: item.name,
+        }
+      })
+
+      info.updateOne(
+        {},
+        {
+          $set: {
+            sections: finalSections,
+          },
+        },
+        (err, data) => {
+          if (err) {
+            res.sendStatus(500)
+            return
+          }
+
+          res.json({
+            message: 'Info Updated Successfully',
+          })
+        },
+      )
+    }
+  } else {
+    res.sendStatus(500)
+    return
+  }
+})
+
 const PORT = process.env.PORT || 8080
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
