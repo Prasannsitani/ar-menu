@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import {
   Modal as MuiModal,
   Typography,
@@ -8,9 +8,7 @@ import {
   IconButton,
   Divider,
   Box,
-  Input,
 } from '@mui/material'
-import { withStyles } from '@mui/styles'
 import { isEmpty } from 'lodash'
 import CancelIcon from '@mui/icons-material/Cancel'
 import CircularProgress from '@mui/material/CircularProgress'
@@ -42,6 +40,8 @@ const ModelMultipleImageModal = props => {
   const id = useMemo(() => (props.id ? props.id : ''), [props.id])
 
   const [uploadLoading, setUploadLoading] = useState(false)
+
+  const [deleteLoading, setDeleteLoading] = useState(false)
 
   const [currentFile, setCurrentFile] = useState([])
 
@@ -77,6 +77,10 @@ const ModelMultipleImageModal = props => {
         setUploadLoading(false)
         props.openToast('Something Went Wrong!!')
       })
+  }
+
+  const handleDelete = () => {
+    console.log('handleDelete Pressed')
   }
 
   return (
@@ -156,9 +160,20 @@ const ModelMultipleImageModal = props => {
               sx={{ width: '48%' }}
               color="error"
               variant="outlined"
-              onClick={props.onClose}
+              onClick={() =>
+                props.isUpload ? handleDelete() : props.onClose()
+              }
             >
-              Cancel
+              <Stack flexDirection="row" alignItems="center">
+                {deleteLoading ? (
+                  <Box sx={{ display: 'flex' }}>
+                    <CircularProgress sx={{ color: 'red' }} size="1rem" />
+                  </Box>
+                ) : null}
+                <Typography sx={{ ml: deleteLoading ? 1 : 0 }}>
+                  {props.isUpload ? `DELETE` : `CANCEL`}
+                </Typography>
+              </Stack>
             </Button>
 
             <Button

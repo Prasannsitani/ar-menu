@@ -282,13 +282,6 @@ const Table = props => {
         onClose={() => setModelModal({ isOpen: false, isModel: '', id: '' })}
         openToast={message => setToast({ isOpen: true, message: message })}
       />
-      <Snackbar
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        open={toast.isOpen}
-        onClose={() => setToast({ isOpen: false, message: '' })}
-        message={toast.message ? toast.message : 'Request Successfull'}
-        TransitionComponent={props => <Slide {...props} direction="up" />}
-      />
       <ModelMultipleImageModal
         id={modelImagesModal.id}
         isOpen={modelImagesModal.isOpen}
@@ -297,6 +290,13 @@ const Table = props => {
           setModelImagesModal({ isOpen: false, isUpload: '', id: '' })
         }
         openToast={message => setToast({ isOpen: true, message: message })}
+      />
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        open={toast.isOpen}
+        onClose={() => setToast({ isOpen: false, message: '' })}
+        message={toast.message ? toast.message : 'Request Successfull'}
+        TransitionComponent={props => <Slide {...props} direction="up" />}
       />
     </Stack>
   )
