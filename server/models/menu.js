@@ -11,6 +11,7 @@ const menuSchema = new Schema({
   food_category: String,
   ar_info: Object,
   model_360_images: Object,
+  model_360_image_urls: Array,
 })
 
 module.exports = mongoose.model('Menu', menuSchema)

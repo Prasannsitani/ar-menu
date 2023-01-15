@@ -1,4 +1,4 @@
-const { S3Client } = require('@aws-sdk/client-s3')
+const { S3Client, DeleteObjectCommand } = require('@aws-sdk/client-s3')
 const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
@@ -621,7 +621,8 @@ app.post('/upload-model-images', (req, res) => {
         return
       }
 
-      let isValid = false
+      let isValidCount = 0
+      let imageUrls = []
       const { id } = req.body
 
       for (let item of req.files) {
@@ -630,11 +631,12 @@ app.post('/upload-model-images', (req, res) => {
           item.contentType === 'image/jpeg' ||
           item.contentType === 'image/jpg'
         ) {
-          isValid = true
+          isValidCount += 1
+          imageUrls.push(item.key)
         }
       }
 
-      if (isValid) {
+      if (isValidCount === req.files?.length) {
         if (id) {
           menu.findByIdAndUpdate(
             id,
@@ -645,6 +647,7 @@ app.post('/upload-model-images', (req, res) => {
                   path_url: `https://public-asset.fra1.cdn.digitaloceanspaces.com/${id}`,
                   total: req.files?.length,
                 },
+                model_360_image_urls: imageUrls,
               },
             },
             { new: true },
@@ -672,10 +675,21 @@ app.post('/upload-model-images', (req, res) => {
   )
 })
 
-app.post('/delete-model-images', (req, res) => {
+app.post('/delete-model-images', async (req, res) => {
   const { id } = req.body
 
   if (id) {
+    const menuData = await menu.findById(id)
+
+    menuData.model_360_image_urls?.map(async item => {
+      await s3.send(
+        new DeleteObjectCommand({
+          Bucket: 'public-asset',
+          Key: item,
+        }),
+      )
+    })
+
     menu.findByIdAndUpdate(
       id,
       {
@@ -685,6 +699,7 @@ app.post('/delete-model-images', (req, res) => {
             path_url: '',
             total: 0,
           },
+          model_360_image_urls: '',
         },
       },
       { new: true },
