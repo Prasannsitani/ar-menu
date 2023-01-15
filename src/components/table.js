@@ -292,8 +292,8 @@ const Table = props => {
         openToast={message => setToast({ isOpen: true, message: message })}
       />
       <Snackbar
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         open={toast.isOpen}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         onClose={() => setToast({ isOpen: false, message: '' })}
         message={toast.message ? toast.message : 'Request Successfull'}
         TransitionComponent={props => <Slide {...props} direction="up" />}
