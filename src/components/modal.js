@@ -265,9 +265,12 @@ const Modal = props => {
                 setValues({ ...values, section: ev.target.value })
               }
             >
-              {props.sections.map(item => {
+              {props.sections.map((item, index) => {
                 return (
-                  <MenuItem value={`${item.name}`}>{`${item.name}`}</MenuItem>
+                  <MenuItem
+                    key={index}
+                    value={`${item.name}`}
+                  >{`${item.name}`}</MenuItem>
                 )
               })}
             </Select>
