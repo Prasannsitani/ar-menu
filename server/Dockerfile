@@ -9,7 +9,6 @@ ENV S3_BUCKET_ENDPOINT=https://fra1.digitaloceanspaces.com
 ENV S3_ACCESS_KEY=DO00FHXJYKE998TXYQH4
 ENV S3_SECRET_KEY=CSnZnDgpbiXCGpPcvPUXaqavH8s97JtUap0KSn9G540
 ENV MAX_360_IMAGES_COUNT=24
-ENV port=80
 
 #Getting System Ready to install dependencies
 RUN apt-get clean \
