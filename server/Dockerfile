@@ -38,4 +38,4 @@ RUN yarn install --production
 RUN yarn global add pm2
 
 # Starting Server
-CMD ["sh", "-c", "service nginx start ; pm2-runtime server.js -i 0"]
+CMD ["sh", "-c", "service nginx start; pm2-runtime server.js -i 0"]
