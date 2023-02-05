@@ -33,8 +33,8 @@ server {
 }
 
 server {
-    listen       80;
-    listen       [::]:80;
+    listen       443;
+    listen       [::]:443;
     server_name  armenuapp.online www.armenuapp.online;
     root         /app;
 
