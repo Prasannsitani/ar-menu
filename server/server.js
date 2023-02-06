@@ -310,7 +310,7 @@ app.post('/update-menu', async (req, res) => {
               return
             }
 
-            if (items && items.length < 10) {
+            if (items && items.length < 25) {
               menu.create(updateObject, err => {
                 if (err) {
                   res.sendStatus(500)
@@ -323,7 +323,7 @@ app.post('/update-menu', async (req, res) => {
               })
             } else {
               res.status(400).json({
-                message: 'Maximun 10 items allowed',
+                message: 'Maximun 25 items allowed',
               })
             }
           })
