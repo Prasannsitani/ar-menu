@@ -544,56 +544,79 @@ app.get('/get-info', (req, res) => {
   }
 })
 
-app.post('/update-info', (req, res) => {
-  const {
-    name,
-    primaryColor,
-    primaryTextColor,
-    secondaryColor,
-    secondaryTextColor,
-    quantityButtonColor,
-  } = req.body
+const logoImageUpload = multer({
+  storage: multerS3({
+    s3: s3,
+    bucket: 'public-asset',
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    acl: 'public-read',
+    key: (request, file, cb) => {
+      cb(null, file.originalname)
+    },
+  }),
+}).array('image', 1)
 
-  if (
-    name &&
-    primaryColor &&
-    secondaryColor &&
-    secondaryTextColor &&
-    primaryTextColor &&
-    quantityButtonColor
-  ) {
-    const updateObject = {
-      name: name,
-      theme: {
-        primary_color: primaryColor,
-        primary_text_color: primaryTextColor,
-        secondary_color: secondaryColor,
-        secondary_text_color: secondaryTextColor,
-        quantity_button_color: quantityButtonColor,
-      },
+app.post('/update-info', (req, res) => {
+  logoImageUpload(req, res, error => {
+    if (error) {
+      res.sendStatus(500)
+      return
     }
 
-    info.updateOne(
-      {},
-      {
-        $set: updateObject,
-      },
-      (err, data) => {
-        if (err) {
-          res.sendStatus(500)
-          return
-        }
+    const imageUrl = req.files?.[0]?.location
 
-        res.json({
-          message: 'Info Updated Successfully',
-        })
-      },
-    )
-  } else {
-    res.status(400).json({
-      message: 'All Fields are compulsory',
-    })
-  }
+    const {
+      name,
+      primaryColor,
+      secondaryColor,
+      secondaryTextColor,
+      primaryTextColor,
+      quantityButtonColor,
+    } = req.body
+
+    if (
+      name &&
+      primaryColor &&
+      secondaryColor &&
+      secondaryTextColor &&
+      primaryTextColor &&
+      quantityButtonColor &&
+      imageUrl
+    ) {
+      const updatedObject = {
+        name: name,
+        theme: {
+          primary_color: primaryColor,
+          primary_text_color: primaryTextColor,
+          secondary_color: secondaryColor,
+          secondary_text_color: secondaryTextColor,
+          quantity_button_color: quantityButtonColor,
+        },
+        image_url: imageUrl,
+      }
+
+      info.updateOne(
+        {},
+        {
+          $set: updatedObject,
+        },
+        (err, data) => {
+          if (err) {
+            res.sendStatus(500)
+            return
+          }
+
+          res.json({
+            message: 'Info Updated Successfully',
+          })
+        },
+      )
+    } else {
+      res.status(400).json({
+        message: 'All Fields are compulsory',
+      })
+    }
+  })
 })
 
 const uploadModelImages = multer({

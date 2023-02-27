@@ -7,9 +7,12 @@ import {
   Button,
   IconButton,
   Divider,
+  Box,
 } from '@mui/material'
+import { withStyles } from '@mui/styles'
 import { isEmpty } from 'lodash'
 import CancelIcon from '@mui/icons-material/Cancel'
+import CircularProgress from '@mui/material/CircularProgress'
 
 const style = {
   position: 'absolute',
@@ -24,7 +27,32 @@ const style = {
   borderRadius: 10,
 }
 
+const CssTextField = withStyles({
+  root: {
+    '& label.Mui-focused': {
+      color: 'gray',
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: 'yellow',
+    },
+    '& .MuiOutlinedInput-root': {
+      '&:hover fieldset': {
+        borderColor: 'lightGray',
+        borderWidth: '1px',
+      },
+      '&.Mui-focused fieldset': {
+        borderColor: 'lightGray',
+        borderWidth: '1px',
+      },
+    },
+  },
+})(TextField)
+
 const ColorModal = props => {
+  const [uploadLoading, setUploadLoading] = useState(false)
+
+  const [currentFile, setCurrentFile] = useState()
+
   const [values, setValues] = useState({
     name: '',
     primaryColor: '',
@@ -57,21 +85,28 @@ const ColorModal = props => {
       })
   }, [props.data])
 
+  const changeHandler = event => {
+    setCurrentFile(event.target.files[0])
+  }
+
   const handleSubmit = () => {
+    setUploadLoading(true)
+    const formData = new FormData()
+
+    formData.append('image', currentFile)
+    formData.append('name', values.name)
+    formData.append('primaryColor', values.primaryColor)
+    formData.append('primaryTextColor', values.primaryTextColor)
+    formData.append('secondaryColor', values.secondaryColor)
+    formData.append('secondaryTextColor', values.secondaryTextColor)
+    formData.append('quantityButtonColor', values.quantityButtonColor)
+
     fetch(`${process.env.REACT_APP_API_URL}/update-info`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        name: values.name,
-        primaryColor: values.primaryColor,
-        primaryTextColor: values.primaryTextColor,
-        secondaryColor: values.secondaryColor,
-        secondaryTextColor: values.secondaryTextColor,
-        quantityButtonColor: values.quantityButtonColor,
-      }),
+      body: formData,
     })
       .then(response => response)
       .then(async response => {
@@ -83,8 +118,12 @@ const ColorModal = props => {
         } else {
           props.onOpenToast('Something Went Wrong!!')
         }
+        setUploadLoading(false)
       })
-      .catch(error => props.onOpenToast('Something Went Wrong!!'))
+      .catch(error => {
+        setUploadLoading(false)
+        props.onOpenToast('Something Went Wrong!!')
+      })
   }
 
   return (
@@ -112,7 +151,7 @@ const ColorModal = props => {
             fontWeight="bold"
             fontFamily="cursive"
           >
-            Ui Pallete
+            {`Ui Pallete`}
           </Typography>
           <Divider
             sx={{
@@ -202,6 +241,15 @@ const ColorModal = props => {
             required
             focused={values.quantityButtonColor ? true : false}
           />
+          <CssTextField
+            label="Logo Image"
+            name="image"
+            variant="outlined"
+            type="file"
+            focused
+            required
+            onChange={changeHandler}
+          />
           <Stack
             sx={{
               flexDirection: 'row',
@@ -223,7 +271,14 @@ const ColorModal = props => {
               variant="contained"
               onClick={handleSubmit}
             >
-              SAVE
+              <Stack flexDirection="row" alignItems="center">
+                {uploadLoading ? (
+                  <Box sx={{ display: 'flex' }}>
+                    <CircularProgress sx={{ color: 'white' }} size="1rem" />
+                  </Box>
+                ) : null}
+                <Typography sx={{ ml: uploadLoading ? 1 : 0 }}>SAVE</Typography>
+              </Stack>
             </Button>
           </Stack>
         </Stack>
