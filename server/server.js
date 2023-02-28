@@ -258,7 +258,7 @@ app.get('/home', async (req, res) => {
 const upload = multer({
   storage: multerS3({
     s3: s3,
-    bucket: 'public-asset',
+    bucket: process.env.S3_BUCKET_NAME,
     contentType: multerS3.AUTO_CONTENT_TYPE,
     acl: 'public-read',
     key: (request, file, cb) => {
@@ -379,7 +379,7 @@ app.post('/update-menu', async (req, res) => {
 const uploadImage = multer({
   storage: multerS3({
     s3: s3,
-    bucket: 'public-asset',
+    bucket: process.env.S3_BUCKET_NAME,
     contentType: multerS3.AUTO_CONTENT_TYPE,
     acl: 'public-read',
     key: (request, file, cb) => {
@@ -439,7 +439,7 @@ app.post('/upload-image', (req, res) => {
 const uploadModel = multer({
   storage: multerS3({
     s3: s3,
-    bucket: 'public-asset',
+    bucket: process.env.S3_BUCKET_NAME,
     contentType: multerS3.AUTO_CONTENT_TYPE,
     acl: 'public-read',
     key: (request, file, cb) => {
@@ -475,7 +475,7 @@ app.post('/upload-model', (req, res) => {
               ar_enabled: true,
               ar_info: {
                 type: 'MODEL',
-                url: `https://public-asset.fra1.cdn.digitaloceanspaces.com/${name}`,
+                url: `https://${process.env.S3_BUCKET_NAME}.fra1.cdn.digitaloceanspaces.com/${name}`,
               },
             },
           },
@@ -547,7 +547,7 @@ app.get('/get-info', (req, res) => {
 const logoImageUpload = multer({
   storage: multerS3({
     s3: s3,
-    bucket: 'public-asset',
+    bucket: process.env.S3_BUCKET_NAME,
     contentType: multerS3.AUTO_CONTENT_TYPE,
     acl: 'public-read',
     key: (request, file, cb) => {
@@ -622,7 +622,7 @@ app.post('/update-info', (req, res) => {
 const uploadModelImages = multer({
   storage: multerS3({
     s3: s3,
-    bucket: 'public-asset',
+    bucket: process.env.S3_BUCKET_NAME,
     contentType: multerS3.AUTO_CONTENT_TYPE,
     acl: 'public-read',
     metadata: function (req, file, cb) {
@@ -674,7 +674,7 @@ app.post('/upload-model-images', (req, res) => {
                 $set: {
                   model_360_images: {
                     is_active: true,
-                    path_url: `https://public-asset.fra1.cdn.digitaloceanspaces.com/${id}`,
+                    path_url: `https://${process.env.S3_BUCKET_NAME}.fra1.cdn.digitaloceanspaces.com/${id}`,
                     total: req.files?.length,
                   },
                   model_360_image_urls: imageUrls,
@@ -715,7 +715,7 @@ app.post('/delete-model-images', async (req, res) => {
     menuData.model_360_image_urls?.map(async item => {
       await s3.send(
         new DeleteObjectCommand({
-          Bucket: 'public-asset',
+          Bucket: process.env.S3_BUCKET_NAME,
           Key: item,
         }),
       )
