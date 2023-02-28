@@ -3,11 +3,10 @@ FROM node:16
 
 # Setting up env as production
 ENV NODE_ENV=production
-ENV ADMIN_URL=https://menu-app-admin-luqws.ondigitalocean.app/
-ENV DB_URL=mongodb+srv://admin:admin@ar-menu.jvvucuy.mongodb.net/test
-ENV S3_BUCKET_ENDPOINT=https://fra1.digitaloceanspaces.com
-ENV S3_ACCESS_KEY=DO00FHXJYKE998TXYQH4
-ENV S3_SECRET_KEY=CSnZnDgpbiXCGpPcvPUXaqavH8s97JtUap0KSn9G540
+ENV DB_URL=mongodb+srv://admin:admin@ar-menu.jvvucuy.mongodb.net/Restaurant-1
+ENV S3_BUCKET_ENDPOINT=https://public-assets.nyc3.digitaloceanspaces.com
+ENV S3_ACCESS_KEY=DO00NBGAWXZPBNLWJJAH
+ENV S3_SECRET_KEY=6DFBPz2Fz+z5FWP2TwhzpYfa2mH6tDJe4bmiuG650g4
 ENV MAX_360_IMAGES_COUNT=24
 
 #Getting System Ready to install dependencies
