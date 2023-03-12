@@ -29,9 +29,9 @@ const style = {
 const ModelMultipleImageModal = props => {
   const imageUrl = useMemo(() => {
     if (props.isUpload === true) {
-      return 'https://public-asset.fra1.cdn.digitaloceanspaces.com/tick.png'
+      return 'https://public-assets.nyc3.digitaloceanspaces.com/tick.png'
     } else if (props.isUpload === false) {
-      return 'https://public-asset.fra1.cdn.digitaloceanspaces.com/Cross.png'
+      return 'https://public-assets.nyc3.digitaloceanspaces.com/cross.png'
     } else {
       return null
     }
