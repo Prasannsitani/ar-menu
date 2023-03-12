@@ -160,8 +160,8 @@ const Table = props => {
                     <img
                       src={`${
                         item.ar_enabled
-                          ? `https://public-asset.fra1.cdn.digitaloceanspaces.com/tick.png`
-                          : `https://public-asset.fra1.cdn.digitaloceanspaces.com/Cross.png`
+                          ? `https://purnabramha-public-assets.nyc3.cdn.digitaloceanspaces.com/tick.png`
+                          : `https://purnabramha-public-assets.nyc3.cdn.digitaloceanspaces.com/cross.png`
                       }?w=100&h=100&fit=crop&auto=format`}
                       alt={'Image'}
                       loading="lazy"
@@ -207,8 +207,8 @@ const Table = props => {
                     <img
                       src={`${
                         item.model_360_images?.is_active
-                          ? `https://public-asset.fra1.cdn.digitaloceanspaces.com/tick.png`
-                          : `https://public-asset.fra1.cdn.digitaloceanspaces.com/Cross.png`
+                          ? `https://purnabramha-public-assets.nyc3.cdn.digitaloceanspaces.com/tick.png`
+                          : `https://purnabramha-public-assets.nyc3.cdn.digitaloceanspaces.com/cross.png`
                       }?w=100&h=100&fit=crop&auto=format`}
                       alt={'Image'}
                       loading="lazy"

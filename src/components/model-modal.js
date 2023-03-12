@@ -51,9 +51,9 @@ const CssTextField = withStyles({
 const ModelModal = props => {
   const modelUrl = useMemo(() => {
     if (props.isModel === true) {
-      return 'https://public-asset.fra1.cdn.digitaloceanspaces.com/tick.png'
+      return 'https://purnabramha-public-assets.nyc3.cdn.digitaloceanspaces.com/tick.png'
     } else if (props.isModel === false) {
-      return 'https://public-asset.fra1.cdn.digitaloceanspaces.com/Cross.png'
+      return 'https://purnabramha-public-assets.nyc3.cdn.digitaloceanspaces.com/cross.png'
     } else {
       return null
     }
