@@ -475,7 +475,7 @@ app.post('/upload-model', (req, res) => {
               ar_enabled: true,
               ar_info: {
                 type: 'MODEL',
-                url: `https://${process.env.S3_BUCKET_NAME}.fra1.cdn.digitaloceanspaces.com/${name}`,
+                url: `https://${process.env.S3_BUCKET_NAME}.nyc3.digitaloceanspaces.com/${name}`,
               },
             },
           },
@@ -674,7 +674,7 @@ app.post('/upload-model-images', (req, res) => {
                 $set: {
                   model_360_images: {
                     is_active: true,
-                    path_url: `https://${process.env.S3_BUCKET_NAME}.fra1.cdn.digitaloceanspaces.com/${id}`,
+                    path_url: `https://${process.env.S3_BUCKET_NAME}.nyc3.digitaloceanspaces.com/${id}`,
                     total: req.files?.length,
                   },
                   model_360_image_urls: imageUrls,
