@@ -225,6 +225,7 @@ app.get('/home', async (req, res) => {
   let _menu = []
   let _info = {}
   let _data = {}
+  let _final_data = {}
 
   try {
     _info = await info.findOne()
@@ -242,6 +243,14 @@ app.get('/home', async (req, res) => {
           }
         }
       })
+
+      if (_info.sections && _info.sections.length > 0) {
+        _info.sections.map(item => {
+          if (_data[item.name]) {
+            _final_data[item.name] = _data[item.name]
+          }
+        })
+      }
     } else {
       res.sendStatus(404)
     }
@@ -251,7 +260,7 @@ app.get('/home', async (req, res) => {
 
   res.json({
     info: _info,
-    menu: _data,
+    menu: _final_data,
   })
 })
 
