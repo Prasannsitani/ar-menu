@@ -32,17 +32,18 @@ jobs:
           docker build -t menu-server .
           docker images
 
-      - name: Copy Docker Image to Remote Server
+          - name: DigitalOcean Login
+          run: |
+            doctl auth init -t ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+          
+      - name: DigitalOcean Push Image
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'docker load' < $(docker save menu-server:latest) 
-        env:
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-  
-      - name: Deploy Docker Container on Remote Server
+          doctl registry login
+          doctl registry tag menu-server:latest registry.digitalocean.com/${{ secrets.DIGITALOCEAN_REGISTRY }}/menu-server:latest
+          doctl registry push registry.digitalocean.com/${{ secrets.DIGITALOCEAN_REGISTRY }}/menu-server:latest
+
+      - name: DigitalOcean Deploy
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'docker run -d -p 8080:80 menu-server:latest'
-        env:
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_HOST: ${{ secrets.SSH_HOST }} 
+          doctl kubernetes cluster kubeconfig save ${{ secrets.DIGITALOCEAN_CLUSTER }}
+          kubectl set image deployment/menu-deployment menu=registry.digitalocean.com/${{ secrets.DIGITALOCEAN_REGISTRY }}/menu-server:latest
           
