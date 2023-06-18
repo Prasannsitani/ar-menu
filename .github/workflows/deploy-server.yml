@@ -21,14 +21,15 @@ jobs:
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
-      - name: Verify installation
-        run: doctl version
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
 
-      - name: Verify log-in
-        run: doctl compute region list
-
-      - name: List files
+      - name: Docker Build
         run: |
           cd server
-          echo ls
+          yarn install
+          docker built -t menu-server .
+          docker container ls
           
