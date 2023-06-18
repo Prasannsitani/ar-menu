@@ -16,6 +16,9 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
 
+      - name: List files
+        run: ls
+
     # steps:
     #   - name: executing remote ssh commands using password
     #     uses: appleboy/ssh-action@v0.1.10
