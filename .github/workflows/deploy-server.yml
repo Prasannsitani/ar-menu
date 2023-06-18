@@ -16,28 +16,19 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
 
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Verify installation
+        run: doctl version
+
+      - name: Verify log-in
+        run: doctl compute region list
+
       - name: List files
-        run: ls
-
-    # steps:
-    #   - name: executing remote ssh commands using password
-    #     uses: appleboy/ssh-action@v0.1.10
-    #     with:
-    #       host: ${{ secrets.SSH_HOST }}
-    #       key: ${{ secrets.SSH_KEY }}
-    #       username: ${{ secrets.SSH_USERNAME }}
-    #       paraphrase: ${{ secrets.SSH_PARAPHRASE }}
-
-    #       script: | 
-    #         git clone git@github.com:Prasannsitani/ar-menu.git
-    #         echo "Clone the repo"
-
-
-      
-      
-    #   - uses: actions/checkout@v3
-    #   - uses: actions/setup-node@v3
-    #     with:
-    #       node-version: '14'
-    #   - run: npm install -g bats
-    #   - run: bats -v
+        run: |
+          cd server
+          echo ls
+          
