@@ -32,18 +32,26 @@ jobs:
           docker build -t menu-server .
           docker images
 
-      - name: DigitalOcean Login
+      - name: Copy Docker Image to Remote Server
         run: |
-          doctl auth init -t ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-          
-      - name: DigitalOcean Push Image
+          sudo scp -o StrictHostKeyChecking=no -i ${{ secrets.SSH_KEY }} server/menu-server:latest ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USER }}/menu-server:latest
+  
+      - name: SSH into Remote Server and Run Container
         run: |
-          doctl registry login
-          doctl registry tag menu-server:latest registry.digitalocean.com/${{ secrets.DIGITALOCEAN_REGISTRY }}/menu-server:latest
-          doctl registry push registry.digitalocean.com/${{ secrets.DIGITALOCEAN_REGISTRY }}/menu-server:latest
+          sudo ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_KEY }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'docker run -d -p 8080:80 /home/${{ secrets.SSH_USER }}/menu-server:latest'   
 
-      - name: DigitalOcean Deploy
-        run: |
-          doctl kubernetes cluster kubeconfig save ${{ secrets.DIGITALOCEAN_CLUSTER }}
-          kubectl set image deployment/menu-deployment menu=registry.digitalocean.com/${{ secrets.DIGITALOCEAN_REGISTRY }}/menu-server:latest
+      # - name: DigitalOcean Login
+      #   run: |
+      #     doctl auth init -t ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+          
+      # - name: DigitalOcean Push Image
+      #   run: |
+      #     doctl registry login
+      #     doctl registry tag menu-server:latest registry.digitalocean.com/${{ secrets.DIGITALOCEAN_REGISTRY }}/menu-server:latest
+      #     doctl registry push registry.digitalocean.com/${{ secrets.DIGITALOCEAN_REGISTRY }}/menu-server:latest
+
+      # - name: DigitalOcean Deploy
+      #   run: |
+      #     doctl kubernetes cluster kubeconfig save ${{ secrets.DIGITALOCEAN_CLUSTER }}
+      #     kubectl set image deployment/menu-deployment menu=registry.digitalocean.com/${{ secrets.DIGITALOCEAN_REGISTRY }}/menu-server:latest
           
