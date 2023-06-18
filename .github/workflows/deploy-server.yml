@@ -40,5 +40,5 @@ jobs:
 
       - name: Copy Docker Image to Remote Server
         run: |
-          sudo scp -v -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa server/menu-server:latest ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}/menu-server:latest
+          sudo scp -v -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa menu-server:latest ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}/menu-server:latest
           
