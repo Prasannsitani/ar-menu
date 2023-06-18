@@ -31,5 +31,18 @@ jobs:
           cd server
           docker build -t menu-server .
           docker images
-          docker run -d -p 8080:80 menu-server:latest
+
+      - name: Copy Docker Image to Remote Server
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'docker load' < $(docker save menu-server:latest) 
+        env:
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+  
+      - name: Deploy Docker Container on Remote Server
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'docker run -d -p 8080:80 menu-server:latest'
+        env:
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }} 
           
