@@ -32,13 +32,21 @@ jobs:
           docker build -t menu-server .
           docker images
 
+      - name: Check Values
+        run: |
+          echo ${{ secrets.SSH_KEY }}
+          echo ${{ secrets.SSH_USER }}
+          echo ${{ secrets.SSH_HOST }} 
+          echo ${{ secrets.SSH_PRIVATE_KEY }} 
+
+
       - name: Copy Docker Image to Remote Server
         run: |
-          sudo scp -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} server/menu-server:latest ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USER }}/menu-server:latest
+          sudo scp -o StrictHostKeyChecking=no -i ${{ secrets.SSH_KEY }} server/menu-server:latest ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}/menu-server:latest
   
       - name: SSH into Remote Server and Run Container
         run: |
-          sudo ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'docker run -d -p 8080:80 /home/${{ secrets.SSH_USER }}/menu-server:latest'   
+          sudo ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_KEY }} ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} 'docker run -d -p 8080:80 /home/${{ secrets.SSH_USERNAME }}/menu-server:latest'   
 
       # - name: DigitalOcean Login
       #   run: |
