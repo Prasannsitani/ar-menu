@@ -43,8 +43,8 @@ jobs:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
           eval "$(ssh-agent -s)"
-          echo "${{ secrets.SSH_PARAPHRASE }}" | ssh-add -k -
           ssh-add - <<<"${{ secrets.SSH_KEY }}"
+          echo "${{ secrets.SSH_PARAPHRASE }}" | ssh-add -k -
           sudo scp -v -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -o "ForwardAgent yes" server/menu-server:latest ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}/menu-server:latest
           sudo killall ssh-agent   
 
