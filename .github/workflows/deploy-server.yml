@@ -30,6 +30,6 @@ jobs:
         run: |
           cd server
           yarn install
-          docker built -t menu-server .
+          docker build -t menu-server .
           docker container ls
           
