@@ -35,7 +35,7 @@ jobs:
       - name: Check Values
         run: |
           echo ${{ secrets.SSH_KEY }}
-          echo ${{ secrets.SSH_USER }}
+          echo ${{ secrets.SSH_USERNAME }}
           echo ${{ secrets.SSH_HOST }} 
           echo ${{ secrets.SSH_PRIVATE_KEY }} 
 
