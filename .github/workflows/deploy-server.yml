@@ -38,6 +38,10 @@ jobs:
           echo "${{ secrets.SSH_USERNAME }}"
           echo "${{ secrets.SSH_HOST }}"
 
+      - name: Install SSh Ask Package
+        run: |
+          sudo apt-get install ssh-askpass    
+
       - name: Copy Docker Image to Remote Server
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
