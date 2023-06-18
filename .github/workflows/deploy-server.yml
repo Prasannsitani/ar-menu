@@ -36,7 +36,7 @@ jobs:
         run: |
           echo "${{ secrets.SSH_KEY }}"
           echo "${{ secrets.SSH_USERNAME }}"
-          echo "${{ secrets.SSH_HOST }}"
+          echo "${{ secrets.SSH_HOST }}"   
 
       - name: Copy Docker Image to Remote Server
         run: |
