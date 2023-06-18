@@ -45,9 +45,6 @@ jobs:
       - name: Copy Docker Image to Remote Server
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-          DISPLAY: ":0"
-          SSH_ASKPASS: /usr/bin/ssh-askpass
-          DEBIAN_FRONTEND: noninteractive
         run: |
           eval "$(ssh-agent -s)"
           echo "${{ secrets.SSH_PARAPHRASE }}" | sshpass -p- ssh-add - <<<"${{ secrets.SSH_KEY }}"
