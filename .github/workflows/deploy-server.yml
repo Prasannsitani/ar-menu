@@ -38,11 +38,18 @@ jobs:
           echo "${{ secrets.SSH_USERNAME }}"
           echo "${{ secrets.SSH_HOST }}"
 
-
       - name: Copy Docker Image to Remote Server
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
-          sudo scp -v -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa server/menu-server:latest ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}/menu-server:latest
-          # sudo scp -v -o StrictHostKeyChecking=no -i ${{ secrets.SSH_KEY }} server/menu-server:latest ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}/menu-server:latest
+          eval "$(ssh-agent -s)"
+          ssh-add - <<<"${{ secrets.SSH_KEY }}"
+          sudo scp -v -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -o "ForwardAgent yes" server/menu-server:latest ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}/menu-server:latest
+          sudo killall ssh-agent   
+
+      # - name: Copy Docker Image to Remote Server
+      #   run: |
+      #     sudo scp -v -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa server/menu-server:latest ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}/menu-server:latest
   
       # - name: SSH into Remote Server and Run Container
       #   run: |
