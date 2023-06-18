@@ -16,37 +16,36 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
 
-      - name: Install doctl
-        uses: digitalocean/action-doctl@v2
-        with:
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      # - name: Install doctl
+      #   uses: digitalocean/action-doctl@v2
+      #   with:
+      #     token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.x
+      # - name: Use Node.js 16.x
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: 16.x
 
-      - name: Docker Build
-        run: |
-          cd server
-          docker build -t menu-server .
-          docker images
+      # - name: Docker Build
+      #   run: |
+      #     cd server
+      #     docker build -t menu-server .
+      #     docker images
 
       - name: Check Values
         run: |
-          echo ${{ secrets.SSH_KEY }}
-          echo ${{ secrets.SSH_USERNAME }}
-          echo ${{ secrets.SSH_HOST }} 
-          echo ${{ secrets.SSH_PRIVATE_KEY }} 
+          echo "${{ secrets.SSH_KEY }}"
+          echo "${{ secrets.SSH_USERNAME }}"
+          echo "${{ secrets.SSH_HOST }}"
 
 
-      - name: Copy Docker Image to Remote Server
-        run: |
-          sudo scp -o StrictHostKeyChecking=no -i ${{ secrets.SSH_KEY }} server/menu-server:latest ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}/menu-server:latest
+      # - name: Copy Docker Image to Remote Server
+      #   run: |
+      #     sudo scp -o StrictHostKeyChecking=no -i ${{ secrets.SSH_KEY }} server/menu-server:latest ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USERNAME }}/menu-server:latest
   
-      - name: SSH into Remote Server and Run Container
-        run: |
-          sudo ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_KEY }} ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} 'docker run -d -p 8080:80 /home/${{ secrets.SSH_USERNAME }}/menu-server:latest'   
+      # - name: SSH into Remote Server and Run Container
+      #   run: |
+      #     sudo ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_KEY }} ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} 'docker run -d -p 8080:80 /home/${{ secrets.SSH_USERNAME }}/menu-server:latest'   
 
       # - name: DigitalOcean Login
       #   run: |
