@@ -32,9 +32,9 @@ jobs:
           docker build -t menu-server .
           docker images
 
-          - name: DigitalOcean Login
-          run: |
-            doctl auth init -t ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      - name: DigitalOcean Login
+        run: |
+          doctl auth init -t ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
           
       - name: DigitalOcean Push Image
         run: |
