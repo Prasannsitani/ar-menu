@@ -12,6 +12,10 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_KEY }}
 
-      - name: Connect to Droplet
-        run: ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "echo 'Connected to Droplet!'"
+      - name: Check SSH values
+        run: |
+          cat ~/.ssh/authorized_keys    
+
+      # - name: Connect to Droplet
+      #   run: ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "echo 'Connected to Droplet!'"
           
