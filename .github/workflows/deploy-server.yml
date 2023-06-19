@@ -24,7 +24,8 @@ jobs:
         run: |
           doctl compute droplet list
           doctl compute ssh-key list
-          doctl compute ssh -t ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }} 361334044
+          doctl auth init -t dop_v1_4dd1d8b6fe981402b8894d05f93f4cdd49f5a3251ea536d203f269906e996e5b
+          doctl compute ssh -tt testing-server
         # ls
 
       # - name: Connect to Droplet
