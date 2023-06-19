@@ -24,7 +24,7 @@ jobs:
         run: |
           doctl compute droplet list
           doctl compute ssh-key list
-          doctl compute ssh 361334044
+          doctl compute ssh -tt 361334044
         # ls
 
       # - name: Connect to Droplet
