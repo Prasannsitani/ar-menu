@@ -24,8 +24,8 @@ jobs:
         run: |
           doctl compute droplet list
           doctl compute ssh-key list
-          doctl auth init -t dop_v1_dad67c747821bd8474ec0f8eb8a41606e7a21c935ee234197661e111e7a320e9
-          doctl compute ssh -tt testing-server
+        # doctl auth init -t dop_v1_dad67c747821bd8474ec0f8eb8a41606e7a21c935ee234197661e111e7a320e9
+        # doctl compute ssh -tt testing-server
         # ls
 
       # - name: Connect to Droplet
