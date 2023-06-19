@@ -15,6 +15,8 @@ jobs:
       - name: List All Droplets
         run: |
           doctl compute droplet list
+          doctl compute ssh testing-server
+          ls
 
       # - name: Connect to Droplet
       #   run: ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "echo 'Connected to Droplet!'"
