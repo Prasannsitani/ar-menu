@@ -15,7 +15,8 @@ jobs:
       - name: Check SSH values
         run: |
           cd ~/.ssh
-          ls 
+          ls
+          cat known_hosts 
 
       # - name: Connect to Droplet
       #   run: ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "echo 'Connected to Droplet!'"
