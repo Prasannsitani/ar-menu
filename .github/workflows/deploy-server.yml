@@ -7,16 +7,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Configure SSH connection
-        uses: webfactory/ssh-agent@v0.5.3
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
         with:
-          ssh-private-key: ${{ secrets.SSH_KEY }}
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
-      - name: Check SSH values
+      - name: List All Droplets
         run: |
-          cd ~/.ssh
-          ls
-          cat known_hosts 
+          doctl compute droplet list
 
       # - name: Connect to Droplet
       #   run: ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "echo 'Connected to Droplet!'"
