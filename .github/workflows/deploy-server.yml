@@ -12,14 +12,6 @@ jobs:
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
-      - name: Configure doctl
-        run: |
-          doctl auth init --context auth-validation    
-
-      # - name: Reset doctl default context
-      #   run: |
-      #     /opt/hostedtoolcache/doctl/1.96.1/x64/doctl auth init --remove    
-
       - name: List All Droplets
         run: |
           doctl compute droplet list
@@ -29,9 +21,3 @@ jobs:
 
       # - name: Connect to Droplet
       #   run: ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "echo 'Connected to Droplet!'"
-          
-
-
-      # context: dop_v1_4202c82f6b337bbfb1070488e476e111380b65940466c319c065d8bdb294cf92
-
-      # dop_v1_c9fe14ea5297d2d32c93ed930c0383cd00fb9d2d565e3e4c7a903993747907bf
