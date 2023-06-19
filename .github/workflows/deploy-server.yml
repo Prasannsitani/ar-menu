@@ -10,6 +10,7 @@ jobs:
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
+          context: auth-validation
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
       - name: List All Droplets
@@ -23,5 +24,7 @@ jobs:
       #   run: ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "echo 'Connected to Droplet!'"
           
 
+
+      # context: dop_v1_4202c82f6b337bbfb1070488e476e111380b65940466c319c065d8bdb294cf92
 
       # dop_v1_c9fe14ea5297d2d32c93ed930c0383cd00fb9d2d565e3e4c7a903993747907bf
