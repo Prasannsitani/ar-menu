@@ -13,5 +13,5 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_KEY }}
 
       - name: Connect to Droplet
-        run: ssh ${DROPLET_USERNAME}@${DROPLET_IP_ADDRESS} "echo 'Connected to Droplet!'"
+        run: ssh ${SSH_USERNAME}@${SSH_HOST} "echo 'Connected to Droplet!'"
           
