@@ -15,9 +15,7 @@ RUN apt-get clean \
     && apt-get -y update
     
 # Installing nginx
-RUN apt-get -y install nginx \
-    && apt-get -y install python3-dev \
-    && apt-get -y install build-essential
+RUN apt-get -y install nginx 
 
 # Creating symbolic link for access and error log from nginx
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
