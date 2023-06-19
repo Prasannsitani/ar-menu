@@ -7,10 +7,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Reset doctl default context
-        run: |
-          /opt/hostedtoolcache/doctl/1.96.1/x64/doctl auth init --remove
-
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
@@ -19,6 +15,10 @@ jobs:
       - name: Configure doctl
         run: |
           doctl auth init --context auth-validation    
+
+      # - name: Reset doctl default context
+      #   run: |
+      #     /opt/hostedtoolcache/doctl/1.96.1/x64/doctl auth init --remove    
 
       - name: List All Droplets
         run: |
