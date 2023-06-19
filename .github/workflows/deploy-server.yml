@@ -16,7 +16,7 @@ jobs:
         run: |
           doctl compute droplet list
           doctl compute ssh-key list
-        # doctl compute ssh testing-server
+          doctl compute ssh 142.93.214.244
         # ls
 
       # - name: Connect to Droplet
