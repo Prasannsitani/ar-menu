@@ -31,7 +31,8 @@ jobs:
           cat ~/.ssh/id_rsa
           cat ~/.ssh/authorized_keys
           cat ~/.ssh/known_hosts
-          doctl compute ssh -t=dop_v1_54f857e9bbe40be0f3266144e53738172a5299b7353f6b9e3949853906650827 testing-server
+          ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "echo 'Connected to Droplet!'"
+        # doctl compute ssh testing-server
 
       # - name: Connect to Droplet
       #   run: ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "echo 'Connected to Droplet!'"
