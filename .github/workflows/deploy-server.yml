@@ -24,8 +24,10 @@ jobs:
         run: |
           doctl compute droplet list
           doctl compute ssh-key list
-          doctl compute ssh -i ~/.ssh/id_rsa root@${{ secrets.SSH_HOST }}
-      # doctl compute ssh -tt testing-server
+          cat ~/.ssh/id_rsa
+          cat ~/.ssh/authorized_token
+          cat ~/.ssh/known_hosts
+          doctl compute ssh -tt testing-server --ssh-key-path=~/.ssh/id_rsa
 
       # - name: Connect to Droplet
       #   run: ssh ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "echo 'Connected to Droplet!'"
